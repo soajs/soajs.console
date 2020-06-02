@@ -40,6 +40,8 @@ describe("starting integration tests", () => {
 	});
 	
 	it("loading tests", (done) => {
+		require("./ledger/add.js");
+		require("./ledger/add_get.js");
 		done();
 	});
 	

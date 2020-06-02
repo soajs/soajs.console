@@ -128,7 +128,7 @@ module.exports = {
 					"required": true,
 					"validation": {
 						"type": "string",
-						"enum": ["Registry", "Deployment", "Recipe"]
+						"enum": ["failed", "succeeded"]
 					}
 				},
 				"header": {
