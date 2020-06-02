@@ -7,9 +7,36 @@
  */
 
 "use strict";
-//const colName = "ledger";
+const colName = "ledger";
 const core = require("soajs");
 const Mongo = core.mongo;
+
+/*
+{
+	_id
+	type: "deployment || registry"
+	locator: ["api catalog", "configure", "itemID"]
+	action: "deleted || updated || added"
+	status: "failed" || "success"
+	who: {
+		"_id": "",
+		"username": ""
+		"firstName": ""
+		"lastName": ""
+		"email": ""
+	}
+	header": {
+	
+	}
+	input: {
+	
+	}
+	output: {
+	
+	}
+	time: ""
+}
+ */
 
 let indexing = {};
 
@@ -46,21 +73,49 @@ function Ledger(service, options, mongoCore) {
 	}
 }
 
-Ledger.prototype.validateId = function (id, cb) {
+Ledger.prototype.add = function (data, cb) {
 	let __self = this;
-	
-	if (!id) {
-		let error = new Error("ledger: must provide an id.");
+	if (!data || !data.type || !data.locator || !data.action || !data.status || !data.who) {
+		let error = new Error("Ledger: type, locator, action, status, and who are required.");
 		return cb(error, null);
 	}
 	
-	try {
-		id = __self.mongoCore.ObjectId(id);
-		return cb(null, id);
-	} catch (e) {
-		__self.log(e.message);
-		return cb(new Error("A valid ID is required"), null);
+	let options = {};
+	let doc = {
+		type: data.type,
+		locator: data.locator,
+		action: data.action,
+		status: data.status,
+		who: data.who,
+		header: data.header || null,
+		input: data.input || null,
+		output: data.output || null,
+		time: new Date().getTime()
+	};
+	let versioning = false;
+	__self.mongoCore.insertOne(colName, doc, options, versioning, cb);
+};
+
+Ledger.prototype.get = function (data, cb) {
+	let __self = this;
+	let condition = {};
+	if (data && data.type) {
+		condition = {
+			type: data.type
+		};
 	}
+	let options = {
+		"skip": 0,
+		"limit": 100
+	};
+	options.sort = {};
+	if (data && data.limit) {
+		options.limit = data.limit;
+	}
+	if (data && data.start) {
+		options.skip = data.start;
+	}
+	__self.mongoCore.find(colName, condition, options, cb);
 };
 
 Ledger.prototype.closeConnection = function () {

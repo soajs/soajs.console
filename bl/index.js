@@ -17,8 +17,8 @@ const BLs = ["ledger", "registry"];
 
 let BL = {
 	init: init,
-	marketplace: null,
-	marketplace_soajs: null
+	ledger: null,
+	registry: null
 	
 };
 

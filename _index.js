@@ -25,7 +25,11 @@ function run(serviceStartCb) {
 			}
 			
 			//GET methods
-			
+			service.get("/ledger/:type", function (req, res) {
+				bl.ledger.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			//DELETE methods
 			
@@ -34,7 +38,11 @@ function run(serviceStartCb) {
 			
 			
 			//POST methods
-			
+			service.post("/ledger/:type", function (req, res) {
+				bl.ledger.add(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			service.start(serviceStartCb);
 		});

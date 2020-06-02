@@ -41,6 +41,42 @@ let bl = {
 				modelObj.closeConnection();
 			}
 		}
+	},
+	
+	"get": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		modelObj.get(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, response);
+		});
+	},
+	"add": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		if (soajs.urac) {
+			inputmaskData.who = {
+				"_id": soajs.urac._id,
+				"username": soajs.urac.username,
+				"firstName": soajs.urac.firstName,
+				"lastName": soajs.urac.lastName,
+				"email": soajs.urac.email
+			};
+		}
+		modelObj.add(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, response);
+		});
 	}
 };
 

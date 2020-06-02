@@ -50,11 +50,6 @@ module.exports = {
 	"schema": {
 		
 		"commonFields": {
-			"keywords": {
-				"source": ['query.keywords', 'body.keywords'],
-				"required": false,
-				"validation": {"type": "string"}
-			},
 			"start": {
 				"required": false,
 				"source": ["query.start", "body.start"],
@@ -72,19 +67,93 @@ module.exports = {
 					"type": "integer",
 					"max": 2000
 				}
-			},
-			"id": {
-				"source": ['query.id', 'body.id'],
-				"required": true,
-				"validation": {"type": "string"}
 			}
 		},
 		
-		"get": {},
+		"get": {
+			"/ledger/:type": {
+				"_apiInfo": {
+					"l": "This API returns the ledger entries of a specific type",
+					"group": "Ledger"
+				},
+				"commonFields": ["start", "limit"],
+				"type": {
+					"source": ["params.type"],
+					"required": true,
+					"validation": {
+						"type": "string",
+						"enum": ["Registry", "Deployment", "Recipe"]
+					}
+				}
+			}
+		},
 		
 		"delete": {},
 		
-		"post": {},
+		"post": {
+			"/ledger/:type": {
+				"_apiInfo": {
+					"l": "This API adds an entry to the ledger of a specific type",
+					"group": "Ledger"
+				},
+				"type": {
+					"source": ["params.type"],
+					"required": true,
+					"validation": {
+						"type": "string",
+						"enum": ["Registry", "Deployment", "Recipe"]
+					}
+				},
+				"locator": {
+					"source": ["body.locator"],
+					"required": true,
+					"validation": {
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "string"
+						}
+					}
+				},
+				"action": {
+					"source": ["body.action"],
+					"required": true,
+					"validation": {
+						"type": "string",
+						"enum": ["deleted", "updated", "added"]
+					}
+				},
+				"status": {
+					"source": ["body.status"],
+					"required": true,
+					"validation": {
+						"type": "string",
+						"enum": ["Registry", "Deployment", "Recipe"]
+					}
+				},
+				"header": {
+					"source": ['body.header'],
+					"required": false,
+					"validation": {
+						"type": "object"
+					}
+				},
+				"input": {
+					"source": ['body.input'],
+					"required": false,
+					"validation": {
+						"type": "object"
+					}
+				},
+				"output": {
+					"source": ['body.output'],
+					"required": false,
+					"validation": {
+						"type": "object"
+					}
+				}
+			}
+		},
 		
 		"put": {}
 		
