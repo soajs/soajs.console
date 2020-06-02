@@ -104,6 +104,14 @@ module.exports = {
 						"enum": ["Registry", "Deployment", "Recipe"]
 					}
 				},
+				"section": {
+					"source": ["body.section"],
+					"required": true,
+					"validation": {
+						"type": "string",
+						"enum": ["Default", "Custom", "Resource configuration", "Catalog", "Continuous delivery", "Cloud and deployment"]
+					}
+				},
 				"locator": {
 					"source": ["body.locator"],
 					"required": true,

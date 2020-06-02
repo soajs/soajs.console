@@ -18,7 +18,8 @@ describe("Testing add, and get ledger", () => {
 	it("Success - add get", (done) => {
 		let params = {
 			body: {
-				"locator": ["Custom registry", "oauth"],
+				"section": "Custom",
+				"locator": ["oauth"],
 				"action": "added",
 				"status": "succeeded",
 				"header": {
@@ -40,7 +41,8 @@ describe("Testing add, and get ledger", () => {
 			
 			let params = {
 				body: {
-					"locator": ["Registry"],
+					"section": "Default",
+					"locator": ["Configuration"],
 					"action": "updated",
 					"status": "succeeded",
 					"header": {},

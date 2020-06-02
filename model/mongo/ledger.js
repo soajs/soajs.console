@@ -15,6 +15,7 @@ const Mongo = core.mongo;
 {
 	_id
 	type: "deployment || registry"
+	section: ["Default || Custom || Resource configuration || Catalog || CD || Cloud and deployment"]
 	locator: ["api catalog", "configure", "itemID"]
 	action: "deleted || updated || added"
 	status: "failed" || "success"
@@ -75,7 +76,7 @@ function Ledger(service, options, mongoCore) {
 
 Ledger.prototype.add = function (data, cb) {
 	let __self = this;
-	if (!data || !data.type || !data.locator || !data.action || !data.status || !data.who) {
+	if (!data || !data.type || !data.locator || !data.section || !data.action || !data.status || !data.who) {
 		let error = new Error("Ledger: type, locator, action, status, and who are required.");
 		return cb(error, null);
 	}
@@ -83,6 +84,7 @@ Ledger.prototype.add = function (data, cb) {
 	let options = {};
 	let doc = {
 		type: data.type,
+		section: data.section,
 		locator: data.locator,
 		action: data.action,
 		status: data.status,

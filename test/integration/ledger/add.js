@@ -18,7 +18,8 @@ describe("Testing add ledger", () => {
 	it("Success - add", (done) => {
 		let params = {
 			body: {
-				"locator": ["Custom registry", "urac"],
+				"section": "Custom",
+				"locator": ["urac"],
 				"action": "added",
 				"status": "succeeded",
 				"header": {
