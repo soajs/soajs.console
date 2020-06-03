@@ -38,7 +38,7 @@ function run(serviceStartCb) {
 			
 			
 			//POST methods
-			service.post("/ledger/:type", function (req, res) {
+			service.post("/ledger", function (req, res) {
 				bl.ledger.add(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});

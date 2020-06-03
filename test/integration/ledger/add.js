@@ -18,22 +18,25 @@ describe("Testing add ledger", () => {
 	it("Success - add", (done) => {
 		let params = {
 			body: {
-				"section": "Custom",
-				"locator": ["urac"],
-				"action": "added",
-				"status": "succeeded",
-				"header": {
-					"userAgent": "firefox"
-				},
-				"input": {
-					"qs1": "anything"
-				},
-				"output": {
-					"nothing": "blabla"
+				"doc": {
+					"type": "Registry",
+					"section": "Custom",
+					"locator": ["urac"],
+					"action": "added",
+					"status": "succeeded",
+					"header": {
+						"userAgent": "firefox"
+					},
+					"input": {
+						"qs1": "anything"
+					},
+					"output": {
+						"nothing": "blabla"
+					}
 				}
 			}
 		};
-		requester('/ledger/Registry', 'post', params, (error, body) => {
+		requester('/ledger', 'post', params, (error, body) => {
 			assert.ifError(error);
 			assert.ok(body);
 			assert.ok(body.data);

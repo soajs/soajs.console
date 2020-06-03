@@ -8,6 +8,9 @@
 
 'use strict';
 
+
+const ledger_doc = require("./schemas/ledger_doc.js");
+
 module.exports = {
 	"type": 'service',
 	'subType': 'soajs',
@@ -91,74 +94,15 @@ module.exports = {
 		"delete": {},
 		
 		"post": {
-			"/ledger/:type": {
+			"/ledger": {
 				"_apiInfo": {
 					"l": "This API adds an entry to the ledger of a specific type",
 					"group": "Ledger"
 				},
-				"type": {
-					"source": ["params.type"],
+				"doc": {
+					"source": ["body.doc"],
 					"required": true,
-					"validation": {
-						"type": "string",
-						"enum": ["Registry", "Deployment", "Recipe"]
-					}
-				},
-				"section": {
-					"source": ["body.section"],
-					"required": true,
-					"validation": {
-						"type": "string",
-						"enum": ["Default", "Custom", "Resource configuration", "Catalog", "Continuous delivery", "Cloud and deployment"]
-					}
-				},
-				"locator": {
-					"source": ["body.locator"],
-					"required": true,
-					"validation": {
-						"type": "array",
-						"minItems": 1,
-						"items": {
-							"type": "string"
-						}
-					}
-				},
-				"action": {
-					"source": ["body.action"],
-					"required": true,
-					"validation": {
-						"type": "string",
-						"enum": ["deleted", "updated", "added"]
-					}
-				},
-				"status": {
-					"source": ["body.status"],
-					"required": true,
-					"validation": {
-						"type": "string",
-						"enum": ["failed", "succeeded"]
-					}
-				},
-				"header": {
-					"source": ['body.header'],
-					"required": false,
-					"validation": {
-						"type": "object"
-					}
-				},
-				"input": {
-					"source": ['body.input'],
-					"required": false,
-					"validation": {
-						"type": "object"
-					}
-				},
-				"output": {
-					"source": ['body.output'],
-					"required": false,
-					"validation": {
-						"type": "object"
-					}
+					"validation": ledger_doc
 				}
 			}
 		},

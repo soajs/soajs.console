@@ -76,22 +76,22 @@ function Ledger(service, options, mongoCore) {
 
 Ledger.prototype.add = function (data, cb) {
 	let __self = this;
-	if (!data || !data.type || !data.locator || !data.section || !data.action || !data.status || !data.who) {
+	if (!data || !data.doc || !data.doc.type || !data.doc.locator || !data.doc.section || !data.doc.action || !data.doc.status || !data.who) {
 		let error = new Error("Ledger: type, locator, action, status, and who are required.");
 		return cb(error, null);
 	}
 	
 	let options = {};
 	let doc = {
-		type: data.type,
-		section: data.section,
-		locator: data.locator,
-		action: data.action,
-		status: data.status,
+		type: data.doc.type,
+		section: data.doc.section,
+		locator: data.doc.locator,
+		action: data.doc.action,
+		status: data.doc.status,
 		who: data.who,
-		header: data.header || null,
-		input: data.input || null,
-		output: data.output || null,
+		header: data.doc.header || null,
+		input: data.doc.input || null,
+		output: data.doc.output || null,
 		time: new Date().getTime()
 	};
 	let versioning = false;

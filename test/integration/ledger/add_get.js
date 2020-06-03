@@ -18,22 +18,25 @@ describe("Testing add, and get ledger", () => {
 	it("Success - add get", (done) => {
 		let params = {
 			body: {
-				"section": "Custom",
-				"locator": ["oauth"],
-				"action": "added",
-				"status": "succeeded",
-				"header": {
-					"userAgent": "safari"
-				},
-				"input": {
-					"qs1": "anything"
-				},
-				"output": {
-					"nothing": "blabla"
+				"doc": {
+					"type": "Registry",
+					"section": "Custom",
+					"locator": ["oauth"],
+					"action": "added",
+					"status": "succeeded",
+					"header": {
+						"userAgent": "safari"
+					},
+					"input": {
+						"qs1": "anything"
+					},
+					"output": {
+						"nothing": "blabla"
+					}
 				}
 			}
 		};
-		requester('/ledger/Registry', 'post', params, (error, body) => {
+		requester('/ledger', 'post', params, (error, body) => {
 			assert.ifError(error);
 			assert.ok(body);
 			assert.ok(body.data);
@@ -41,20 +44,23 @@ describe("Testing add, and get ledger", () => {
 			
 			let params = {
 				body: {
-					"section": "Default",
-					"locator": ["Configuration"],
-					"action": "updated",
-					"status": "succeeded",
-					"header": {},
-					"input": {
-						"key": "anything"
-					},
-					"output": {
-						"nothing": "blabla"
+					"doc": {
+						"type": "Registry",
+						"section": "Default",
+						"locator": ["Configuration"],
+						"action": "updated",
+						"status": "succeeded",
+						"header": {},
+						"input": {
+							"key": "anything"
+						},
+						"output": {
+							"nothing": "blabla"
+						}
 					}
 				}
 			};
-			requester('/ledger/Registry', 'post', params, (error, body) => {
+			requester('/ledger', 'post', params, (error, body) => {
 				assert.ifError(error);
 				assert.ok(body);
 				assert.ok(body.data);
