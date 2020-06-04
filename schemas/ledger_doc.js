@@ -17,7 +17,7 @@ let config = {
 		},
 		"section": {
 			"type": "string",
-			"enum": ["Default", "Custom", "Throttling", "Resource configuration", "Catalog", "Continuous delivery", "Cloud and deployment", "Template", "Technology", "Cloud"]
+			"enum": ["Default", "Custom", "Throttling", "Resource configuration", "Catalog", "Continuous delivery", "Kubernetes", "Template", "Technology", "Cloud"]
 		},
 		"locator": {
 			"type": "array",
