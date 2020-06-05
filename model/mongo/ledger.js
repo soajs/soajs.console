@@ -69,6 +69,10 @@ function Ledger(service, options, mongoCore) {
 		if (indexing && !indexing[index]) {
 			indexing[index] = true;
 			
+			__self.mongoCore.createIndex(colName, {'type': 1}, {}, (err, index) => {
+				service.log.debug("Index: " + index + " created with error: " + err);
+			});
+			
 			service.log.debug("ledger: Indexes for " + index + " Updated!");
 		}
 	}
@@ -80,7 +84,6 @@ Ledger.prototype.add = function (data, cb) {
 		let error = new Error("Ledger: type, locator, action, status, and who are required.");
 		return cb(error, null);
 	}
-	
 	let options = {};
 	let doc = {
 		type: data.doc.type,
@@ -89,11 +92,17 @@ Ledger.prototype.add = function (data, cb) {
 		action: data.doc.action,
 		status: data.doc.status,
 		who: data.who,
-		header: data.doc.header || null,
-		input: data.doc.input || null,
-		output: data.doc.output || null,
 		time: new Date().getTime()
 	};
+	if (data.doc.header) {
+		doc.header = JSON.stringify(data.doc.header);
+	}
+	if (data.doc.input) {
+		doc.input = JSON.stringify(data.doc.input);
+	}
+	if (data.doc.output) {
+		doc.output = JSON.stringify(data.doc.output);
+	}
 	let versioning = false;
 	__self.mongoCore.insertOne(colName, doc, options, versioning, cb);
 };
