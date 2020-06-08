@@ -13,7 +13,7 @@ let config = {
 	"properties": {
 		"type": {
 			"type": "string",
-			"enum": ["Registry", "Deployment", "Recipe", "Infra"]
+			"enum": ["Registry", "Deployment", "Recipe", "Infra", "Notification"]
 		},
 		"section": {
 			"type": "string",
