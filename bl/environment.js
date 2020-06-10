@@ -79,7 +79,7 @@ let bl = {
 		let env = null;
 		if (inputmaskData.settings.type === "local") {
 			env = require("./templates/env_local.js");
-			// mongo client sdk adds _id after first usage
+			//NOTE: mongo client sdk adds _id after first usage
 			delete env._id;
 			env.code = inputmaskData.code;
 			env.description = inputmaskData.description;
@@ -87,7 +87,7 @@ let bl = {
 			add(env);
 		} else if (inputmaskData.settings.type === "kubernetes") {
 			env = require("./templates/env_kubernetes.js");
-			// mongo client sdk adds _id after first usage
+			//NOTE: mongo client sdk adds _id after first usage
 			delete env._id;
 			env.code = inputmaskData.code;
 			env.description = inputmaskData.description;

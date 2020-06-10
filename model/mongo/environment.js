@@ -151,23 +151,6 @@ Environment.prototype.check_if_can_access = function (data, condition, options, 
 	});
 };
 
-Environment.prototype.validateId = function (id, cb) {
-	let __self = this;
-	
-	if (!id) {
-		let error = new Error("Environment: must provide an id.");
-		return cb(error, null);
-	}
-	
-	try {
-		id = __self.mongoCore.ObjectId(id);
-		return cb(null, id);
-	} catch (e) {
-		__self.log(e.message);
-		return cb(new Error("A valid ID is required"), null);
-	}
-};
-
 Environment.prototype.closeConnection = function () {
 	let __self = this;
 	__self.mongoCore.closeDb();

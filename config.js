@@ -101,7 +101,7 @@ module.exports = {
 					"group": "Account"
 				},
 				"code": {
-					"source": ["body.code"],
+					"source": ["query.code"],
 					"validation": {
 						"type": "string"
 					}

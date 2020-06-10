@@ -18,7 +18,7 @@ describe("Testing add environment", () => {
 	it("Success - add and get", (done) => {
 		let params = {
 			body: {
-				"code": "anto",
+				"code": "del",
 				"description": "this is about my added env",
 				"settings": {
 					"type": "local",
@@ -33,28 +33,25 @@ describe("Testing add environment", () => {
 			
 			let params = {
 				body: {
-					"code": "hage",
-					"description": "this is about my added env",
-					"settings": {
-						"type": "kubernetes",
-						"namespace": "hage",
-						"id": "1111"
-					}
+					"code": "del"
 				}
 			};
-			requester('/environment', 'post', params, (error, body) => {
+			requester('/environment', 'del', params, (error, body) => {
 				assert.ifError(error);
 				assert.ok(body);
 				assert.ok(body.data);
+				assert.deepStrictEqual(body.data, {n: 1, ok: 1, deletedCount: 1});
 				
-				
-				let params = {};
+				let params = {
+					qs: {
+						"code": "del"
+					}
+				};
 				requester('/environment', 'get', params, (error, body) => {
 					assert.ifError(error);
+					console.log(body);
 					assert.ok(body);
-					assert.ok(body.data);
-					let validate = (body.data.length >= 2);
-					assert.strictEqual(validate, true);
+					assert.strictEqual(body.data, null);
 					done();
 				});
 			});
