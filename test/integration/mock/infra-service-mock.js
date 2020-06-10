@@ -14,9 +14,25 @@ const mApp = express();
 
 function startServer(serverConfig, callback) {
 	sApp.post('/kubernetes/namespace', (req, res) => {
+		/*
 		let sReply = {
 			"result": true,
 			"data": {"created": true}
+		};
+		*/
+		let sReply = {
+			"result": false,
+			"errors": {
+				"codes": [
+					702
+				],
+				"details": [
+					{
+						"code": 702,
+						"message": "Driver error: namespaces \"soajs\" already exists"
+					}
+				]
+			}
 		};
 		res.json(sReply);
 	});
