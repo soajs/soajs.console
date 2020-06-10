@@ -55,6 +55,7 @@ describe("starting integration tests", () => {
 		require("./ledger/add_get.js");
 		
 		require("./environment/add.js");
+		require("./environment/add_get.js");
 		done();
 	});
 	

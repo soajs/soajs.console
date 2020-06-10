@@ -10,6 +10,16 @@
 
 const sdk = require("../lib/sdk.js");
 
+function getGroups(soajs) {
+	let _groups = null;
+	if (soajs && soajs.urac && soajs.urac.groups) {
+		if (Array.isArray(soajs.urac.groups) && soajs.urac.groups.length > 0) {
+			_groups = soajs.urac.groups;
+		}
+	}
+	return _groups;
+}
+
 let bl = {
 	"modelObj": null,
 	"model": null,
@@ -60,6 +70,8 @@ let bl = {
 				if (err) {
 					return cb(bl.handleError(soajs, 602, err));
 				}
+				//TODO: add to infra account deployment a record
+				
 				return cb(null, {"added": true});
 			});
 		};
@@ -67,12 +79,16 @@ let bl = {
 		let env = null;
 		if (inputmaskData.settings.type === "local") {
 			env = require("./templates/env_local.js");
+			// mongo client sdk adds _id after first usage
+			delete env._id;
 			env.code = inputmaskData.code;
 			env.description = inputmaskData.description;
 			env.port = inputmaskData.settings.port;
 			add(env);
 		} else if (inputmaskData.settings.type === "kubernetes") {
 			env = require("./templates/env_kubernetes.js");
+			// mongo client sdk adds _id after first usage
+			delete env._id;
 			env.code = inputmaskData.code;
 			env.description = inputmaskData.description;
 			env.deployer.container.kubernetes.remote.namespace.default = inputmaskData.settings.namespace;
@@ -100,17 +116,57 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
-		//get environment and check type (local | kubernetes)
-		// if local delete env
+		
+		//TODO: cleanup not supported yet
 		// if kubernetes
 		// delete namespace and then delete env
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.delete(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			let result = {};
+			if (response) {
+				result.n = response.result.n;
+				result.ok = response.result.ok;
+				result.deletedCount = response.deletedCount;
+			}
+			return cb(null, result);
+		});
 	},
 	
 	"get": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
-		//get environment but filter sensitive data before returning
+		
+		let modelObj = bl.mp.getModel(soajs, options);
+		
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.get(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, response);
+		});
+	},
+	
+	"update_acl": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.update_acl(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, response);
+		});
 	}
 };
 

@@ -205,7 +205,37 @@ module.exports = {
 			}
 		},
 		
-		"put": {}
+		"put": {
+			"/environment/acl": {
+				"_apiInfo": {
+					"l": "This API updates the environment acl",
+					"group": "Account"
+				},
+				"code": {
+					"source": ["body.code"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"type": {
+					"source": ['body.type'],
+					"required": true,
+					"validation": {
+						"type": "string",
+						"enum": ["blacklist", "whitelist"]
+					}
+				},
+				"groups": {
+					"source": ['body.groups'],
+					"required": true,
+					"validation": {
+						"type": "array",
+						"minItems": 1
+					}
+				}
+			}
+		}
 		
 	}
 };

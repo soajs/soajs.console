@@ -72,7 +72,7 @@ describe("Testing add, and get ledger", () => {
 					assert.ok(body);
 					assert.ok(body.data);
 					let validate = (body.data.length >= 2);
-					assert.deepEqual(validate, true);
+					assert.strictEqual(validate, true);
 					done();
 				});
 			});

@@ -63,6 +63,11 @@ function run(serviceStartCb) {
 			
 			
 			//PUT methods
+			service.put("/environment/acl", function (req, res) {
+				bl.environment.update_acl(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			
 			//POST methods
