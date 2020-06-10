@@ -35,6 +35,13 @@ let bl = {
 			"msg": bl.localConfig.errors[errCode] + ((err && errCode === 602) ? err.message : "")
 		});
 	},
+	"handleUpdateResponse": (response) => {
+		if (response) {
+			return true;
+		} else {
+			return false;
+		}
+	},
 	
 	"mp": {
 		"getModel": (soajs) => {
@@ -173,7 +180,7 @@ let bl = {
 			if (err) {
 				return cb(bl.handleError(soajs, 602, err));
 			}
-			return cb(null, response);
+			return cb(null, bl.handleUpdateResponse(response));
 		});
 	}
 };
