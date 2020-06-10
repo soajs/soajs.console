@@ -47,6 +47,7 @@ module.exports = {
 		400: "Business logic required data are missing",
 		401: "Failed to build environment template",
 		402: "Unable to find the specified kubernetes account",
+		403: "Failed to create namespace",
 		
 		500: "Nothing to Update!",
 		

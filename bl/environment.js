@@ -107,7 +107,15 @@ let bl = {
 				env.deployer.container.kubernetes.remote.apiPort = infra.configuration.port;
 				env.deployer.container.kubernetes.remote.auth.token = infra.configuration.token;
 				
-				add(env);
+				let data = {
+					"name": inputmaskData.settings.namespace
+				};
+				sdk.infra.create.namespace(soajs, data, (error, response) => {
+					if (!response) {
+						return cb(bl.handleError(soajs, 403, null));
+					}
+					add(env);
+				});
 			});
 		}
 	},

@@ -13,7 +13,13 @@ const sApp = express();
 const mApp = express();
 
 function startServer(serverConfig, callback) {
-	
+	sApp.post('/kubernetes/namespace', (req, res) => {
+		let sReply = {
+			"result": true,
+			"data": {"created": true}
+		};
+		res.json(sReply);
+	});
 	sApp.get('/account/kubernetes/token', (req, res) => {
 		let sReply = {
 			"result": true,
