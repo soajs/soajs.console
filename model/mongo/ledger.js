@@ -11,34 +11,6 @@ const colName = "ledger";
 const core = require("soajs");
 const Mongo = core.mongo;
 
-/*
-{
-	_id
-	type: "deployment || registry"
-	section: ["Default || Custom || Resource configuration || Catalog || CD || Cloud and deployment"]
-	locator: ["api catalog", "configure", "itemID"]
-	action: "deleted || updated || added"
-	status: "failed" || "success"
-	who: {
-		"_id": "",
-		"username": ""
-		"firstName": ""
-		"lastName": ""
-		"email": ""
-	}
-	header": {
-	
-	}
-	input: {
-	
-	}
-	output: {
-	
-	}
-	time: ""
-}
- */
-
 let indexing = {};
 
 function Ledger(service, options, mongoCore) {
@@ -94,6 +66,9 @@ Ledger.prototype.add = function (data, cb) {
 		who: data.who,
 		time: new Date().getTime()
 	};
+	if (data.doc.env) {
+		doc.env = data.doc.env;
+	}
 	if (data.doc.header) {
 		doc.header = JSON.stringify(data.doc.header);
 	}

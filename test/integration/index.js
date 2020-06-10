@@ -11,6 +11,9 @@ const imported = require("../data/import.js");
 let helper = require("../helper.js");
 
 
+let infra_ms = require('./mock/infra-service-mock.js');
+let infra_servers = null;
+
 describe("starting integration tests", () => {
 	
 	let controller, service;
@@ -31,17 +34,27 @@ describe("starting integration tests", () => {
 				console.log("Starting Console ...");
 				service = helper.requireModule('./_index.js');
 				service.runService(() => {
-					setTimeout(function () {
-						done();
-					}, 5000);
+					infra_ms.startServer({s: {port: 4008}, m: {port: 5008}, name: "infra"}, function (servers) {
+						infra_servers = servers;
+						setTimeout(function () {
+							done();
+						}, 5000);
+					});
 				});
 			});
 		});
 	});
 	
+	after((done) => {
+		//infra_ms.killServer(infra_servers);
+		done();
+	});
+	
 	it("loading tests", (done) => {
 		require("./ledger/add.js");
 		require("./ledger/add_get.js");
+		
+		require("./environment/add.js");
 		done();
 	});
 	

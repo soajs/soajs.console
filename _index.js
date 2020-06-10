@@ -30,8 +30,36 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			service.get("/environment", function (req, res) {
+				bl.environment.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			//DELETE methods
+			service.delete("/environment", function (req, res) {
+				bl.environment.delete(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					let response = req.soajs.buildResponse(error, data);
+					res.json(response);
+					
+					let doc = {
+						"type": "Notification",
+						"section": "Environment",
+						"locator": ["Code", req.soajs.inputmaskData.code],
+						"action": "deleted",
+						"status": (error ? "failed" : "succeeded"),
+						"input": req.soajs.inputmaskData,
+						"output": data
+					};
+					bl.ledger.add(req.soajs, {"doc": doc}, null, (error) => {
+						if (error && error.message) {
+							req.soajs.log.error(error.message);
+						} else if (error) {
+							req.soajs.log.error(error);
+						}
+					});
+				});
+			});
 			
 			
 			//PUT methods
@@ -41,6 +69,29 @@ function run(serviceStartCb) {
 			service.post("/ledger", function (req, res) {
 				bl.ledger.add(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.post("/environment", function (req, res) {
+				bl.environment.add(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					let response = req.soajs.buildResponse(error, data);
+					res.json(response);
+					
+					let doc = {
+						"type": "Notification",
+						"section": "Environment",
+						"locator": ["Code", req.soajs.inputmaskData.code],
+						"action": "added",
+						"status": (error ? "failed" : "succeeded"),
+						"input": req.soajs.inputmaskData,
+						"output": data
+					};
+					bl.ledger.add(req.soajs, {"doc": doc}, null, (error) => {
+						if (error && error.message) {
+							req.soajs.log.error(error.message);
+						} else if (error) {
+							req.soajs.log.error(error);
+						}
+					});
 				});
 			});
 			

@@ -37,12 +37,16 @@ module.exports = {
 			{"label": "Resource Info", "path": "/resourceInfo", "icon": "fas fa-info"}
 		]
 	},
+	"interConnect": [{
+		"name": "infra",
+		"version": "1"
+	}],
 	
 	//-------------------------------------
 	"errors": {
 		400: "Business logic required data are missing",
-		
-		401: "Catalog Entry with same DNA detected!",
+		401: "Failed to build environment template",
+		402: "Unable to find the specified kubernetes account",
 		
 		500: "Nothing to Update!",
 		
@@ -88,10 +92,44 @@ module.exports = {
 						"enum": ["Registry", "Deployment", "Recipe"]
 					}
 				}
+			},
+			
+			"/environment": {
+				"_apiInfo": {
+					"l": "This API returns the environment(s).",
+					"group": "Account"
+				},
+				"code": {
+					"source": ["body.code"],
+					"validation": {
+						"type": "string"
+					}
+				}
 			}
 		},
 		
-		"delete": {},
+		"delete": {
+			"/environment": {
+				"_apiInfo": {
+					"l": "This API deletes an environment",
+					"group": "Environment"
+				},
+				"code": {
+					"source": ["body.code"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"cleanup": {
+					"source": ["body.cleanup"],
+					"validation": {
+						"type": "boolean",
+						"default": false
+					}
+				}
+			}
+		},
 		
 		"post": {
 			"/ledger": {
@@ -103,6 +141,66 @@ module.exports = {
 					"source": ["body.doc"],
 					"required": true,
 					"validation": ledger_doc
+				}
+			},
+			"/environment": {
+				"_apiInfo": {
+					"l": "This API adds an environment",
+					"group": "Environment"
+				},
+				"code": {
+					"source": ["body.code"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"description": {
+					"source": ["body.description"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"settings": {
+					"source": ["body.settings"],
+					"required": true,
+					"validation": {
+						"type": "object",
+						"properties": {
+							"oneOf": [
+								{
+									"type": {
+										"type": "string",
+										"enum": ["local"]
+									},
+									"port": {
+										"type": "integer"
+									}
+								},
+								{
+									"type": {
+										"type": "string",
+										"enum": ["kubernetes"]
+									},
+									"namespace": {
+										"type": "string"
+									},
+									"id": {
+										"type": "string"
+									}
+								}
+							]
+						},
+						"oneOf": [
+							{
+								"required": ["type", "port"]
+							},
+							{
+								"required": ["type", "namespace", "id"]
+							}
+						]
+					}
 				}
 			}
 		},
