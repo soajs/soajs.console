@@ -55,7 +55,7 @@ let bl = {
 				return cb(bl.handleError(soajs, 401, null));
 			}
 			let modelObj = bl.mp.getModel(soajs, options);
-			modelObj.add(env, (err, response) => {
+			modelObj.add(env, (err) => {
 				bl.mp.closeModel(modelObj);
 				if (err) {
 					return cb(bl.handleError(soajs, 602, err));
