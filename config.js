@@ -75,7 +75,14 @@ module.exports = {
 					"type": "integer",
 					"max": 2000
 				}
-			}
+			},
+			"env": {
+				"source": ["body.env", "query.env"],
+				"required": true,
+				"validation": {
+					"type": "string"
+				}
+			},
 		},
 		
 		"get": {
@@ -106,6 +113,28 @@ module.exports = {
 						"type": "string"
 					}
 				}
+			},
+			
+			"/registry": {
+				"_apiInfo": {
+					"l": "This API gets a registry",
+					"group": "Registry"
+				},
+				"commonFields": ["env"]
+			},
+			"/registry/custom": {
+				"_apiInfo": {
+					"l": "This API gets a custom registry",
+					"group": "Registry"
+				},
+				"commonFields": ["env"]
+			},
+			"/registry/throttling": {
+				"_apiInfo": {
+					"l": "This API gets the throttling configuration",
+					"group": "Registry"
+				},
+				"commonFields": ["env"]
 			}
 		},
 		
@@ -127,6 +156,34 @@ module.exports = {
 					"validation": {
 						"type": "boolean",
 						"default": false
+					}
+				}
+			},
+			
+			"/registry/db/custom": {
+				"_apiInfo": {
+					"l": "This API deletes a custom registry",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"name": {
+					"source": ['body.name'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
+			"/registry/custom": {
+				"_apiInfo": {
+					"l": "This API deletes a custom registry",
+					"group": "Registry"
+				},
+				"id": {
+					"source": ['body.id'],
+					"required": true,
+					"validation": {
+						"type": "string"
 					}
 				}
 			}
@@ -203,6 +260,60 @@ module.exports = {
 						]
 					}
 				}
+			},
+			
+			"/registry/db/custom": {
+				"_apiInfo": {
+					"l": "This API adds a custom registry",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"prefix": {
+					"source": ['body.prefix'],
+					"required": false,
+					"validation": {"type": "string"}
+				},
+				"name": {
+					"source": ['body.name'],
+					"required": true,
+					"validation": {"type": "string"}
+				},
+				"cluster": {
+					"source": ['body.cluster'],
+					"required": true,
+					"validation": {"type": "string"}
+				},
+				"tenantSpecific": {
+					"source": ['body.tenantSpecific'],
+					"required": false,
+					"validation": {"type": "boolean", "default": false}
+				}
+			},
+			"/registry/custom": {
+				"_apiInfo": {
+					"l": "This API adds a custom registry",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"data": {
+					"source": ['body.data'],
+					"required": true,
+					"validation": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"name": {"type": "string"},
+							"plugged": {"type": "boolean"},
+							"shared": {"type": "boolean"},
+							"sharedEnv": {
+								"type": "object",
+								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
+							},
+							"value": {"type": "object"}
+						},
+						"required": ["name", "plugged", "shared", "value"]
+					}
+				}
 			}
 		},
 		
@@ -235,8 +346,266 @@ module.exports = {
 						"minItems": 1
 					}
 				}
+			},
+			
+			"/registry/db/prefix": {
+				"_apiInfo": {
+					"l": "This API updates the registry db prefix",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"prefix": {
+					"source": ['body.prefix'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
+			"/registry/db/session": {
+				"_apiInfo": {
+					"l": "This API updates the registry db session",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"prefix": {
+					"source": ['body.prefix'],
+					"required": false,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"name": {
+					"source": ['body.name'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"cluster": {
+					"source": ['body.cluster'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"store": {
+					"source": ['body.store'],
+					"required": true,
+					"validation": {
+						"type": "object"
+					}
+				},
+				"expireAfter": {
+					"source": ['body.expireAfter'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"collection": {
+					"source": ['body.collection'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"stringify": {
+					"source": ['body.stringify'],
+					"required": true,
+					"validation": {
+						"type": "boolean",
+						"default": true
+					}
+				}
+			},
+			"registry": {
+				"_apiInfo": {
+					"l": "This API updates a registry",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"domain": {
+					"source": ['body.domain'],
+					"required": false,
+					"validation": {"type": "string"}
+				},
+				"sitePrefix": {
+					"source": ['body.sitePrefix'],
+					"required": false,
+					"validation": {"type": "string"}
+				},
+				"apiPrefix": {
+					"source": ['body.apiPrefix'],
+					"required": false,
+					"validation": {"type": "string"}
+				},
+				"port": {
+					"source": ['body.port'],
+					"required": false,
+					"validation": {"type": "integer"}
+				},
+				"protocol": {
+					"source": ['body.protocol'],
+					"required": false,
+					"validation": {"type": "string", "enum": ["http", "https"]}
+				},
+				"description": {
+					"source": ['body.description'],
+					"required": false,
+					"validation": {"type": "string"}
+				},
+				"services": {
+					"source": ['body.services'],
+					"required": false,
+					"validation": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"controller": {
+								"type": "object",
+								"additionalProperties": false,
+								"properties": {
+									"authorization": {"type": "boolean"},
+									"requestTimeout": {"type": "integer", "min": 20, "max": 60},
+									"requestTimeoutRenewal": {"type": "integer", "min": 0}
+								},
+								"required": ["authorization", "requestTimeout", "requestTimeoutRenewal"]
+							},
+							"config": {
+								"type": "object",
+								"additionalProperties": false,
+								"properties": {
+									"awareness": {
+										"type": "object",
+										"additionalProperties": false,
+										"properties": {
+											"cacheTTL": {"type": "integer", "min": 3600},
+											"healthCheckInterval": {"type": "integer", "min": 5000},
+											"autoRelaodRegistry": {"type": "integer", "min": 60000},
+											"maxLogCount": {"type": "integer", "min": 5},
+											"autoRegisterService": {"type": "boolean"}
+										},
+										"required": ["cacheTTL", "healthCheckInterval", "autoRelaodRegistry", "maxLogCount", "autoRegisterService"]
+									},
+									"logger": {
+										"type": "object",
+										"additionalProperties": true
+									},
+									"ports": {
+										"type": "object",
+										"additionalProperties": false,
+										"properties": {
+											"controller": {"type": "integer"},
+											"maintenanceInc": {"type": "integer", "min": 1000},
+											"randomInc": {"type": "integer", "min": 100}
+										},
+										"required": ["controller", "maintenanceInc", "randomInc"]
+									},
+									"oauth": {
+										"type": "object",
+										"additionalProperties": false,
+										"properties": {
+											"accessTokenLifetime": {"type": "number"},
+											"refreshTokenLifetime": {"type": "number"},
+											"debug": {"type": "boolean"}
+										},
+										"required": ["accessTokenLifetime", "refreshTokenLifetime", "debug"]
+									},
+									"cors": {
+										"type": "object",
+										"additionalProperties": true
+									}
+								},
+								"required": ["awareness", "logger", "ports", "oauth", "cors"]
+							}
+						}
+					}
+				}
+			},
+			"/registry/custom": {
+				"_apiInfo": {
+					"l": "This API updates a custom registry",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"id": {
+					"source": ['body.id'],
+					"required": true,
+					"validation": {"type": "string"}
+				},
+				"data": {
+					"source": ['body.data'],
+					"required": true,
+					"validation": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"name": {"type": "string"},
+							"plugged": {"type": "boolean"},
+							"shared": {"type": "boolean"},
+							"sharedEnv": {
+								"type": "object",
+								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
+							},
+							"value": {"type": "object"}
+						},
+						"required": ["name", "plugged", "shared", "value"]
+					}
+				}
+			},
+			"/registry/custom/acl": {
+				"_apiInfo": {
+					"l": "This API updates the custom registry acl",
+					"group": "Account"
+				},
+				"commonFields": ["env"],
+				"type": {
+					"source": ['body.type'],
+					"required": true,
+					"validation": {
+						"type": "string",
+						"enum": ["blacklist", "whitelist"]
+					}
+				},
+				"groups": {
+					"source": ['body.groups'],
+					"required": true,
+					"validation": {
+						"type": "array",
+						"minItems": 1
+					}
+				}
+			},
+			"/registry/throttling": {
+				"_apiInfo": {
+					"l": "This API updates throttling",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"throttling": {
+					"source": ['body.throttling'],
+					"required": true,
+					"validation": {
+						"type": "object",
+						"properties": {
+							"publicAPIStrategy": {"type": "string"},
+							"privateAPIStrategy": {"type": "string"},
+							"additionalProperties": {
+								"type": "object",
+								"properties": {
+									"type": {"type": "number", "min": 0, "max": 1},
+									"window": {"type": "number", "min": 0},
+									"limit": {"type": "number", "min": 0},
+									"retries": {"type": "number", "min": 0},
+									"delay": {"type": "number", "min": 0}
+								},
+								"required": ["type", "window", "limit", "retries", "delay"]
+							}
+						}
+					}
+				}
 			}
 		}
-		
 	}
 };
