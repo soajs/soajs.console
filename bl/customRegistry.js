@@ -40,7 +40,6 @@ let bl = {
 			return false;
 		}
 	},
-	
 	"mp": {
 		"getModel": (soajs) => {
 			let modelObj = bl.modelObj;
@@ -60,56 +59,24 @@ let bl = {
 		}
 	},
 	
-	"add": (soajs, inputmaskData, options, cb) => {
-		if (!inputmaskData || !inputmaskData.settings) {
+	"get": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
-		
-		let add = (env) => {
-			if (!env) {
-				return cb(bl.handleError(soajs, 401, null));
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.get(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
 			}
-			let modelObj = bl.mp.getModel(soajs, options);
-			modelObj.add(env, (err) => {
-				bl.mp.closeModel(modelObj);
-				if (err) {
-					return cb(bl.handleError(soajs, 602, err));
-				}
-				//TODO: add to infra account deployment a record
-				
-				return cb(null, {"added": true});
-			});
-		};
-		
-		let env = null;
-		if (inputmaskData.settings.type === "local") {
-			env = require("./templates/env_local.js");
-			//NOTE: mongo client sdk adds _id after first usage
-			delete env._id;
-			env.code = inputmaskData.code;
-			env.description = inputmaskData.description;
-			env.port = inputmaskData.settings.port;
-			add(env);
-		} else if (inputmaskData.settings.type === "kubernetes") {
-			env = require("./templates/env_kubernetes.js");
-			//NOTE: mongo client sdk adds _id after first usage
-			delete env._id;
-			env.code = inputmaskData.code;
-			env.description = inputmaskData.description;
-			env.deployer.container.kubernetes.namespace = inputmaskData.settings.namespace;
-			env.deployer.container.kubernetes.id = inputmaskData.settings.id;
-			add(env);
-		}
+			return cb(null, response);
+		});
 	},
-	
 	"delete": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
-		
-		//TODO: cleanup not supported yet
-		// if kubernetes
-		// delete namespace and then delete env
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.delete(inputmaskData, (err, response) => {
@@ -126,16 +93,14 @@ let bl = {
 			return cb(null, result);
 		});
 	},
-	
-	"get": (soajs, inputmaskData, options, cb) => {
+	"add": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
-		
 		let modelObj = bl.mp.getModel(soajs, options);
 		
-		inputmaskData._groups = getGroups(soajs);
-		modelObj.get(inputmaskData, (err, response) => {
+		inputmaskData.type = "kubernetes";
+		modelObj.add(inputmaskData, (err, response) => {
 			bl.mp.closeModel(modelObj);
 			if (err) {
 				return cb(bl.handleError(soajs, 602, err));
@@ -143,12 +108,27 @@ let bl = {
 			return cb(null, response);
 		});
 	},
-	
+	"update": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.update(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, bl.handleUpdateResponse(response));
+		});
+	},
 	"update_acl": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 		let modelObj = bl.mp.getModel(soajs, options);
+		
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.update_acl(inputmaskData, (err, response) => {
 			bl.mp.closeModel(modelObj);

@@ -8,6 +8,16 @@
 
 'use strict';
 
+function getGroups(soajs) {
+	let _groups = null;
+	if (soajs && soajs.urac && soajs.urac.groups) {
+		if (Array.isArray(soajs.urac.groups) && soajs.urac.groups.length > 0) {
+			_groups = soajs.urac.groups;
+		}
+	}
+	return _groups;
+}
+
 let bl = {
 	"modelObj": null,
 	"model": null,
@@ -23,7 +33,13 @@ let bl = {
 			"msg": bl.localConfig.errors[errCode] + ((err && errCode === 602) ? err.message : "")
 		});
 	},
-	
+	"handleUpdateResponse": (response) => {
+		if (response) {
+			return true;
+		} else {
+			return false;
+		}
+	},
 	"mp": {
 		"getModel": (soajs) => {
 			let modelObj = bl.modelObj;
@@ -43,67 +59,73 @@ let bl = {
 		}
 	},
 	
-	"get":(soajs, inputmaskData, options, cb) => {
+	"get": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.get(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			if (response) {
+				delete response.deployer;
+				delete response.throttling;
+				if (response.services) {
+					delete response.services.key;
+					delete response.services.cookie;
+					delete response.services.session;
+				}
+			}
+			return cb(null, response);
+		});
+	},
+	"getThrottling": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.get(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			let throttling = null;
+			if (response) {
+				throttling = response.throttling;
+			}
+			return cb(null, throttling);
+		});
+	},
+	"deleteDB": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 	},
-	"getCustom":(soajs, inputmaskData, options, cb) => {
+	"addDB": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 	},
-	"getThrottling":(soajs, inputmaskData, options, cb) => {
+	"updateDBPrefix": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 	},
-	"deleteDB":(soajs, inputmaskData, options, cb) => {
+	"updateDBSession": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 	},
-	"deleteCustom":(soajs, inputmaskData, options, cb) => {
+	"update": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 	},
-	"addDB":(soajs, inputmaskData, options, cb) => {
-		if (!inputmaskData) {
-			return cb(bl.handleError(soajs, 400, null));
-		}
-	},
-	"addCustom":(soajs, inputmaskData, options, cb) => {
-		if (!inputmaskData) {
-			return cb(bl.handleError(soajs, 400, null));
-		}
-	},
-	"updateDBPrefix":(soajs, inputmaskData, options, cb) => {
-		if (!inputmaskData) {
-			return cb(bl.handleError(soajs, 400, null));
-		}
-	},
-	"updateDBSession":(soajs, inputmaskData, options, cb) => {
-		if (!inputmaskData) {
-			return cb(bl.handleError(soajs, 400, null));
-		}
-	},
-	"update":(soajs, inputmaskData, options, cb) => {
-		if (!inputmaskData) {
-			return cb(bl.handleError(soajs, 400, null));
-		}
-	},
-	"updateCustom":(soajs, inputmaskData, options, cb) => {
-		if (!inputmaskData) {
-			return cb(bl.handleError(soajs, 400, null));
-		}
-	},
-	"updateCustom_acl":(soajs, inputmaskData, options, cb) => {
-		if (!inputmaskData) {
-			return cb(bl.handleError(soajs, 400, null));
-		}
-	},
-	"updateThrottling":(soajs, inputmaskData, options, cb) => {
+	"updateThrottling": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}

@@ -528,7 +528,6 @@ module.exports = {
 					"l": "This API updates a custom registry",
 					"group": "Registry"
 				},
-				"commonFields": ["env"],
 				"id": {
 					"source": ['body.id'],
 					"required": true,
@@ -559,7 +558,13 @@ module.exports = {
 					"l": "This API updates the custom registry acl",
 					"group": "Account"
 				},
-				"commonFields": ["env"],
+				"id": {
+					"source": ["body.id"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
 				"type": {
 					"source": ['body.type'],
 					"required": true,

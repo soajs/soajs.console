@@ -7,9 +7,9 @@
  */
 
 "use strict";
-//const colName = "environment";
+const colName = "environment";
 const core = require("soajs");
-//const access = require("./access");
+const access = require("./access");
 const Mongo = core.mongo;
 
 let indexing = {};
@@ -46,6 +46,20 @@ function Registry(service, options, mongoCore) {
 		}
 	}
 }
+
+Registry.prototype.get = function (data, cb) {
+	let __self = this;
+	if (!data || !data.env) {
+		let error = new Error("Registry: env is required.");
+		return cb(error, null);
+	}
+	let condition = {
+		code: data.env
+	};
+	condition = access.add_acl_2_condition(data, condition);
+	let options = {};
+	__self.mongoCore.findOne(colName, condition, options, cb);
+};
 
 Registry.prototype.validateId = function (id, cb) {
 	let __self = this;

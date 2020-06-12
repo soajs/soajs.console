@@ -12,20 +12,11 @@ let doc = {
 	"protocol": "https",
 	"deployer": {
 		"type": "container",
-		"selected": "container.kubernetes.remote",
+		"selected": "container.kubernetes",
 		"container": {
 			"kubernetes": {
-				"remote": {
-					"nodes": "%containerNode%",
-					"apiPort": "%kubernetesRemotePort%",
-					"namespace": {
-						"default": "%namespace%",
-						"perService": false
-					},
-					"auth": {
-						"token": "%kubetoken%"
-					}
-				}
+				"id": "%id%",
+				"namespace": "%namespace%"
 			}
 		}
 	},

@@ -42,7 +42,7 @@ function run(serviceStartCb) {
 				});
 			});
 			service.get("/registry/custom", function (req, res) {
-				bl.registry.getCustom(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+				bl.customRegistry.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
@@ -102,7 +102,7 @@ function run(serviceStartCb) {
 				});
 			});
 			service.delete("/registry/custom", function (req, res) {
-				bl.registry.deleteCustom(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+				bl.customRegistry.delete(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					let response = req.soajs.buildResponse(error, data);
 					res.json(response);
 					
@@ -132,6 +132,7 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			
 			service.put("/registry/db/prefix", function (req, res) {
 				bl.registry.updateDBPrefix(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
@@ -166,7 +167,7 @@ function run(serviceStartCb) {
 				});
 			});
 			service.put("/registry/custom", function (req, res) {
-				bl.registry.updateCustom(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+				bl.customRegistry.update(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					let response = req.soajs.buildResponse(error, data);
 					res.json(response);
 					
@@ -189,7 +190,7 @@ function run(serviceStartCb) {
 				});
 			});
 			service.put("/registry/custom/acl", function (req, res) {
-				bl.registry.updateCustom_acl(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+				bl.customRegistry.update_acl(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
@@ -236,7 +237,7 @@ function run(serviceStartCb) {
 				});
 			});
 			service.post("/registry/custom", function (req, res) {
-				bl.registry.addCustom(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+				bl.customRegistry.add(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					let response = req.soajs.buildResponse(error, data);
 					res.json(response);
 					

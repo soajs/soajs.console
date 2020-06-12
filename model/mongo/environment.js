@@ -54,7 +54,7 @@ function Environment(service, options, mongoCore) {
 Environment.prototype.add = function (data, cb) {
 	let __self = this;
 	if (!data || !data.code) {
-		let error = new Error("Environment:, code is required.");
+		let error = new Error("Environment: code is required.");
 		return cb(error, null);
 	}
 	let options = {};
