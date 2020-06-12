@@ -104,31 +104,84 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.deleteDB(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, bl.handleUpdateResponse(response));
+		});
 	},
 	"addDB": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		modelObj.addDB(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, bl.handleUpdateResponse(response));
+		});
 	},
 	"updateDBPrefix": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.updateDBPrefix(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, bl.handleUpdateResponse(response));
+		});
 	},
 	"updateDBSession": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.updateDBSession(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, bl.handleUpdateResponse(response));
+		});
 	},
 	"update": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.update(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, bl.handleUpdateResponse(response));
+		});
 	},
 	"updateThrottling": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.updateThrottling(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, bl.handleUpdateResponse(response));
+		});
 	}
 	
 };

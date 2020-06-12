@@ -508,9 +508,10 @@ module.exports = {
 										"properties": {
 											"accessTokenLifetime": {"type": "number"},
 											"refreshTokenLifetime": {"type": "number"},
-											"debug": {"type": "boolean"}
+											"debug": {"type": "boolean"},
+											"getUserFromToken": {"type": "boolean"}
 										},
-										"required": ["accessTokenLifetime", "refreshTokenLifetime", "debug"]
+										"required": ["accessTokenLifetime", "refreshTokenLifetime", "debug", "getUserFromToken"]
 									},
 									"cors": {
 										"type": "object",
