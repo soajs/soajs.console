@@ -72,8 +72,11 @@ describe("starting integration tests", () => {
 		
 		require("./resource/add.js");
 		require("./resource/get.js");
+		require("./resource/add_delete.js");
 		
 		require("./customRegistry/add.js");
+		require("./customRegistry/get.js");
+		require("./customRegistry/add_delete.js");
 		
 		done();
 	});
