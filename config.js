@@ -122,16 +122,16 @@ module.exports = {
 				},
 				"commonFields": ["env"]
 			},
-			"/registry/custom": {
+			"/registry/throttling": {
 				"_apiInfo": {
-					"l": "This API gets a custom registry",
+					"l": "This API gets the throttling configuration",
 					"group": "Registry"
 				},
 				"commonFields": ["env"]
 			},
-			"/registry/throttling": {
+			"/registry/custom": {
 				"_apiInfo": {
-					"l": "This API gets the throttling configuration",
+					"l": "This API gets a custom registry",
 					"group": "Registry"
 				},
 				"commonFields": ["env"]
@@ -524,6 +524,35 @@ module.exports = {
 					}
 				}
 			},
+			"/registry/throttling": {
+				"_apiInfo": {
+					"l": "This API updates throttling",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"throttling": {
+					"source": ['body.throttling'],
+					"required": true,
+					"validation": {
+						"type": "object",
+						"properties": {
+							"publicAPIStrategy": {"type": "string"},
+							"privateAPIStrategy": {"type": "string"},
+							"additionalProperties": {
+								"type": "object",
+								"properties": {
+									"type": {"type": "number", "min": 0, "max": 1},
+									"window": {"type": "number", "min": 0},
+									"limit": {"type": "number", "min": 0},
+									"retries": {"type": "number", "min": 0},
+									"delay": {"type": "number", "min": 0}
+								},
+								"required": ["type", "window", "limit", "retries", "delay"]
+							}
+						}
+					}
+				}
+			},
 			"/registry/custom": {
 				"_apiInfo": {
 					"l": "This API updates a custom registry",
@@ -580,35 +609,6 @@ module.exports = {
 					"validation": {
 						"type": "array",
 						"minItems": 1
-					}
-				}
-			},
-			"/registry/throttling": {
-				"_apiInfo": {
-					"l": "This API updates throttling",
-					"group": "Registry"
-				},
-				"commonFields": ["env"],
-				"throttling": {
-					"source": ['body.throttling'],
-					"required": true,
-					"validation": {
-						"type": "object",
-						"properties": {
-							"publicAPIStrategy": {"type": "string"},
-							"privateAPIStrategy": {"type": "string"},
-							"additionalProperties": {
-								"type": "object",
-								"properties": {
-									"type": {"type": "number", "min": 0, "max": 1},
-									"window": {"type": "number", "min": 0},
-									"limit": {"type": "number", "min": 0},
-									"retries": {"type": "number", "min": 0},
-									"delay": {"type": "number", "min": 0}
-								},
-								"required": ["type", "window", "limit", "retries", "delay"]
-							}
-						}
 					}
 				}
 			}
