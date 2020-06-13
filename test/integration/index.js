@@ -71,6 +71,7 @@ describe("starting integration tests", () => {
 		require("./registry/get_throttling.js");
 		
 		require("./resource/add.js");
+		require("./resource/get.js");
 		
 		require("./customRegistry/add.js");
 		
