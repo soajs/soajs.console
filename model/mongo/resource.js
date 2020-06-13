@@ -56,16 +56,16 @@ function Resource(service, options, mongoCore) {
 
 Resource.prototype.add = function (data, cb) {
 	let __self = this;
-	if (!data || !data.env || !data.data || !data.data.name || !data.data.plugged || !data.data.shared || !data.data.config || !data.data.type || !data.data.category) {
-		let error = new Error("Resource: env and data(name, plugged, shared, config, type, category) are required.");
+	if (!data || !data.env || !data.data || !data.data.name || !data.data.config || !data.data.type || !data.data.category) {
+		let error = new Error("Resource: env and data(name, config, type, category) are required.");
 		return cb(error, null);
 	}
 	
 	let options = {};
 	let doc = {
 		"name": data.data.name,
-		"plugged": data.data.plugged,
-		"shared": data.data.shared,
+		"plugged": !!data.data.plugged,
+		"shared": !!data.data.shared,
 		"config": data.data.config,
 		"sharedEnv": data.data.sharedEnv || null,
 		"created": data.env.toUpperCase(),
@@ -79,8 +79,8 @@ Resource.prototype.add = function (data, cb) {
 
 Resource.prototype.update = function (data, cb) {
 	let __self = this;
-	if (!data || !data.id || !data.data || !data.data.name || !data.data.plugged || !data.data.shared || !data.data.config || !data.data.type || !data.data.category) {
-		let error = new Error("Resource: name, plugged, shared, config, type, category are required.");
+	if (!data || !data.id || !data.data || !data.data.name || !data.data.config) {
+		let error = new Error("Resource: id, name, config, are required.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (error, _id) => {
@@ -95,14 +95,20 @@ Resource.prototype.update = function (data, cb) {
 		let fields = {
 			'$set': {
 				"name": data.data.name,
-				"plugged": data.data.plugged,
-				"shared": data.data.shared,
-				"config": data.data.config,
-				"sharedEnv": data.data.sharedEnv || null,
-				"type": data.data.type,
-				"category": data.data.category
+				"plugged": !!data.data.plugged,
+				"shared": !!data.data.shared,
+				"config": data.data.config
 			}
 		};
+		if (data.data.type) {
+			fields.$set.type = data.data.type;
+		}
+		if (data.data.category) {
+			fields.$set.category = data.data.category;
+		}
+		if (data.data.sharedEnv) {
+			fields.$set.sharedEnv = data.data.sharedEnv;
+		}
 		__self.check_if_can_access(data, condition, {}, (error) => {
 			if (error) {
 				return cb(error);

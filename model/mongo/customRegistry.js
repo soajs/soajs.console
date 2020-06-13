@@ -56,16 +56,16 @@ function CustomRegistry(service, options, mongoCore) {
 
 CustomRegistry.prototype.add = function (data, cb) {
 	let __self = this;
-	if (!data || !data.env || !data.data || !data.data.name || !data.data.plugged || !data.data.shared || !data.data.value) {
-		let error = new Error("CustomRegistry: env and data(name, plugged, shared, value) are required.");
+	if (!data || !data.env || !data.data || !data.data.name || !data.data.value) {
+		let error = new Error("CustomRegistry: env and data(name, value) are required.");
 		return cb(error, null);
 	}
 	
 	let options = {};
 	let doc = {
 		"name": data.data.name,
-		"plugged": data.data.plugged,
-		"shared": data.data.shared,
+		"plugged": !!data.data.plugged,
+		"shared": !!data.data.shared,
 		"value": data.data.value,
 		"sharedEnv": data.data.sharedEnv || null,
 		"created": data.env.toUpperCase()
@@ -77,8 +77,8 @@ CustomRegistry.prototype.add = function (data, cb) {
 
 CustomRegistry.prototype.update = function (data, cb) {
 	let __self = this;
-	if (!data || !data.id || !data.data || !data.data.name || !data.data.plugged || !data.data.shared || !data.data.value) {
-		let error = new Error("CustomRegistry: name, plugged, shared, value are required.");
+	if (!data || !data.id || !data.data || !data.data.name || !data.data.value) {
+		let error = new Error("CustomRegistry: id, name, value are required.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (error, _id) => {
@@ -93,12 +93,14 @@ CustomRegistry.prototype.update = function (data, cb) {
 		let fields = {
 			'$set': {
 				"name": data.data.name,
-				"plugged": data.data.plugged,
-				"shared": data.data.shared,
-				"value": data.data.value,
-				"sharedEnv": data.data.sharedEnv || null,
+				"plugged": !!data.data.plugged,
+				"shared": !!data.data.shared,
+				"value": data.data.value
 			}
 		};
+		if (data.data.sharedEnv) {
+			fields.$set.sharedEnv = data.data.sharedEnv;
+		}
 		__self.check_if_can_access(data, condition, {}, (error) => {
 			if (error) {
 				return cb(error);

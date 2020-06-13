@@ -31,7 +31,24 @@ describe("Testing add custom registry", () => {
 			assert.ifError(error);
 			assert.ok(body);
 			assert.ok(body.data);
-			done();
+			
+			let params = {
+				body: {
+					"id": body.data._id,
+					"data": {
+						"name": "urac",
+						"plugged": false,
+						"shared": false,
+						"value": {"ip": "127.0.0.1"}
+					}
+				}
+			};
+			requester('/registry/custom', 'put', params, (error, body) => {
+				assert.ifError(error);
+				assert.ok(body);
+				assert.ok(body.data);
+				done();
+			});
 		});
 	});
 	

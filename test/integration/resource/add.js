@@ -33,7 +33,24 @@ describe("Testing add resource", () => {
 			assert.ifError(error);
 			assert.ok(body);
 			assert.ok(body.data);
-			done();
+			
+			let params = {
+				body: {
+					"id": body.data._id,
+					"data": {
+						"name": "myMongo69",
+						"plugged": false,
+						"shared": false,
+						"config": {"ip": "127.0.0.1"}
+					}
+				}
+			};
+			requester('/registry/resource', 'put', params, (error, body) => {
+				assert.ifError(error);
+				assert.ok(body);
+				assert.ok(body.data);
+				done();
+			});
 		});
 	});
 	

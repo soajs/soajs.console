@@ -698,7 +698,7 @@ module.exports = {
 							},
 							"category": {"type": "string"},
 						},
-						"required": ["name", "plugged", "shared", "config", "type", "category"]
+						"required": ["name", "plugged", "shared", "config"]
 					}
 				}
 			},
