@@ -122,6 +122,37 @@ Registry.prototype.addDB = function (data, cb) {
 
 Registry.prototype.updateDBPrefix = function (data, cb) {
 	let __self = this;
+	if (!data || !data.env || !data.prefix) {
+		let error = new Error("Registry: env, prefix are required.");
+		return cb(error, null);
+	}
+	let condition = {
+		code: data.env
+	};
+	let s = {
+		"$set": {
+			"dbs.config.prefix": data.prefix
+		}
+	};
+	__self.check_if_can_access(data, condition, {}, (error) => {
+		if (error) {
+			return cb(error);
+		}
+		__self.mongoCore.updateOne(colName, condition, s, null, (err, record) => {
+			if (err) {
+				return cb(err);
+			}
+			if (!record || (record && !record.nModified)) {
+				let error = new Error("Registry: [" + data.env + ", prefix] was not updated.");
+				return cb(error);
+			}
+			return cb(null, record.nModified);
+		});
+	});
+};
+
+Registry.prototype.updateDBSession = function (data, cb) {
+	let __self = this;
 	if (!data || !data.env || !data.name || !data.cluster || !data.store || !data.expireAfter || !data.collection || !data.stringify) {
 		let error = new Error("Registry: env, name, cluster, store, expireAfter, collection, stringify are required.");
 		return cb(error, null);
@@ -150,7 +181,7 @@ Registry.prototype.updateDBPrefix = function (data, cb) {
 				return cb(err);
 			}
 			if (!record || (record && !record.nModified)) {
-				let error = new Error("Registry: [" + data.env + ", prefix] was not updated.");
+				let error = new Error("Registry: [" + data.env + ", db session] was not updated.");
 				return cb(error);
 			}
 			return cb(null, record.nModified);
@@ -158,7 +189,7 @@ Registry.prototype.updateDBPrefix = function (data, cb) {
 	});
 };
 
-Registry.prototype.updateDBSession = function (data, cb) {
+Registry.prototype.updateDB = function (data, cb) {
 	let __self = this;
 	if (!data || !data.env || !data.name || !data.cluster) {
 		let error = new Error("Registry: env, name, cluster are required.");
@@ -185,7 +216,7 @@ Registry.prototype.updateDBSession = function (data, cb) {
 				return cb(err);
 			}
 			if (!record || (record && !record.nModified)) {
-				let error = new Error("Registry: [" + data.env + ", session] was not updated.");
+				let error = new Error("Registry: [" + data.env + ", DB] was not updated.");
 				return cb(error);
 			}
 			return cb(null, record.nModified);
@@ -263,7 +294,6 @@ Registry.prototype.update = function (data, cb) {
 	});
 };
 
-
 Registry.prototype.updateThrottling = function (data, cb) {
 	let __self = this;
 	if (!data || !data.env || !data.throttling) {
@@ -307,23 +337,6 @@ Registry.prototype.check_if_can_access = function (data, condition, options, cb)
 		}
 		access.check_can_access(data, item, cb);
 	});
-};
-
-Registry.prototype.validateId = function (id, cb) {
-	let __self = this;
-	
-	if (!id) {
-		let error = new Error("Registry: must provide an id.");
-		return cb(error, null);
-	}
-	
-	try {
-		id = __self.mongoCore.ObjectId(id);
-		return cb(null, id);
-	} catch (e) {
-		__self.log(e.message);
-		return cb(new Error("A valid ID is required"), null);
-	}
 };
 
 Registry.prototype.closeConnection = function () {

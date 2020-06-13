@@ -94,8 +94,8 @@ let bl = {
 				return cb(bl.handleError(soajs, 602, err));
 			}
 			let throttling = null;
-			if (response) {
-				throttling = response.throttling;
+			if (response && response.services && response.services.config) {
+				throttling = response.services.config.throttling || null;
 			}
 			return cb(null, throttling);
 		});

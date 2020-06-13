@@ -400,7 +400,7 @@ module.exports = {
 					"source": ['body.expireAfter'],
 					"required": true,
 					"validation": {
-						"type": "string"
+						"type": "integer"
 					}
 				},
 				"collection": {
@@ -419,7 +419,7 @@ module.exports = {
 					}
 				}
 			},
-			"registry": {
+			"/registry": {
 				"_apiInfo": {
 					"l": "This API updates a registry",
 					"group": "Registry"

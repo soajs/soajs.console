@@ -51,12 +51,24 @@ describe("starting integration tests", () => {
 	});
 	
 	it("loading tests", (done) => {
+		
 		require("./ledger/add.js");
 		require("./ledger/add_get.js");
 		
 		require("./environment/add.js");
 		require("./environment/add_get.js");
 		require("./environment/add_delete.js");
+		
+		require("./registry/update.js");
+		require("./registry/update_prefix.js");
+		require("./registry/update_sessionDB.js");
+		require("./registry/update_throttling.js");
+		
+		require("./registry/add_dbCustom.js");
+		require("./registry/delete_dbCustom.js");
+		
+		require("./registry/get.js");
+		require("./registry/get_throttling.js");
 		done();
 	});
 	

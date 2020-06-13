@@ -64,19 +64,19 @@ Environment.prototype.add = function (data, cb) {
 
 Environment.prototype.get = function (data, cb) {
 	let __self = this;
+	
+	let options = {
+		"projection": {code: 1, description: 1}
+	};
 	if (data.code) {
 		let condition = {
 			code: data.code
 		};
 		condition = access.add_acl_2_condition(data, condition);
-		
-		let options = {};
 		__self.mongoCore.findOne(colName, condition, options, cb);
 	} else {
 		let condition = {};
 		condition = access.add_acl_2_condition(data, condition);
-		
-		let options = {};
 		__self.mongoCore.find(colName, condition, options, cb);
 	}
 };
