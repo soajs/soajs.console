@@ -7,7 +7,7 @@
  */
 
 "use strict";
-const colName = "custom_registry";
+const colName = "resources";
 const core = require("soajs");
 const access = require("./access");
 const Mongo = core.mongo;
