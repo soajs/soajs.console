@@ -41,13 +41,18 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			service.get("/registry/throttling", function (req, res) {
+				bl.registry.getThrottling(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			service.get("/registry/custom", function (req, res) {
 				bl.customRegistry.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
-			service.get("/registry/throttling", function (req, res) {
-				bl.registry.getThrottling(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+			service.get("/registry/resource", function (req, res) {
+				bl.resource.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
@@ -124,6 +129,29 @@ function run(serviceStartCb) {
 					});
 				});
 			});
+			service.delete("/registry/resource", function (req, res) {
+				bl.resource.delete(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					let response = req.soajs.buildResponse(error, data);
+					res.json(response);
+					
+					let doc = {
+						"type": "Registry",
+						"section": "Resource",
+						"locator": [req.soajs.inputmaskData.id],
+						"action": "deleted",
+						"status": (error ? "failed" : "succeeded"),
+						"input": req.soajs.inputmaskData,
+						"output": data
+					};
+					bl.ledger.add(req.soajs, {"doc": doc}, null, (error) => {
+						if (error && error.message) {
+							req.soajs.log.error(error.message);
+						} else if (error) {
+							req.soajs.log.error(error);
+						}
+					});
+				});
+			});
 			
 			
 			//PUT methods
@@ -166,6 +194,11 @@ function run(serviceStartCb) {
 					});
 				});
 			});
+			service.put("/registry/throttling", function (req, res) {
+				bl.registry.updateThrottling(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			service.put("/registry/custom", function (req, res) {
 				bl.customRegistry.update(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					let response = req.soajs.buildResponse(error, data);
@@ -194,8 +227,31 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
-			service.put("/registry/throttling", function (req, res) {
-				bl.registry.updateThrottling(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+			service.put("/registry/resource", function (req, res) {
+				bl.resource.update(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					let response = req.soajs.buildResponse(error, data);
+					res.json(response);
+					
+					let doc = {
+						"type": "Registry",
+						"section": "Resource",
+						"locator": ["Name", req.soajs.inputmaskData.data.name],
+						"action": "updated",
+						"status": (error ? "failed" : "succeeded"),
+						"input": req.soajs.inputmaskData,
+						"output": data
+					};
+					bl.ledger.add(req.soajs, {"doc": doc}, null, (error) => {
+						if (error && error.message) {
+							req.soajs.log.error(error.message);
+						} else if (error) {
+							req.soajs.log.error(error);
+						}
+					});
+				});
+			});
+			service.put("/registry/resource/acl", function (req, res) {
+				bl.resource.update_acl(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
@@ -244,6 +300,29 @@ function run(serviceStartCb) {
 					let doc = {
 						"type": "Registry",
 						"section": "Custom",
+						"locator": ["Name", req.soajs.inputmaskData.data.name],
+						"action": "added",
+						"status": (error ? "failed" : "succeeded"),
+						"input": req.soajs.inputmaskData,
+						"output": data
+					};
+					bl.ledger.add(req.soajs, {"doc": doc}, null, (error) => {
+						if (error && error.message) {
+							req.soajs.log.error(error.message);
+						} else if (error) {
+							req.soajs.log.error(error);
+						}
+					});
+				});
+			});
+			service.post("/registry/resource", function (req, res) {
+				bl.resource.add(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					let response = req.soajs.buildResponse(error, data);
+					res.json(response);
+					
+					let doc = {
+						"type": "Registry",
+						"section": "Resource",
 						"locator": ["Name", req.soajs.inputmaskData.data.name],
 						"action": "added",
 						"status": (error ? "failed" : "succeeded"),

@@ -131,7 +131,15 @@ module.exports = {
 			},
 			"/registry/custom": {
 				"_apiInfo": {
-					"l": "This API gets a custom registry",
+					"l": "This API gets all custom registry",
+					"group": "Registry"
+				},
+				"commonFields": ["env"]
+			},
+			
+			"/registry/resource": {
+				"_apiInfo": {
+					"l": "This API gets all resource configuration",
 					"group": "Registry"
 				},
 				"commonFields": ["env"]
@@ -177,6 +185,20 @@ module.exports = {
 			"/registry/custom": {
 				"_apiInfo": {
 					"l": "This API deletes a custom registry",
+					"group": "Registry"
+				},
+				"id": {
+					"source": ['body.id'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
+			
+			"/registry/resource": {
+				"_apiInfo": {
+					"l": "This API deletes a resource configuration",
 					"group": "Registry"
 				},
 				"id": {
@@ -312,6 +334,38 @@ module.exports = {
 							"value": {"type": "object"}
 						},
 						"required": ["name", "plugged", "shared", "value"]
+					}
+				}
+			},
+			
+			"/registry/resource": {
+				"_apiInfo": {
+					"l": "This API adds a resource",
+					"group": "Registry"
+				},
+				"commonFields": ["env"],
+				"data": {
+					"source": ['body.data'],
+					"required": true,
+					"validation": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"name": {"type": "string", "pattern": /[a-z0-9]{1,61}/},
+							"plugged": {"type": "boolean"},
+							"shared": {"type": "boolean"},
+							"sharedEnv": {
+								"type": "object",
+								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
+							},
+							"config": {"type": "object"},
+							"type": {
+								"type": "string",
+								"enum": ['cluster', 'server', 'cdn', 'system', 'authorization', 'other']
+							},
+							"category": {"type": "string"},
+						},
+						"required": ["name", "plugged", "shared", "config", "type", "category"]
 					}
 				}
 			}
@@ -611,7 +665,72 @@ module.exports = {
 						"minItems": 1
 					}
 				}
-			}
+			},
+			
+			"/registry/resource": {
+				"_apiInfo": {
+					"l": "This API updates a resource configuration",
+					"group": "Registry"
+				},
+				"id": {
+					"source": ['body.id'],
+					"required": true,
+					"validation": {"type": "string"}
+				},
+				"data": {
+					"source": ['body.data'],
+					"required": true,
+					"validation": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"name": {"type": "string", "pattern": /[a-z0-9]{1,61}/},
+							"plugged": {"type": "boolean"},
+							"shared": {"type": "boolean"},
+							"sharedEnv": {
+								"type": "object",
+								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
+							},
+							"config": {"type": "object"},
+							"type": {
+								"type": "string",
+								"enum": ['cluster', 'server', 'cdn', 'system', 'authorization', 'other']
+							},
+							"category": {"type": "string"},
+						},
+						"required": ["name", "plugged", "shared", "config", "type", "category"]
+					}
+				}
+			},
+			"/registry/resource/acl": {
+				"_apiInfo": {
+					"l": "This API updates the resource configuration acl",
+					"group": "Account"
+				},
+				"id": {
+					"source": ["body.id"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"type": {
+					"source": ['body.type'],
+					"required": true,
+					"validation": {
+						"type": "string",
+						"enum": ["blacklist", "whitelist"]
+					}
+				},
+				"groups": {
+					"source": ['body.groups'],
+					"required": true,
+					"validation": {
+						"type": "array",
+						"minItems": 1
+					}
+				}
+			},
 		}
 	}
 };

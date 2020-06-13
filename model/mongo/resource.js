@@ -14,7 +14,7 @@ const Mongo = core.mongo;
 
 let indexing = {};
 
-function CustomRegistry(service, options, mongoCore) {
+function Resource(service, options, mongoCore) {
 	let __self = this;
 	if (__self.log) {
 		__self.log = service.log;
@@ -49,15 +49,15 @@ function CustomRegistry(service, options, mongoCore) {
 				service.log.debug("Index: " + index + " created with error: " + err);
 			});
 			
-			service.log.debug("customRegistry: Indexes for " + index + " Updated!");
+			service.log.debug("Resource: Indexes for " + index + " Updated!");
 		}
 	}
 }
 
-CustomRegistry.prototype.add = function (data, cb) {
+Resource.prototype.add = function (data, cb) {
 	let __self = this;
-	if (!data || !data.env || !data.data || !data.data.name || !data.data.plugged || !data.data.shared || !data.data.value) {
-		let error = new Error("CustomRegistry: env and data(name, plugged, shared, value) are required.");
+	if (!data || !data.env || !data.data || !data.data.name || !data.data.plugged || !data.data.shared || !data.data.config || !data.data.type || !data.data.category) {
+		let error = new Error("Resource: env and data(name, plugged, shared, config, type, category) are required.");
 		return cb(error, null);
 	}
 	
@@ -66,19 +66,21 @@ CustomRegistry.prototype.add = function (data, cb) {
 		"name": data.data.name,
 		"plugged": data.data.plugged,
 		"shared": data.data.shared,
-		"value": data.data.value,
+		"config": data.data.config,
 		"sharedEnv": data.data.sharedEnv || null,
-		"created": data.env.toUpperCase()
+		"created": data.env.toUpperCase(),
+		"type": data.data.type,
+		"category": data.data.category
 	};
 	let versioning = false;
 	
 	__self.mongoCore.insertOne(colName, doc, options, versioning, cb);
 };
 
-CustomRegistry.prototype.update = function (data, cb) {
+Resource.prototype.update = function (data, cb) {
 	let __self = this;
-	if (!data || !data.id || !data.data || !data.data.name || !data.data.plugged || !data.data.shared || !data.data.value) {
-		let error = new Error("CustomRegistry: name, plugged, shared, value are required.");
+	if (!data || !data.id || !data.data || !data.data.name || !data.data.plugged || !data.data.shared || !data.data.config || !data.data.type || !data.data.category) {
+		let error = new Error("Resource: name, plugged, shared, config, type, category are required.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (error, _id) => {
@@ -95,8 +97,10 @@ CustomRegistry.prototype.update = function (data, cb) {
 				"name": data.data.name,
 				"plugged": data.data.plugged,
 				"shared": data.data.shared,
-				"value": data.data.value,
+				"config": data.data.config,
 				"sharedEnv": data.data.sharedEnv || null,
+				"type": data.data.type,
+				"category": data.data.category
 			}
 		};
 		__self.check_if_can_access(data, condition, {}, (error) => {
@@ -108,7 +112,7 @@ CustomRegistry.prototype.update = function (data, cb) {
 					return cb(err);
 				}
 				if (!record || (record && !record.nModified)) {
-					let error = new Error("CustomRegistry: [" + data.id + "] was not updated.");
+					let error = new Error("Resource: [" + data.id + "] was not updated.");
 					return cb(error);
 				}
 				return cb(null, record.nModified);
@@ -117,10 +121,10 @@ CustomRegistry.prototype.update = function (data, cb) {
 	});
 };
 
-CustomRegistry.prototype.get = function (data, cb) {
+Resource.prototype.get = function (data, cb) {
 	let __self = this;
 	if (!data || !data.env) {
-		let error = new Error("customRegistry: env is required.");
+		let error = new Error("Resource: env is required.");
 		return cb(error, null);
 	}
 	let condition = {
@@ -131,10 +135,10 @@ CustomRegistry.prototype.get = function (data, cb) {
 	__self.mongoCore.find(colName, condition, options, cb);
 };
 
-CustomRegistry.prototype.delete = function (data, cb) {
+Resource.prototype.delete = function (data, cb) {
 	let __self = this;
 	if (!data || !data.id) {
-		let error = new Error("customRegistry: id is required.");
+		let error = new Error("Resource: id is required.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (error, _id) => {
@@ -150,19 +154,19 @@ CustomRegistry.prototype.delete = function (data, cb) {
 	});
 };
 
-CustomRegistry.prototype.update_acl = function (data, cb) {
+Resource.prototype.update_acl = function (data, cb) {
 	let __self = this;
 	if (!data || !data.id || !data.type || !data.groups) {
-		let error = new Error("customRegistry: id, type and groups are required.");
+		let error = new Error("Resource: id, type and groups are required.");
 		return cb(error, null);
 	}
 	let allowedTypes = ["blacklist", "whitelist"];
 	if (!allowedTypes.includes(data.type)) {
-		let error = new Error("customRegistry: type can only be one of the following: " + allowedTypes.join(","));
+		let error = new Error("Resource: type can only be one of the following: " + allowedTypes.join(","));
 		return cb(error, null);
 	}
 	if (!Array.isArray(data.groups)) {
-		let error = new Error("customRegistry: groups must be an array.");
+		let error = new Error("Resource: groups must be an array.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (err, _id) => {
@@ -188,7 +192,7 @@ CustomRegistry.prototype.update_acl = function (data, cb) {
 					return cb(err);
 				}
 				if (!record || (record && !record.nModified)) {
-					let error = new Error("customRegistry: [" + data.id + "] was not updated.");
+					let error = new Error("Resource: [" + data.id + "] was not updated.");
 					return cb(error);
 				}
 				return cb(null, record.nModified);
@@ -197,25 +201,25 @@ CustomRegistry.prototype.update_acl = function (data, cb) {
 	});
 };
 
-CustomRegistry.prototype.check_if_can_access = function (data, condition, options, cb) {
+Resource.prototype.check_if_can_access = function (data, condition, options, cb) {
 	let __self = this;
 	__self.mongoCore.findOne(colName, condition, options, (err, item) => {
 		if (err) {
 			return cb(err, null);
 		}
 		if (!item) {
-			let error = new Error("CustomRegistry: item not found.");
+			let error = new Error("Resource: item not found.");
 			return cb(error, null);
 		}
 		access.check_can_access(data, item, cb);
 	});
 };
 
-CustomRegistry.prototype.validateId = function (id, cb) {
+Resource.prototype.validateId = function (id, cb) {
 	let __self = this;
 	
 	if (!id) {
-		let error = new Error("customRegistry: must provide an id.");
+		let error = new Error("Resource: must provide an id.");
 		return cb(error, null);
 	}
 	
@@ -228,9 +232,9 @@ CustomRegistry.prototype.validateId = function (id, cb) {
 	}
 };
 
-CustomRegistry.prototype.closeConnection = function () {
+Resource.prototype.closeConnection = function () {
 	let __self = this;
 	__self.mongoCore.closeDb();
 };
 
-module.exports = CustomRegistry;
+module.exports = Resource;
