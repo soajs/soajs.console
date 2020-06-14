@@ -34,7 +34,7 @@ describe("Testing add custom registry", () => {
 			
 			let params = {
 				body: {
-					"id": body.data._id,
+					"id": body.data[0]._id,
 					"data": {
 						"name": "urac",
 						"plugged": false,

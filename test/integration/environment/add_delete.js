@@ -15,7 +15,7 @@ const requester = require('../requester.js');
 describe("Testing add environment", () => {
 	
 	
-	it("Success - add and get", (done) => {
+	it("Success - add and delete", (done) => {
 		let params = {
 			body: {
 				"code": "del",
@@ -49,7 +49,6 @@ describe("Testing add environment", () => {
 				};
 				requester('/environment', 'get', params, (error, body) => {
 					assert.ifError(error);
-					console.log(body);
 					assert.ok(body);
 					assert.strictEqual(body.data, null);
 					done();

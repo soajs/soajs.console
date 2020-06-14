@@ -36,7 +36,7 @@ describe("Testing add delete resource", () => {
 			
 			let params = {
 				body: {
-					"id": body.data._id,
+					"id": body.data[0]._id,
 				}
 			};
 			requester('/registry/resource', 'delete', params, (error, body) => {

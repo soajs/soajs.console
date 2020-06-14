@@ -77,6 +77,7 @@ describe("starting integration tests", () => {
 		require("./customRegistry/add.js");
 		require("./customRegistry/get.js");
 		require("./customRegistry/add_delete.js");
+		require("./customRegistry/acl.js");
 		
 		done();
 	});

@@ -105,7 +105,7 @@ let bl = {
 			if (err) {
 				return cb(bl.handleError(soajs, 602, err));
 			}
-			return cb(null, response[0]);
+			return cb(null, response);
 		});
 	},
 	"update": (soajs, inputmaskData, options, cb) => {
