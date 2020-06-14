@@ -20,7 +20,7 @@ describe("Testing get resource", () => {
 				"env": "STG"
 			}
 		};
-		requester('/registry/resource', 'get', params, (error, body) => {
+		requester('/registry/custom', 'get', params, (error, body) => {
 			assert.ifError(error);
 			assert.ok(body);
 			assert.ok(body.data);
