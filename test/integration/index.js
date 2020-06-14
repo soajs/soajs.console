@@ -58,6 +58,7 @@ describe("starting integration tests", () => {
 		require("./environment/add.js");
 		require("./environment/add_get.js");
 		require("./environment/add_delete.js");
+		require("./environment/acl.js");
 		
 		require("./registry/update.js");
 		require("./registry/update_prefix.js");
