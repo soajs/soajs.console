@@ -56,7 +56,11 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
-			
+			service.get("/registry/deployer", function (req, res) {
+				bl.registry.getDeployer(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			//DELETE methods
 			service.delete("/environment", function (req, res) {

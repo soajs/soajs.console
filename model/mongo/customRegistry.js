@@ -125,11 +125,21 @@ CustomRegistry.prototype.get = function (data, cb) {
 		let error = new Error("customRegistry: env is required.");
 		return cb(error, null);
 	}
+	let options = {
+		"skip": 0,
+		"limit": 100
+	};
+	options.sort = {};
+	if (data && data.limit) {
+		options.limit = data.limit;
+	}
+	if (data && data.start) {
+		options.skip = data.start;
+	}
 	let condition = {
 		created: data.env.toUpperCase()
 	};
 	condition = access.add_acl_2_condition(data, condition);
-	let options = {};
 	__self.mongoCore.find(colName, condition, options, cb);
 };
 

@@ -74,6 +74,17 @@ Environment.prototype.get = function (data, cb) {
 		};
 		condition = access.add_acl_2_condition(data, condition);
 		__self.mongoCore.findOne(colName, condition, options, cb);
+	} else if (data.id) {
+		__self.validateId(data.id, (error, _id) => {
+			if (error) {
+				return cb(error);
+			}
+			let condition = {
+				_id: _id
+			};
+			condition = access.add_acl_2_condition(data, condition);
+			__self.mongoCore.findOne(colName, condition, options, cb);
+		});
 	} else {
 		let condition = {};
 		condition = access.add_acl_2_condition(data, condition);
@@ -83,16 +94,29 @@ Environment.prototype.get = function (data, cb) {
 
 Environment.prototype.delete = function (data, cb) {
 	let __self = this;
-	if (!data || !data.code) {
-		let error = new Error("Environment: code is required.");
+	if (!data || !(data.code && data.id)) {
+		let error = new Error("Environment: (code or id) is required.");
 		return cb(error, null);
 	}
-	let condition = {
-		code: data.code
-	};
-	condition = access.add_acl_2_condition(data, condition);
 	let options = {};
-	__self.mongoCore.deleteOne(colName, condition, options, cb);
+	if (data.code) {
+		let condition = {
+			code: data.code
+		};
+		condition = access.add_acl_2_condition(data, condition);
+		__self.mongoCore.deleteOne(colName, condition, options, cb);
+	} else if (data.id) {
+		__self.validateId(data.id, (error, _id) => {
+			if (error) {
+				return cb(error);
+			}
+			let condition = {
+				_id: _id
+			};
+			condition = access.add_acl_2_condition(data, condition);
+			__self.mongoCore.deleteOne(colName, condition, options, cb);
+		});
+	}
 };
 
 Environment.prototype.update_acl = function (data, cb) {

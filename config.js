@@ -50,6 +50,7 @@ module.exports = {
 		403: "Failed to create namespace",
 		
 		500: "Nothing to Update!",
+		501: "Unable to find the environment deployer data",
 		
 		601: "Model not found",
 		602: "Model error: ",
@@ -112,6 +113,12 @@ module.exports = {
 					"validation": {
 						"type": "string"
 					}
+				},
+				"id": {
+					"source": ["query.id"],
+					"validation": {
+						"type": "string"
+					}
 				}
 			},
 			
@@ -120,7 +127,7 @@ module.exports = {
 					"l": "This API gets a registry",
 					"group": "Registry"
 				},
-				"commonFields": ["env"]
+				"commonFields": ["env","start", "limit"]
 			},
 			"/registry/throttling": {
 				"_apiInfo": {
@@ -143,6 +150,13 @@ module.exports = {
 					"group": "Registry"
 				},
 				"commonFields": ["env"]
+			},
+			"/registry/deployer": {
+				"_apiInfo": {
+					"l": "This API gets a registry deployer information",
+					"group": "Registry"
+				},
+				"commonFields": ["env"]
 			}
 		},
 		
@@ -154,7 +168,12 @@ module.exports = {
 				},
 				"code": {
 					"source": ["body.code"],
-					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"id": {
+					"source": ["body.id"],
 					"validation": {
 						"type": "string"
 					}

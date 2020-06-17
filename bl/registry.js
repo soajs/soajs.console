@@ -8,6 +8,8 @@
 
 'use strict';
 
+const soajsCore = require('soajs');
+
 function getGroups(soajs) {
 	let _groups = null;
 	if (soajs && soajs.urac && soajs.urac.groups) {
@@ -80,6 +82,20 @@ let bl = {
 				}
 			}
 			return cb(null, response);
+		});
+	},
+	"getDeployer": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		soajsCore.core.registry.loadByEnv({envCode: inputmaskData.env}, (err, envRecord) => {
+			if (err) {
+				soajs.log.error(err.message);
+			}
+			if (!envRecord || !envRecord.deployer) {
+				return cb(bl.handleError(soajs, 501, null));
+			}
+			return cb(null, envRecord.deployer);
 		});
 	},
 	"getThrottling": (soajs, inputmaskData, options, cb) => {
