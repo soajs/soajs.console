@@ -94,7 +94,7 @@ Environment.prototype.get = function (data, cb) {
 
 Environment.prototype.delete = function (data, cb) {
 	let __self = this;
-	if (!data || !(data.code && data.id)) {
+	if (!data || !(data.code || data.id)) {
 		let error = new Error("Environment: (code or id) is required.");
 		return cb(error, null);
 	}
