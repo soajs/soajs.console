@@ -48,9 +48,12 @@ module.exports = {
 		401: "Failed to build environment template",
 		402: "Unable to find the specified kubernetes account",
 		403: "Failed to create namespace",
+		404: "Failed to update kubernetes driver environment usage.",
+		405: "Failed to update environment, settings provided are not for this type.",
 		
 		500: "Nothing to Update!",
 		501: "Unable to find the environment deployer data",
+		502: "Unable to find the environment",
 		
 		601: "Model not found",
 		602: "Model error: ",
@@ -127,7 +130,7 @@ module.exports = {
 					"l": "This API gets a registry",
 					"group": "Registry"
 				},
-				"commonFields": ["env","start", "limit"]
+				"commonFields": ["env"]
 			},
 			"/registry/throttling": {
 				"_apiInfo": {
@@ -394,7 +397,7 @@ module.exports = {
 			"/environment/acl": {
 				"_apiInfo": {
 					"l": "This API updates the environment acl",
-					"group": "Account"
+					"group": "Environment"
 				},
 				"code": {
 					"source": ["body.code"],
@@ -417,6 +420,38 @@ module.exports = {
 					"validation": {
 						"type": "array",
 						"minItems": 1
+					}
+				}
+			},
+			
+			"/environment": {
+				"_apiInfo": {
+					"l": "This API updates the environment information",
+					"group": "Environment"
+				},
+				"code": {
+					"source": ["body.code"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"description": {
+					"source": ["body.description"],
+					"validation": {
+						"type": "string"
+					}
+				},
+				"settings": {
+					"source": ["body.settings"],
+					"validation": {
+						"type": "object",
+						"properties": {
+							"namespace": {
+								"type": "string"
+							}
+						},
+						"required": ["namespace"]
 					}
 				}
 			},

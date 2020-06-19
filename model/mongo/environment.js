@@ -68,6 +68,9 @@ Environment.prototype.get = function (data, cb) {
 	let options = {
 		"projection": {code: 1, description: 1}
 	};
+	if (data.noProjection) {
+		delete options.projection;
+	}
 	if (data.code) {
 		let condition = {
 			code: data.code
@@ -117,6 +120,46 @@ Environment.prototype.delete = function (data, cb) {
 			__self.mongoCore.deleteOne(colName, condition, options, cb);
 		});
 	}
+};
+
+Environment.prototype.update = function (data, cb) {
+	let __self = this;
+	if (!data || !data.code) {
+		let error = new Error("Environment: code is required.");
+		return cb(error, null);
+	}
+	
+	let condition = {"code": data.code};
+	
+	let options = {};
+	let fields = {
+		'$set': {}
+	};
+	if (data.description) {
+		fields.$set.description = data.description;
+	}
+	if (data.settings) {
+		let defaultLocation = "deployer.container.kubernetes.namespace";
+		if (data.depSeleted) {
+			defaultLocation = data.depSeleted;
+		}
+		fields.$set[defaultLocation] = data.settings.namespace;
+	}
+	__self.check_if_can_access(data, condition, {}, (error) => {
+		if (error) {
+			return cb(error);
+		}
+		__self.mongoCore.updateOne(colName, condition, fields, options, (err, record) => {
+			if (err) {
+				return cb(err);
+			}
+			if (!record || (record && !record.nModified)) {
+				let error = new Error("Environment: [" + data.code + "] was not updated.");
+				return cb(error);
+			}
+			return cb(null, record.nModified);
+		});
+	});
 };
 
 Environment.prototype.update_acl = function (data, cb) {

@@ -8,6 +8,7 @@
 
 'use strict';
 
+const sdk = require("../lib/sdk.js");
 const soajsCore = require('soajs');
 
 function getGroups(soajs) {
@@ -19,6 +20,8 @@ function getGroups(soajs) {
 	}
 	return _groups;
 }
+
+const get = (p, o) => p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : null, o);
 
 let bl = {
 	"modelObj": null,
@@ -74,11 +77,11 @@ let bl = {
 			}
 			if (response) {
 				delete response.deployer;
-				delete response.throttling;
-				if (response.services) {
-					delete response.services.key;
-					delete response.services.cookie;
-					delete response.services.session;
+				if (response.services && response.services.config) {
+					delete response.services.config.throttling;
+					delete response.services.config.key;
+					delete response.services.config.cookie;
+					delete response.services.config.session;
 				}
 			}
 			return cb(null, response);
@@ -95,7 +98,45 @@ let bl = {
 			if (!envRecord || !envRecord.deployer) {
 				return cb(bl.handleError(soajs, 501, null));
 			}
-			return cb(null, envRecord.deployer);
+			let depType = get(["deployer", "type"], envRecord);
+			let regConf = null;
+			if (depType === "container") {
+				let depSeleted = get(["deployer", "selected"], envRecord);
+				regConf = get(["deployer"].concat(depSeleted.split(".")), envRecord);
+			}
+			if (regConf) {
+				let id = regConf.id;
+				// get the latest url and port from infra
+				sdk.infra.get.account_token(soajs, {"id": id}, (error, data) => {
+					if (data) {
+						if (regConf.configuration) {
+							regConf.configuration.port = data.configuration.port;
+							regConf.configuration.url = data.configuration.url;
+						}
+					}
+					let modelObj = bl.mp.getModel(soajs, options);
+					inputmaskData._groups = getGroups(soajs);
+					
+					// get the latest namespace from registry
+					modelObj.get(inputmaskData, (err, response) => {
+						bl.mp.closeModel(modelObj);
+						let regConfLatest = null;
+						if (response) {
+							let depType = get(["deployer", "type"], response);
+							if (depType === "container") {
+								let depSeleted = get(["deployer", "selected"], response);
+								regConfLatest = get(["deployer"].concat(depSeleted.split(".")), response);
+							}
+						}
+						if (regConfLatest) {
+							regConf.namespace = regConfLatest.namespace;
+						}
+						return cb(null, envRecord.deployer);
+					});
+				});
+			} else {
+				return cb(null, envRecord.deployer);
+			}
 		});
 	},
 	"getThrottling": (soajs, inputmaskData, options, cb) => {

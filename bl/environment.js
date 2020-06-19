@@ -8,6 +8,10 @@
 
 'use strict';
 
+const get = (p, o) => p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : null, o);
+
+const sdk = require("../lib/sdk.js");
+
 function getGroups(soajs) {
 	let _groups = null;
 	if (soajs && soajs.urac && soajs.urac.groups) {
@@ -75,8 +79,6 @@ let bl = {
 				if (err) {
 					return cb(bl.handleError(soajs, 602, err));
 				}
-				//TODO: add to infra account deployment a record
-				
 				return cb(null, {"added": true});
 			});
 		};
@@ -98,7 +100,26 @@ let bl = {
 			env.description = inputmaskData.description;
 			env.deployer.container.kubernetes.namespace = inputmaskData.settings.namespace;
 			env.deployer.container.kubernetes.id = inputmaskData.settings.id;
-			add(env);
+			
+			sdk.infra.create.namespace(soajs, {
+				"name": inputmaskData.settings.namespace,
+				"env": inputmaskData.code
+			}, (error, data) => {
+				if (data) {
+					sdk.infra.update.account_env(soajs, {
+						"id": inputmaskData.settings.id,
+						"env": inputmaskData.code
+					}, (error, data) => {
+						if (data) {
+							add(env);
+						} else {
+							return cb(bl.handleError(soajs, 404, null));
+						}
+					});
+				} else {
+					return cb(bl.handleError(soajs, 403, null));
+				}
+			});
 		}
 	},
 	
@@ -107,23 +128,45 @@ let bl = {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 		
-		//TODO: cleanup not supported yet
-		// if kubernetes
-		// delete namespace and then delete env
+		//TODO: cleanup not supported yet: if kubernetes delete all the deployment configuration of the deleted env
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
-		modelObj.delete(inputmaskData, (err, response) => {
+		modelObj.get({"code": inputmaskData.code, "id": inputmaskData.id, "noProjection": true}, (err, response) => {
 			bl.mp.closeModel(modelObj);
 			if (err) {
 				return cb(bl.handleError(soajs, 602, err));
 			}
-			let result = {};
 			if (response) {
-				result.n = response.result.n;
-				result.ok = response.result.ok;
-				result.deletedCount = response.deletedCount;
+				let regConf = null;
+				let depType = get(["deployer", "type"], response);
+				if (depType === "container") {
+					let depSeleted = get(["deployer", "selected"], response);
+					regConf = get(["deployer"].concat(depSeleted.split(".")), response);
+				}
+				if (regConf && regConf.id) {
+					sdk.infra.update.account_env(soajs, {
+						"id": regConf.id,
+						"env": inputmaskData.code,
+						"delete": true
+					}, () => {
+					});
+				}
 			}
-			return cb(null, result);
+			modelObj.delete(inputmaskData, (err, response) => {
+				bl.mp.closeModel(modelObj);
+				if (err) {
+					return cb(bl.handleError(soajs, 602, err));
+				}
+				let result = {};
+				if (response) {
+					result.n = response.result.n;
+					result.ok = response.result.ok;
+					result.deletedCount = response.deletedCount;
+				}
+				
+				return cb(null, result);
+			});
 		});
 	},
 	
@@ -141,6 +184,63 @@ let bl = {
 				return cb(bl.handleError(soajs, 602, err));
 			}
 			return cb(null, response);
+		});
+	},
+	
+	"update": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		let continue_update = () => {
+			inputmaskData._groups = getGroups(soajs);
+			modelObj.update(inputmaskData, (err, response) => {
+				bl.mp.closeModel(modelObj);
+				if (err) {
+					return cb(bl.handleError(soajs, 602, err));
+				}
+				return cb(null, bl.handleUpdateResponse(response));
+			});
+		};
+		modelObj.get({"code": inputmaskData.code, "noProjection": true}, (err, response) => {
+			if (err) {
+				bl.mp.closeModel(modelObj);
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			if (response) {
+				let regConf = null;
+				let depSeleted = null;
+				let depType = get(["deployer", "type"], response);
+				if (depType === "container") {
+					depSeleted = get(["deployer", "selected"], response);
+					regConf = get(["deployer"].concat(depSeleted.split(".")), response);
+				}
+				if (regConf) {
+					inputmaskData.depSeleted = "deployer." + depSeleted + ".namespace";
+				}
+				if (inputmaskData.settings && inputmaskData.settings.namespace && !regConf) {
+					return cb(bl.handleError(soajs, 405, null));
+				} else {
+					if (inputmaskData.settings && inputmaskData.settings.namespace) {
+						sdk.infra.create.namespace(soajs, {
+							"name": inputmaskData.settings.namespace,
+							"env": inputmaskData.code
+						}, (error, data) => {
+							if (data) {
+								continue_update();
+							} else {
+								bl.mp.closeModel(modelObj);
+								return cb(bl.handleError(soajs, 403, null));
+							}
+						});
+					} else {
+						continue_update();
+					}
+				}
+			} else {
+				bl.mp.closeModel(modelObj);
+				return cb(bl.handleError(soajs, 502, null));
+			}
 		});
 	},
 	

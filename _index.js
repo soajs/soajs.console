@@ -164,6 +164,11 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			service.put("/environment", function (req, res) {
+				bl.environment.update(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			service.put("/registry/db/prefix", function (req, res) {
 				bl.registry.updateDBPrefix(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
