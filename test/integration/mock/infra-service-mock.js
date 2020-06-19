@@ -50,6 +50,14 @@ function startServer(serverConfig, callback) {
 		res.json(sReply);
 	});
 	
+	sApp.put('/account/kubernetes/environment', (req, res) => {
+		let sReply = {
+			"result": true,
+			"data": true
+		};
+		res.json(sReply);
+	});
+	
 	mApp.get('/heartbeat', (req, res) => {
 		let mReply = {
 			'result': true,
