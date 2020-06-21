@@ -21,7 +21,7 @@ describe("Testing add environment", () => {
 				"code": "anto",
 				"description": "this is about my added env",
 				"settings": {
-					"type": "local",
+					"type": "manual",
 					"port": 10000
 				}
 			}

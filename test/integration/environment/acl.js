@@ -21,7 +21,7 @@ describe("Testing ACL environment", () => {
 				"code": "ACL",
 				"description": "this is about my added env",
 				"settings": {
-					"type": "local",
+					"type": "manual",
 					"port": 10000
 				}
 			}

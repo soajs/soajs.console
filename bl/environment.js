@@ -68,6 +68,7 @@ let bl = {
 		if (!inputmaskData || !inputmaskData.settings) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		inputmaskData.code = inputmaskData.code.toUpperCase();
 		
 		let add = (env) => {
 			if (!env) {
@@ -84,8 +85,8 @@ let bl = {
 		};
 		
 		let env = null;
-		if (inputmaskData.settings.type === "local") {
-			env = require("./templates/env_local.js");
+		if (inputmaskData.settings.type === "manual") {
+			env = require("./templates/env_manual.js");
 			//NOTE: mongo client sdk adds _id after first usage
 			delete env._id;
 			env.code = inputmaskData.code;
@@ -100,10 +101,10 @@ let bl = {
 			env.description = inputmaskData.description;
 			env.deployer.container.kubernetes.namespace = inputmaskData.settings.namespace;
 			env.deployer.container.kubernetes.id = inputmaskData.settings.id;
-			
 			sdk.infra.create.namespace(soajs, {
 				"name": inputmaskData.settings.namespace,
-				"env": inputmaskData.code
+				//"env": inputmaskData.code,
+				"id": inputmaskData.settings.id
 			}, (error, data) => {
 				if (data) {
 					sdk.infra.update.account_env(soajs, {
@@ -120,6 +121,8 @@ let bl = {
 					return cb(bl.handleError(soajs, 403, null));
 				}
 			});
+		} else {
+			return cb(bl.handleError(soajs, 406, null));
 		}
 	},
 	

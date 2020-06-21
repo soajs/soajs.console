@@ -15,13 +15,13 @@ const requester = require('../requester.js');
 describe("Testing add environment", () => {
 	
 	
-	it("Success - add local", (done) => {
+	it("Success - add manual", (done) => {
 		let params = {
 			body: {
 				"code": "TONY",
 				"description": "this is about my added env",
 				"settings":{
-					"type": "local",
+					"type": "manual",
 					"port": 10000
 				}
 			}

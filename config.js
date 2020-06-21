@@ -50,6 +50,7 @@ module.exports = {
 		403: "Failed to create namespace",
 		404: "Failed to update kubernetes driver environment usage.",
 		405: "Failed to update environment, settings provided are not for this type.",
+		406: "Failed to create environment, unsupported type.",
 		
 		500: "Nothing to Update!",
 		501: "Unable to find the environment deployer data",
@@ -274,7 +275,7 @@ module.exports = {
 								{
 									"type": {
 										"type": "string",
-										"enum": ["local"]
+										"enum": ["manual"]
 									},
 									"port": {
 										"type": "integer"
