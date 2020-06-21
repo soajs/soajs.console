@@ -68,7 +68,9 @@ let bl = {
 		if (!inputmaskData || !inputmaskData.settings) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
-		inputmaskData.code = inputmaskData.code.toUpperCase();
+		if (inputmaskData.code) {
+			inputmaskData.code = inputmaskData.code.toUpperCase();
+		}
 		
 		let add = (env) => {
 			if (!env) {
@@ -130,7 +132,9 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
-		
+		if (inputmaskData.code) {
+			inputmaskData.code = inputmaskData.code.toUpperCase();
+		}
 		//TODO: cleanup not supported yet: if kubernetes delete all the deployment configuration of the deleted env
 		
 		let modelObj = bl.mp.getModel(soajs, options);
@@ -177,6 +181,9 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.code) {
+			inputmaskData.code = inputmaskData.code.toUpperCase();
+		}
 		
 		let modelObj = bl.mp.getModel(soajs, options);
 		
@@ -194,6 +201,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.code) {
+			inputmaskData.code = inputmaskData.code.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		let continue_update = () => {
 			inputmaskData._groups = getGroups(soajs);
@@ -251,6 +262,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.code) {
+			inputmaskData.code = inputmaskData.code.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.update_acl(inputmaskData, (err, response) => {

@@ -68,6 +68,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.get(inputmaskData, (err, response) => {
@@ -91,6 +95,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
 		soajsCore.core.registry.loadByEnv({envCode: inputmaskData.env}, (err, envRecord) => {
 			if (err) {
 				soajs.log.error(err.message);
@@ -143,6 +151,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.get(inputmaskData, (err, response) => {
@@ -161,6 +173,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.deleteDB(inputmaskData, (err, response) => {
@@ -175,6 +191,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		modelObj.addDB(inputmaskData, (err, response) => {
 			bl.mp.closeModel(modelObj);
@@ -188,6 +208,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.updateDBPrefix(inputmaskData, (err, response) => {
@@ -202,6 +226,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.updateDBSession(inputmaskData, (err, response) => {
@@ -216,6 +244,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.update(inputmaskData, (err, response) => {
@@ -230,6 +262,10 @@ let bl = {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
 		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.updateThrottling(inputmaskData, (err, response) => {
