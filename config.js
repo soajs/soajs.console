@@ -690,7 +690,7 @@ module.exports = {
 							},
 							"value": {"type": "object"}
 						},
-						"oneOf": [
+						"anyOf": [
 							{
 								"required": ["name"]
 							},
@@ -771,7 +771,7 @@ module.exports = {
 							},
 							"category": {"type": "string"},
 						},
-						"oneOf": [
+						"anyOf": [
 							{
 								"required": ["name"]
 							},
