@@ -34,7 +34,7 @@ let bl = {
 		}
 		return ({
 			"code": errCode,
-			"msg": bl.localConfig.errors[errCode] + ((err && errCode === 602) ? err.message : "")
+			"msg": bl.localConfig.errors[errCode] + ((err && (errCode === 602 || errCode === 802)) ? err.message : "")
 		});
 	},
 	"handleUpdateResponse": (response) => {
@@ -94,6 +94,8 @@ let bl = {
 			env.code = inputmaskData.code;
 			env.description = inputmaskData.description;
 			env.port = inputmaskData.settings.port;
+			
+			//TODO: check if port is not being used bu another env
 			add(env);
 		} else if (inputmaskData.settings.type === "kubernetes") {
 			env = require("./templates/env_kubernetes.js");
@@ -103,6 +105,8 @@ let bl = {
 			env.description = inputmaskData.description;
 			env.deployer.container.kubernetes.namespace = inputmaskData.settings.namespace;
 			env.deployer.container.kubernetes.id = inputmaskData.settings.id;
+			
+			//TODO: check if namespace is not being used bu another env
 			sdk.infra.create.namespace(soajs, {
 				"name": inputmaskData.settings.namespace,
 				//"env": inputmaskData.code,
@@ -116,11 +120,19 @@ let bl = {
 						if (data) {
 							add(env);
 						} else {
-							return cb(bl.handleError(soajs, 404, null));
+							if (error) {
+								return cb(bl.handleError(soajs, 802, error));
+							} else {
+								return cb(bl.handleError(soajs, 404, null));
+							}
 						}
 					});
 				} else {
-					return cb(bl.handleError(soajs, 403, null));
+					if (error) {
+						return cb(bl.handleError(soajs, 802, error));
+					} else {
+						return cb(bl.handleError(soajs, 403, null));
+					}
 				}
 			});
 		} else {
@@ -244,7 +256,11 @@ let bl = {
 								continue_update();
 							} else {
 								bl.mp.closeModel(modelObj);
-								return cb(bl.handleError(soajs, 403, null));
+								if (error) {
+									return cb(bl.handleError(soajs, 802, error));
+								} else {
+									return cb(bl.handleError(soajs, 403, null));
+								}
 							}
 						});
 					} else {

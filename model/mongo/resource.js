@@ -79,8 +79,8 @@ Resource.prototype.add = function (data, cb) {
 
 Resource.prototype.update = function (data, cb) {
 	let __self = this;
-	if (!data || !data.id || !data.data || !data.data.name || !data.data.config) {
-		let error = new Error("Resource: id, name, config, are required.");
+	if (!data || !data.id || (!data.data && !data.data.name && !data.data.config && !data.data.hasOwnProperty("plugged") && !data.data.hasOwnProperty("shared") && !data.data.sharedEnv) && !data.data.type && !data.data.category) {
+		let error = new Error("Resource: id, and (name, config, plugged, shared, or sharedEnv) are required.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (error, _id) => {
@@ -93,21 +93,28 @@ Resource.prototype.update = function (data, cb) {
 		
 		let options = {};
 		let fields = {
-			'$set': {
-				"name": data.data.name,
-				"plugged": !!data.data.plugged,
-				"shared": !!data.data.shared,
-				"config": data.data.config
-			}
+			'$set': {}
 		};
+		if (data.data.name) {
+			fields.$set.name = data.data.name;
+		}
+		if (data.data.config) {
+			fields.$set.config = data.data.config;
+		}
+		if (data.data.hasOwnProperty("plugged")) {
+			fields.$set.plugged = !!data.data.plugged;
+		}
+		if (data.data.hasOwnProperty("shared")) {
+			fields.$set.shared = !!data.data.shared;
+		}
+		if (data.data.sharedEnv) {
+			fields.$set.sharedEnv = data.data.sharedEnv;
+		}
 		if (data.data.type) {
 			fields.$set.type = data.data.type;
 		}
 		if (data.data.category) {
 			fields.$set.category = data.data.category;
-		}
-		if (data.data.sharedEnv) {
-			fields.$set.sharedEnv = data.data.sharedEnv;
 		}
 		__self.check_if_can_access(data, condition, {}, (error) => {
 			if (error) {

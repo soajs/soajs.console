@@ -58,6 +58,7 @@ module.exports = {
 		
 		601: "Model not found",
 		602: "Model error: ",
+		802: "SDK error: "
 		
 	},
 	"schema": {
@@ -193,7 +194,7 @@ module.exports = {
 			
 			"/registry/db/custom": {
 				"_apiInfo": {
-					"l": "This API deletes a custom registry",
+					"l": "This API deletes a custom DB",
 					"group": "Registry"
 				},
 				"commonFields": ["env"],
@@ -287,7 +288,8 @@ module.exports = {
 										"enum": ["kubernetes"]
 									},
 									"namespace": {
-										"type": "string"
+										"type": "string",
+										"pattern": /[a-z0-9]([-a-z0-9]*[a-z0-9])?/
 									},
 									"id": {
 										"type": "string"
@@ -309,7 +311,7 @@ module.exports = {
 			
 			"/registry/db/custom": {
 				"_apiInfo": {
-					"l": "This API adds a custom registry",
+					"l": "This API adds a custom DB",
 					"group": "Registry"
 				},
 				"commonFields": ["env"],
@@ -688,7 +690,23 @@ module.exports = {
 							},
 							"value": {"type": "object"}
 						},
-						"required": ["name", "plugged", "shared", "value"]
+						"oneOf": [
+							{
+								"required": ["name"]
+							},
+							{
+								"required": ["plugged"]
+							},
+							{
+								"required": ["shared"]
+							},
+							{
+								"required": ["sharedEnv"]
+							},
+							{
+								"required": ["value"]
+							}
+						]
 					}
 				}
 			},
@@ -753,7 +771,29 @@ module.exports = {
 							},
 							"category": {"type": "string"},
 						},
-						"required": ["name", "plugged", "shared", "config"]
+						"oneOf": [
+							{
+								"required": ["name"]
+							},
+							{
+								"required": ["plugged"]
+							},
+							{
+								"required": ["shared"]
+							},
+							{
+								"required": ["sharedEnv"]
+							},
+							{
+								"required": ["config"]
+							},
+							{
+								"required": ["type"]
+							},
+							{
+								"required": ["category"]
+							}
+						]
 					}
 				}
 			},

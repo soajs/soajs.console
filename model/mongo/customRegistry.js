@@ -77,8 +77,8 @@ CustomRegistry.prototype.add = function (data, cb) {
 
 CustomRegistry.prototype.update = function (data, cb) {
 	let __self = this;
-	if (!data || !data.id || !data.data || !data.data.name || !data.data.value) {
-		let error = new Error("CustomRegistry: id, name, value are required.");
+	if (!data || !data.id || (!data.data && !data.data.name && !data.data.value && !data.data.hasOwnProperty("plugged") && !data.data.hasOwnProperty("shared") && !data.data.sharedEnv)) {
+		let error = new Error("CustomRegistry: id, and (name, value, plugged, shared, or sharedEnv) are required.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (error, _id) => {
@@ -91,13 +91,20 @@ CustomRegistry.prototype.update = function (data, cb) {
 		
 		let options = {};
 		let fields = {
-			'$set': {
-				"name": data.data.name,
-				"plugged": !!data.data.plugged,
-				"shared": !!data.data.shared,
-				"value": data.data.value
-			}
+			'$set': {}
 		};
+		if (data.data.name) {
+			fields.$set.name = data.data.name;
+		}
+		if (data.data.value) {
+			fields.$set.value = data.data.value;
+		}
+		if (data.data.hasOwnProperty("plugged")) {
+			fields.$set.plugged = !!data.data.plugged;
+		}
+		if (data.data.hasOwnProperty("shared")) {
+			fields.$set.shared = !!data.data.shared;
+		}
 		if (data.data.sharedEnv) {
 			fields.$set.sharedEnv = data.data.sharedEnv;
 		}
