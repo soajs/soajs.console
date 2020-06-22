@@ -356,7 +356,12 @@ module.exports = {
 								"type": "object",
 								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
 							},
-							"value": {"type": "object"}
+							"value": {
+								"anyOf": [
+									{"type": "string"},
+									{"type": "object"}
+								]
+							}
 						},
 						"required": ["name", "plugged", "shared", "value"]
 					}
@@ -688,7 +693,12 @@ module.exports = {
 								"type": "object",
 								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
 							},
-							"value": {"type": "object"}
+							"value": {
+								"anyOf": [
+									{"type": "string"},
+									{"type": "object"}
+								]
+							}
 						},
 						"anyOf": [
 							{
