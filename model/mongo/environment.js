@@ -95,6 +95,22 @@ Environment.prototype.get = function (data, cb) {
 	}
 };
 
+Environment.prototype.get_portUsage = function (data, cb) {
+	let __self = this;
+	if (!data || !(data.port)) {
+		let error = new Error("Environment: (port) is required.");
+		return cb(error, null);
+	}
+	
+	let options = {};
+	let condition = {
+		"services.config.ports.controller": data.port
+	};
+	condition = access.add_acl_2_condition(data, condition);
+	__self.mongoCore.countDocuments(colName, condition, options, cb);
+	
+};
+
 Environment.prototype.delete = function (data, cb) {
 	let __self = this;
 	if (!data || !(data.code || data.id)) {

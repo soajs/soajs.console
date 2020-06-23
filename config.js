@@ -51,6 +51,7 @@ module.exports = {
 		404: "Failed to update kubernetes driver environment usage.",
 		405: "Failed to update environment, settings provided are not for this type.",
 		406: "Failed to create environment, unsupported type.",
+		407: "Failed to create environment, port is taken by another environment.",
 		
 		500: "Nothing to Update!",
 		501: "Unable to find the environment deployer data",

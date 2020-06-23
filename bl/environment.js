@@ -72,11 +72,11 @@ let bl = {
 			inputmaskData.code = inputmaskData.code.toUpperCase();
 		}
 		
-		let add = (env) => {
+		let add = (env, modelObj) => {
 			if (!env) {
+				bl.mp.closeModel(modelObj);
 				return cb(bl.handleError(soajs, 401, null));
 			}
-			let modelObj = bl.mp.getModel(soajs, options);
 			modelObj.add(env, (err) => {
 				bl.mp.closeModel(modelObj);
 				if (err) {
@@ -95,8 +95,19 @@ let bl = {
 			env.description = inputmaskData.description;
 			env.port = inputmaskData.settings.port;
 			
-			//TODO: check if port is not being used bu another env
-			add(env);
+			let modelObj = bl.mp.getModel(soajs, options);
+			modelObj.get_portUsage({"port": inputmaskData.settings.port}, (err, count) => {
+				if (err) {
+					bl.mp.closeModel(modelObj);
+					return cb(bl.handleError(soajs, 602, err));
+				}
+				if (count) {
+					bl.mp.closeModel(modelObj);
+					return cb(bl.handleError(soajs, 407, null));
+				} else {
+					add(env, modelObj);
+				}
+			});
 		} else if (inputmaskData.settings.type === "kubernetes") {
 			env = require("./templates/env_kubernetes.js");
 			//NOTE: mongo client sdk adds _id after first usage
@@ -109,7 +120,6 @@ let bl = {
 			//TODO: check if namespace is not being used bu another env
 			sdk.infra.create.namespace(soajs, {
 				"name": inputmaskData.settings.namespace,
-				//"env": inputmaskData.code,
 				"id": inputmaskData.settings.id
 			}, (error, data) => {
 				if (data) {
