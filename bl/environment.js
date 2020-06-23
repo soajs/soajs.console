@@ -128,7 +128,8 @@ let bl = {
 						"env": inputmaskData.code
 					}, (error, data) => {
 						if (data) {
-							add(env);
+							let modelObj = bl.mp.getModel(soajs, options);
+							add(env, modelObj);
 						} else {
 							if (error) {
 								return cb(bl.handleError(soajs, 802, error));
