@@ -86,7 +86,11 @@ function run(serviceStartCb) {
 					});
 				});
 			});
-			
+			service.delete("/registry/db/session", function (req, res) {
+				bl.registry.deleteDBSession(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			service.delete("/registry/db/custom", function (req, res) {
 				bl.registry.deleteDB(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					let response = req.soajs.buildResponse(error, data);

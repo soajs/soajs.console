@@ -78,7 +78,31 @@ Registry.prototype.deleteDB = function (data, cb) {
 			return cb(err);
 		}
 		if (!record || (record && !record.nModified)) {
-			let error = new Error("Registry: [" + data.env + ", " + data.name + "] was not deleted.");
+			let error = new Error("Registry: [" + data.env + ", db " + data.name + "] was not deleted.");
+			return cb(error);
+		}
+		return cb(null, record.nModified);
+	});
+};
+
+Registry.prototype.deleteDBSession = function (data, cb) {
+	let __self = this;
+	if (!data || !data.env) {
+		let error = new Error("Registry: env, name are required.");
+		return cb(error, null);
+	}
+	let condition = {
+		code: data.env
+	};
+	condition = access.add_acl_2_condition(data, condition);
+	let s = {"$unset": {}};
+	s.$unset["dbs.session"] = 1;
+	__self.mongoCore.updateOne(colName, condition, s, null, (err, record) => {
+		if (err) {
+			return cb(err);
+		}
+		if (!record || (record && !record.nModified)) {
+			let error = new Error("Registry: [" + data.env + ", db session] was not deleted.");
 			return cb(error);
 		}
 		return cb(null, record.nModified);
@@ -122,7 +146,7 @@ Registry.prototype.addDB = function (data, cb) {
 
 Registry.prototype.updateDBPrefix = function (data, cb) {
 	let __self = this;
-	if (!data || !data.env || !data.prefix) {
+	if (!data || !data.env || (!data.prefix && data.prefix !== "")) {
 		let error = new Error("Registry: env, prefix are required.");
 		return cb(error, null);
 	}
@@ -216,7 +240,7 @@ Registry.prototype.updateDB = function (data, cb) {
 				return cb(err);
 			}
 			if (!record || (record && !record.nModified)) {
-				let error = new Error("Registry: [" + data.env + ", DB] was not updated.");
+				let error = new Error("Registry: [" + data.env + ", db " + data.name + "] was not updated.");
 				return cb(error);
 			}
 			return cb(null, record.nModified);

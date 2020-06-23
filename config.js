@@ -206,6 +206,13 @@ module.exports = {
 					}
 				}
 			},
+			"/registry/db/session": {
+				"_apiInfo": {
+					"l": "This API deletes the session DB",
+					"group": "Registry"
+				},
+				"commonFields": ["env"]
+			},
 			"/registry/custom": {
 				"_apiInfo": {
 					"l": "This API deletes a custom registry",

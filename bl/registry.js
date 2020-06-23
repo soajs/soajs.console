@@ -187,6 +187,24 @@ let bl = {
 			return cb(null, bl.handleUpdateResponse(response));
 		});
 	},
+	"deleteDBSession": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.deleteDBSession(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, bl.handleUpdateResponse(response));
+		});
+	},
 	"addDB": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
