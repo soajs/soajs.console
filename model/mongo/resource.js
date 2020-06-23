@@ -143,6 +143,9 @@ Resource.prototype.get = function (data, cb) {
 	let condition = {
 		created: data.env.toUpperCase()
 	};
+	if (data.type) {
+		condition.type = data.type;
+	}
 	condition = access.add_acl_2_condition(data, condition);
 	let options = {};
 	__self.mongoCore.find(colName, condition, options, cb);

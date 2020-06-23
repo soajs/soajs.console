@@ -155,7 +155,14 @@ module.exports = {
 					"l": "This API gets all resource configuration",
 					"group": "Registry"
 				},
-				"commonFields": ["env"]
+				"commonFields": ["env"],
+				"type": {
+					"source": ["query.type"],
+					"validation": {
+						"type": "string",
+						"enum": ["cluster"]
+					}
+				},
 			},
 			"/registry/deployer": {
 				"_apiInfo": {
