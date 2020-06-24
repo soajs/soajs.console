@@ -122,11 +122,13 @@ Registry.prototype.addDB = function (data, cb) {
 		"$set": {
 			["dbs.databases." + data.name]: {
 				"cluster": data.cluster,
-				"tenantSpecific": data.tenantSpecific || false,
-				"prefix": data.prefix || null
+				"tenantSpecific": data.tenantSpecific || false
 			}
 		}
 	};
+	if (data.prefix) {
+		s.$set["dbs.databases." + data.name].prefix = data.prefix;
+	}
 	__self.check_if_can_access(data, condition, {}, (error) => {
 		if (error) {
 			return cb(error);
