@@ -66,7 +66,7 @@ Environment.prototype.get = function (data, cb) {
 	let __self = this;
 	
 	let options = {
-		"projection": {code: 1, description: 1}
+		"projection": {code: 1, description: 1, deployer: 1}
 	};
 	if (data.noProjection) {
 		delete options.projection;
