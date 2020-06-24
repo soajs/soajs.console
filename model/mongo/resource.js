@@ -67,11 +67,13 @@ Resource.prototype.add = function (data, cb) {
 		"plugged": !!data.data.plugged,
 		"shared": !!data.data.shared,
 		"config": data.data.config,
-		"sharedEnv": data.data.sharedEnv || null,
 		"created": data.env.toUpperCase(),
 		"type": data.data.type,
 		"category": data.data.category
 	};
+	if (data.data.sharedEnvs) {
+		doc.sharedEnvs = data.data.sharedEnvs;
+	}
 	let versioning = false;
 	
 	__self.mongoCore.insertOne(colName, doc, options, versioning, cb);
@@ -79,8 +81,8 @@ Resource.prototype.add = function (data, cb) {
 
 Resource.prototype.update = function (data, cb) {
 	let __self = this;
-	if (!data || !data.id || (!data.data && !data.data.name && !data.data.config && !data.data.hasOwnProperty("plugged") && !data.data.hasOwnProperty("shared") && !data.data.sharedEnv) && !data.data.type && !data.data.category) {
-		let error = new Error("Resource: id, and (name, config, plugged, shared, or sharedEnv) are required.");
+	if (!data || !data.id || (!data.data && !data.data.name && !data.data.config && !data.data.hasOwnProperty("plugged") && !data.data.hasOwnProperty("shared") && !data.data.sharedEnvs) && !data.data.type && !data.data.category) {
+		let error = new Error("Resource: id, and (name, config, plugged, shared, or sharedEnvs) are required.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (error, _id) => {
@@ -107,8 +109,8 @@ Resource.prototype.update = function (data, cb) {
 		if (data.data.hasOwnProperty("shared")) {
 			fields.$set.shared = !!data.data.shared;
 		}
-		if (data.data.sharedEnv) {
-			fields.$set.sharedEnv = data.data.sharedEnv;
+		if (data.data.sharedEnvs) {
+			fields.$set.sharedEnvs = data.data.sharedEnvs;
 		}
 		if (data.data.type) {
 			fields.$set.type = data.data.type;

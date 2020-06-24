@@ -22,7 +22,7 @@ describe("Testing ACL resource", () => {
 					"name": "infra_acl",
 					"plugged": true,
 					"shared": true,
-					"sharedEnv": {"DEV": true},
+					"sharedEnvs": {"DEV": true},
 					"config": {"ip": "127.0.0.1"},
 					"type": "cluster",
 					"category": "mongo"

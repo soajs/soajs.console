@@ -22,7 +22,7 @@ describe("Testing add resource", () => {
 					"name": "myMongo",
 					"plugged": true,
 					"shared": true,
-					"sharedEnv": {"DEV": true},
+					"sharedEnvs": {"DEV": true},
 					"config": {"ip": "127.0.0.1"},
 					"type": "cluster",
 					"category": "mongo"

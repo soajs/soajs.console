@@ -22,7 +22,7 @@ describe("Testing add custom registry", () => {
 					"name": "oauth",
 					"plugged": true,
 					"shared": true,
-					"sharedEnv": {"DEV": true},
+					"sharedEnvs": {"DEV": true},
 					"value": {"ip": "127.0.0.1"}
 				}
 			}

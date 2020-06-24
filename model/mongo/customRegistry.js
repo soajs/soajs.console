@@ -67,9 +67,11 @@ CustomRegistry.prototype.add = function (data, cb) {
 		"plugged": !!data.data.plugged,
 		"shared": !!data.data.shared,
 		"value": data.data.value,
-		"sharedEnv": data.data.sharedEnv || null,
 		"created": data.env.toUpperCase()
 	};
+	if (data.data.sharedEnvs) {
+		doc.sharedEnvs = data.data.sharedEnvs;
+	}
 	let versioning = false;
 	
 	__self.mongoCore.insertOne(colName, doc, options, versioning, cb);
@@ -77,8 +79,8 @@ CustomRegistry.prototype.add = function (data, cb) {
 
 CustomRegistry.prototype.update = function (data, cb) {
 	let __self = this;
-	if (!data || !data.id || (!data.data && !data.data.name && !data.data.value && !data.data.hasOwnProperty("plugged") && !data.data.hasOwnProperty("shared") && !data.data.sharedEnv)) {
-		let error = new Error("CustomRegistry: id, and (name, value, plugged, shared, or sharedEnv) are required.");
+	if (!data || !data.id || (!data.data && !data.data.name && !data.data.value && !data.data.hasOwnProperty("plugged") && !data.data.hasOwnProperty("shared") && !data.data.sharedEnvs)) {
+		let error = new Error("CustomRegistry: id, and (name, value, plugged, shared, or sharedEnvs) are required.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (error, _id) => {
@@ -105,8 +107,8 @@ CustomRegistry.prototype.update = function (data, cb) {
 		if (data.data.hasOwnProperty("shared")) {
 			fields.$set.shared = !!data.data.shared;
 		}
-		if (data.data.sharedEnv) {
-			fields.$set.sharedEnv = data.data.sharedEnv;
+		if (data.data.sharedEnvs) {
+			fields.$set.sharedEnvs = data.data.sharedEnvs;
 		}
 		__self.check_if_can_access(data, condition, {}, (error) => {
 			if (error) {

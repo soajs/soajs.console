@@ -367,7 +367,7 @@ module.exports = {
 							"name": {"type": "string"},
 							"plugged": {"type": "boolean"},
 							"shared": {"type": "boolean"},
-							"sharedEnv": {
+							"sharedEnvs": {
 								"type": "object",
 								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
 							},
@@ -399,7 +399,7 @@ module.exports = {
 							"name": {"type": "string", "pattern": /[a-z0-9]{1,61}/},
 							"plugged": {"type": "boolean"},
 							"shared": {"type": "boolean"},
-							"sharedEnv": {
+							"sharedEnvs": {
 								"type": "object",
 								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
 							},
@@ -704,7 +704,7 @@ module.exports = {
 							"name": {"type": "string"},
 							"plugged": {"type": "boolean"},
 							"shared": {"type": "boolean"},
-							"sharedEnv": {
+							"sharedEnvs": {
 								"type": "object",
 								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
 							},
@@ -726,7 +726,7 @@ module.exports = {
 								"required": ["shared"]
 							},
 							{
-								"required": ["sharedEnv"]
+								"required": ["sharedEnvs"]
 							},
 							{
 								"required": ["value"]
@@ -785,7 +785,7 @@ module.exports = {
 							"name": {"type": "string", "pattern": /[a-z0-9]{1,61}/},
 							"plugged": {"type": "boolean"},
 							"shared": {"type": "boolean"},
-							"sharedEnv": {
+							"sharedEnvs": {
 								"type": "object",
 								"patternProperties": {"^[A-Z]+$": {"type": "boolean"}}
 							},
@@ -807,7 +807,7 @@ module.exports = {
 								"required": ["shared"]
 							},
 							{
-								"required": ["sharedEnv"]
+								"required": ["sharedEnvs"]
 							},
 							{
 								"required": ["config"]

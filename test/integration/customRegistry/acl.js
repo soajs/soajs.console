@@ -22,7 +22,7 @@ describe("Testing ACL custom registry", () => {
 					"name": "infra_acl",
 					"plugged": true,
 					"shared": true,
-					"sharedEnv": {"DEV": true},
+					"sharedEnvs": {"DEV": true},
 					"value": {"ip": "127.0.0.1"}
 				}
 			}
