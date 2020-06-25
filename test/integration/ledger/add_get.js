@@ -40,7 +40,7 @@ describe("Testing add, and get ledger", () => {
 			assert.ifError(error);
 			assert.ok(body);
 			assert.ok(body.data);
-			assert.deepEqual(body.data.type, "Registry");
+			assert.strictEqual(body.data.type, "Registry");
 			
 			let params = {
 				body: {
@@ -64,14 +64,14 @@ describe("Testing add, and get ledger", () => {
 				assert.ifError(error);
 				assert.ok(body);
 				assert.ok(body.data);
-				assert.deepEqual(body.data.type, "Registry");
+				assert.strictEqual(body.data.type, "Registry");
 				
 				let params = {};
 				requester('/ledger/Registry', 'get', params, (error, body) => {
 					assert.ifError(error);
 					assert.ok(body);
 					assert.ok(body.data);
-					let validate = (body.data.length >= 2);
+					let validate = (body.data.count >= 2);
 					assert.strictEqual(validate, true);
 					done();
 				});

@@ -101,7 +101,45 @@ Ledger.prototype.get = function (data, cb) {
 	if (data && data.start) {
 		options.skip = data.start;
 	}
-	__self.mongoCore.find(colName, condition, options, cb);
+	__self.mongoCore.find(colName, condition, options, (error, response) => {
+		if (error) {
+			return cb(error);
+		} else {
+			if (response && response.length > options.limit) {
+				__self.count(data, (error, count) => {
+					if (error) {
+						return cb(error);
+					} else {
+						return cb(null, {
+							"limit": options.limit,
+							"start": options.skip,
+							"count": count,
+							"items": response
+						});
+					}
+				});
+			} else {
+				return cb(null, {
+					"limit": options.limit,
+					"start": options.skip,
+					"count": response.length,
+					"items": response
+				});
+			}
+		}
+	});
+};
+
+Ledger.prototype.count = function (data, cb) {
+	let __self = this;
+	let condition = {};
+	if (data && data.type) {
+		condition = {
+			type: data.type
+		};
+	}
+	let options = {};
+	__self.mongoCore.countDocuments(colName, condition, options, cb);
 };
 
 Ledger.prototype.closeConnection = function () {

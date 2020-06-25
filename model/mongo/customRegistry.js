@@ -134,17 +134,7 @@ CustomRegistry.prototype.get = function (data, cb) {
 		let error = new Error("customRegistry: env is required.");
 		return cb(error, null);
 	}
-	let options = {
-		"skip": 0,
-		"limit": 100
-	};
-	options.sort = {};
-	if (data && data.limit) {
-		options.limit = data.limit;
-	}
-	if (data && data.start) {
-		options.skip = data.start;
-	}
+	let options = {};
 	let condition = {
 		created: data.env.toUpperCase()
 	};
