@@ -81,8 +81,8 @@ Resource.prototype.add = function (data, cb) {
 
 Resource.prototype.update = function (data, cb) {
 	let __self = this;
-	if (!data || !data.id || (!data.data && !data.data.name && !data.data.config && !data.data.hasOwnProperty("plugged") && !data.data.hasOwnProperty("shared") && !data.data.sharedEnvs) && !data.data.type && !data.data.category) {
-		let error = new Error("Resource: id, and (name, config, plugged, shared, or sharedEnvs) are required.");
+	if (!data || !data.id || (!data.data && !data.data.name && !data.data.config && !data.data.hasOwnProperty("plugged") && !data.data.hasOwnProperty("shared") && !data.data.sharedEnvs && !data.data.type && !data.data.category)) {
+		let error = new Error("Resource: id, and (name, config, plugged, shared, sharedEnvs, type, or category) are required.");
 		return cb(error, null);
 	}
 	__self.validateId(data.id, (error, _id) => {
