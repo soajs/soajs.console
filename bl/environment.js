@@ -125,7 +125,7 @@ let bl = {
 				if (data) {
 					sdk.infra.update.account_env(soajs, {
 						"id": inputmaskData.settings.id,
-						"env": inputmaskData.code
+						"env": inputmaskData.code.toLowerCase()
 					}, (error, data) => {
 						if (data) {
 							let modelObj = bl.mp.getModel(soajs, options);
@@ -177,7 +177,7 @@ let bl = {
 				if (regConf && regConf.id) {
 					sdk.infra.update.account_env(soajs, {
 						"id": regConf.id,
-						"env": inputmaskData.code,
+						"env": inputmaskData.code.toLowerCase(),
 						"delete": true
 					}, () => {
 					});
@@ -261,7 +261,7 @@ let bl = {
 					if (inputmaskData.settings && inputmaskData.settings.namespace) {
 						sdk.infra.create.namespace(soajs, {
 							"name": inputmaskData.settings.namespace,
-							"env": inputmaskData.code
+							"env": inputmaskData.code.toLowerCase()
 						}, (error, data) => {
 							if (data) {
 								continue_update();
