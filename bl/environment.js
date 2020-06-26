@@ -125,7 +125,8 @@ let bl = {
 				if (data) {
 					sdk.infra.update.account_env(soajs, {
 						"id": inputmaskData.settings.id,
-						"env": inputmaskData.code.toLowerCase()
+						"env": inputmaskData.code.toLowerCase(),
+						"namespace": inputmaskData.settings.namespace
 					}, (error, data) => {
 						if (data) {
 							let modelObj = bl.mp.getModel(soajs, options);
@@ -256,20 +257,39 @@ let bl = {
 					inputmaskData.depSeleted = "deployer." + depSeleted + ".namespace";
 				}
 				if (inputmaskData.settings && inputmaskData.settings.namespace && !regConf) {
+					bl.mp.closeModel(modelObj);
 					return cb(bl.handleError(soajs, 405, null));
 				} else {
-					if (inputmaskData.settings && inputmaskData.settings.namespace) {
+					if (inputmaskData.settings && inputmaskData.settings.namespace && inputmaskData.settings.namespace !== regConf.namespace) {
 						sdk.infra.create.namespace(soajs, {
 							"name": inputmaskData.settings.namespace,
 							"env": inputmaskData.code.toLowerCase()
 						}, (error, data) => {
 							if (data) {
-								continue_update();
+								sdk.infra.update.account_env(soajs, {
+									"id": inputmaskData.settings.id,
+									"env": inputmaskData.code.toLowerCase(),
+									"namespace": inputmaskData.settings.namespace
+								}, (error, data) => {
+									if (data) {
+										continue_update();
+									} else {
+										if (error) {
+											bl.mp.closeModel(modelObj);
+											return cb(bl.handleError(soajs, 802, error));
+										} else {
+											bl.mp.closeModel(modelObj);
+											return cb(bl.handleError(soajs, 404, null));
+										}
+									}
+								});
 							} else {
 								bl.mp.closeModel(modelObj);
 								if (error) {
+									bl.mp.closeModel(modelObj);
 									return cb(bl.handleError(soajs, 802, error));
 								} else {
+									bl.mp.closeModel(modelObj);
 									return cb(bl.handleError(soajs, 403, null));
 								}
 							}
