@@ -472,9 +472,12 @@ module.exports = {
 						"properties": {
 							"namespace": {
 								"type": "string"
+							},
+							"id": {
+								"type": "string"
 							}
 						},
-						"required": ["namespace"]
+						"required": ["namespace", "id"]
 					}
 				}
 			},
