@@ -109,6 +109,7 @@ let bl = {
 				}
 			});
 		} else if (inputmaskData.settings.type === "kubernetes") {
+			inputmaskData.settings.namespace = inputmaskData.settings.namespace.toLowerCase();
 			env = require("./templates/env_kubernetes.js");
 			//NOTE: mongo client sdk adds _id after first usage
 			delete env._id;
@@ -261,6 +262,7 @@ let bl = {
 					return cb(bl.handleError(soajs, 405, null));
 				} else {
 					if (inputmaskData.settings && inputmaskData.settings.namespace && inputmaskData.settings.namespace !== regConf.namespace) {
+						inputmaskData.settings.namespace = inputmaskData.settings.namespace.toLowerCase();
 						sdk.infra.create.namespace(soajs, {
 							"name": inputmaskData.settings.namespace,
 							"env": inputmaskData.code.toLowerCase()
