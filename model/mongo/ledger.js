@@ -92,7 +92,7 @@ Ledger.prototype.get = function (data, cb) {
 		condition.section = data.section;
 	}
 	if (data && data.env) {
-		condition.env = data.env;
+		condition.env = data.env.toLowerCase();
 	}
 	let options = {
 		"skip": 0,
