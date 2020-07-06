@@ -41,7 +41,7 @@ function Ledger(service, options, mongoCore) {
 		if (indexing && !indexing[index]) {
 			indexing[index] = true;
 			
-			__self.mongoCore.createIndex(colName, {'type': 1}, {}, (err, index) => {
+			__self.mongoCore.createIndex(colName, {'type': 1, 'section': 1}, {}, (err, index) => {
 				service.log.debug("Index: " + index + " created with error: " + err);
 			});
 			
@@ -67,7 +67,7 @@ Ledger.prototype.add = function (data, cb) {
 		time: new Date().getTime()
 	};
 	if (data.doc.env) {
-		doc.env = data.doc.env;
+		doc.env = data.doc.env.toLowerCase();
 	}
 	if (data.doc.header) {
 		doc.header = JSON.stringify(data.doc.header);
@@ -86,9 +86,13 @@ Ledger.prototype.get = function (data, cb) {
 	let __self = this;
 	let condition = {};
 	if (data && data.type) {
-		condition = {
-			type: data.type
-		};
+		condition.type = data.type;
+	}
+	if (data && data.section) {
+		condition.section = data.section;
+	}
+	if (data && data.env) {
+		condition.env = data.env;
 	}
 	let options = {
 		"skip": 0,

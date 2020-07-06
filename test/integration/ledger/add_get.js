@@ -66,8 +66,10 @@ describe("Testing add, and get ledger", () => {
 				assert.ok(body.data);
 				assert.strictEqual(body.data.type, "Registry");
 				
-				let params = {};
-				requester('/ledger/Registry', 'get', params, (error, body) => {
+				let params = {
+					"type": 'Registry'
+				};
+				requester('/ledger', 'get', params, (error, body) => {
 					assert.ifError(error);
 					assert.ok(body);
 					assert.ok(body.data);

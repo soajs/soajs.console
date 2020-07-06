@@ -25,7 +25,7 @@ function run(serviceStartCb) {
 			}
 			
 			//GET methods
-			service.get("/ledger/:type", function (req, res) {
+			service.get("/ledger", function (req, res) {
 				bl.ledger.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
@@ -64,11 +64,12 @@ function run(serviceStartCb) {
 			
 			//DELETE methods
 			service.delete("/environment", function (req, res) {
-				bl.environment.delete(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+				bl.environment.delete(req.soajs, req.soajs.inputmaskData, null, (error, data, envCode) => {
 					let response = req.soajs.buildResponse(error, data);
 					res.json(response);
 					
 					let doc = {
+						"env": envCode,
 						"type": "Notification",
 						"section": "Environment",
 						"locator": ["Code", req.soajs.inputmaskData.code],
@@ -97,6 +98,7 @@ function run(serviceStartCb) {
 					res.json(response);
 					
 					let doc = {
+						"env": req.soajs.inputmaskData.env,
 						"type": "Registry",
 						"section": "DB",
 						"locator": [req.soajs.inputmaskData.name],
@@ -190,6 +192,7 @@ function run(serviceStartCb) {
 					res.json(response);
 					
 					let doc = {
+						"env": req.soajs.inputmaskData.env,
 						"type": "Registry",
 						"section": "Default",
 						"locator": [],
@@ -311,6 +314,7 @@ function run(serviceStartCb) {
 					res.json(response);
 					
 					let doc = {
+						"env": req.soajs.inputmaskData.env,
 						"type": "Registry",
 						"section": "Custom",
 						"locator": ["Name", req.soajs.inputmaskData.data.name],
@@ -334,6 +338,7 @@ function run(serviceStartCb) {
 					res.json(response);
 					
 					let doc = {
+						"env": req.soajs.inputmaskData.env,
 						"type": "Registry",
 						"section": "Resource",
 						"locator": ["Name", req.soajs.inputmaskData.data.name],

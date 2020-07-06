@@ -178,26 +178,28 @@ let bl = {
 				if (regConf && regConf.id) {
 					sdk.infra.update.account_env(soajs, {
 						"id": regConf.id,
-						"env": inputmaskData.code.toLowerCase(),
+						"env": response.code.toLowerCase(),
 						"delete": true
 					}, () => {
 					});
 				}
+				modelObj.delete(inputmaskData, (err, delResponse) => {
+					bl.mp.closeModel(modelObj);
+					if (err) {
+						return cb(bl.handleError(soajs, 602, err));
+					}
+					let result = {};
+					if (delResponse) {
+						result.n = delResponse.result.n;
+						result.ok = delResponse.result.ok;
+						result.deletedCount = delResponse.deletedCount;
+					}
+					
+					return cb(null, result, response.code);
+				});
+			} else {
+				return cb(bl.handleError(soajs, 502, null));
 			}
-			modelObj.delete(inputmaskData, (err, response) => {
-				bl.mp.closeModel(modelObj);
-				if (err) {
-					return cb(bl.handleError(soajs, 602, err));
-				}
-				let result = {};
-				if (response) {
-					result.n = response.result.n;
-					result.ok = response.result.ok;
-					result.deletedCount = response.deletedCount;
-				}
-				
-				return cb(null, result);
-			});
 		});
 	},
 	

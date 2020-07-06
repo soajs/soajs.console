@@ -93,18 +93,30 @@ module.exports = {
 		},
 		
 		"get": {
-			"/ledger/:type": {
+			"/ledger": {
 				"_apiInfo": {
-					"l": "This API returns the ledger entries of a specific type",
+					"l": "This API returns all the ledger entries with the ability to filter entries by env, type and section",
 					"group": "Ledger"
 				},
 				"commonFields": ["start", "limit"],
+				"env": {
+					"source": ["query.env"],
+					"validation": {
+						"type": "string"
+					}
+				},
 				"type": {
-					"source": ["params.type"],
-					"required": true,
+					"source": ["query.type"],
 					"validation": {
 						"type": "string",
-						"enum": ["Registry", "Deployment", "Recipe"]
+						"enum": ["Registry", "Deployment", "Notification"]
+					}
+				},
+				"section": {
+					"source": ["query.section"],
+					"validation": {
+						"type": "string",
+						"enum": ["Default", "Custom", "Throttling", "DB", "Resource configuration", "Catalog", "Continuous delivery", "Kubernetes", "Environment"]
 					}
 				}
 			},
