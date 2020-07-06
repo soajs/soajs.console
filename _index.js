@@ -122,6 +122,7 @@ function run(serviceStartCb) {
 					res.json(response);
 					
 					let doc = {
+						"env": req.soajs.inputmaskData.env,
 						"type": "Registry",
 						"section": "Custom",
 						"locator": [req.soajs.inputmaskData.id],
@@ -145,6 +146,7 @@ function run(serviceStartCb) {
 					res.json(response);
 					
 					let doc = {
+						"env": req.soajs.inputmaskData.env,
 						"type": "Registry",
 						"section": "Resource",
 						"locator": [req.soajs.inputmaskData.id],
@@ -221,6 +223,7 @@ function run(serviceStartCb) {
 					res.json(response);
 					
 					let doc = {
+						"env": req.soajs.inputmaskData.env,
 						"type": "Registry",
 						"section": "Custom",
 						"locator": ["Name", req.soajs.inputmaskData.data.name],
@@ -249,6 +252,7 @@ function run(serviceStartCb) {
 					res.json(response);
 					
 					let doc = {
+						"env": req.soajs.inputmaskData.env,
 						"type": "Registry",
 						"section": "Resource",
 						"locator": ["Name", req.soajs.inputmaskData.data.name],

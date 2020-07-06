@@ -244,6 +244,12 @@ module.exports = {
 					"validation": {
 						"type": "string"
 					}
+				},
+				"env": {
+					"source": ["body.env"],
+					"validation": {
+						"type": "string"
+					}
 				}
 			},
 			
@@ -255,6 +261,12 @@ module.exports = {
 				"id": {
 					"source": ['body.id'],
 					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"env": {
+					"source": ["body.env"],
 					"validation": {
 						"type": "string"
 					}
@@ -704,6 +716,12 @@ module.exports = {
 					"l": "This API updates a custom registry",
 					"group": "Registry"
 				},
+				"env": {
+					"source": ["body.env"],
+					"validation": {
+						"type": "string"
+					}
+				},
 				"id": {
 					"source": ['body.id'],
 					"required": true,
@@ -784,6 +802,12 @@ module.exports = {
 				"_apiInfo": {
 					"l": "This API updates a resource configuration",
 					"group": "Registry"
+				},
+				"env": {
+					"source": ["body.env"],
+					"validation": {
+						"type": "string"
+					}
 				},
 				"id": {
 					"source": ['body.id'],
