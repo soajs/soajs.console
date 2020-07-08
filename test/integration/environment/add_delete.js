@@ -22,7 +22,7 @@ describe("Testing add environment", () => {
 				"description": "this is about my added env",
 				"settings": {
 					"type": "manual",
-					"port": 10000
+					"port": 13000
 				}
 			}
 		};
