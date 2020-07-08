@@ -23,7 +23,6 @@ let doc = {
 	},
 	"services": {
 		"controller": {
-			"maxPoolSize": 100,
 			"authorization": false,
 			"requestTimeout": 30,
 			"requestTimeoutRenewal": 0
@@ -64,7 +63,7 @@ let doc = {
 				"refreshTokenLifetime": 1209600
 			},
 			"ports": {
-				"controller": 4000,
+				"controller": "%port%",
 				"maintenanceInc": 1000,
 				"randomInc": 100
 			},

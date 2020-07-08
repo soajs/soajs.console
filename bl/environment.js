@@ -94,6 +94,7 @@ let bl = {
 			env.code = inputmaskData.code;
 			env.description = inputmaskData.description;
 			env.port = inputmaskData.settings.port;
+			env.services.config.ports.controller = inputmaskData.settings.port;
 			
 			let modelObj = bl.mp.getModel(soajs, options);
 			modelObj.get_portUsage({"port": inputmaskData.settings.port}, (err, count) => {
