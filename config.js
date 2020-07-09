@@ -140,6 +140,13 @@ module.exports = {
 				}
 			},
 			
+			"/release": {
+				"_apiInfo": {
+					"l": "This API returns the release information.",
+					"group": "Settings"
+				}
+			},
+			
 			"/registry": {
 				"_apiInfo": {
 					"l": "This API gets a registry",

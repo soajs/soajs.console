@@ -35,6 +35,11 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			service.get("/release", function (req, res) {
+				bl.settings.get_release(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			service.get("/registry", function (req, res) {
 				bl.registry.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
