@@ -260,13 +260,13 @@ Registry.prototype.update = function (data, cb) {
 		code: data.env
 	};
 	let s = {"$set": {}};
-	if (data.domain) {
+	if (data.domain || data.domain === "") {
 		s.$set.domain = data.domain;
 	}
-	if (data.sitePrefix) {
+	if (data.sitePrefix || data.sitePrefix === "") {
 		s.$set.sitePrefix = data.sitePrefix;
 	}
-	if (data.apiPrefix) {
+	if (data.apiPrefix || data.apiPrefix === "") {
 		s.$set.apiPrefix = data.apiPrefix;
 	}
 	if (data.port) {
