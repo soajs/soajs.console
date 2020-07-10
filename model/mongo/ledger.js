@@ -109,7 +109,11 @@ Ledger.prototype.get = function (data, cb) {
 		if (error) {
 			return cb(error);
 		} else {
-			if (response && response.length < options.limit) {
+			let current_count = options.skip;
+			if (response && response.length) {
+				current_count = current_count + response.length;
+			}
+			if (current_count < options.limit) {
 				return cb(null, {
 					"limit": options.limit,
 					"start": options.skip,
