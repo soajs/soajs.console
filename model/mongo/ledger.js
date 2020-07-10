@@ -109,7 +109,14 @@ Ledger.prototype.get = function (data, cb) {
 		if (error) {
 			return cb(error);
 		} else {
-			if (response && response.length > options.limit) {
+			if (response && response.length < options.limit) {
+				return cb(null, {
+					"limit": options.limit,
+					"start": options.skip,
+					"count": response.length,
+					"items": response
+				});
+			} else {
 				__self.count(data, condition, (error, count) => {
 					if (error) {
 						return cb(error);
@@ -121,13 +128,6 @@ Ledger.prototype.get = function (data, cb) {
 							"items": response
 						});
 					}
-				});
-			} else {
-				return cb(null, {
-					"limit": options.limit,
-					"start": options.skip,
-					"count": response.length,
-					"items": response
 				});
 			}
 		}
