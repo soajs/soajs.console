@@ -110,7 +110,7 @@ Ledger.prototype.get = function (data, cb) {
 			return cb(error);
 		} else {
 			if (response && response.length > options.limit) {
-				__self.count(data, (error, count) => {
+				__self.count(data, condition, (error, count) => {
 					if (error) {
 						return cb(error);
 					} else {
@@ -134,14 +134,8 @@ Ledger.prototype.get = function (data, cb) {
 	});
 };
 
-Ledger.prototype.count = function (data, cb) {
+Ledger.prototype.count = function (data, condition, cb) {
 	let __self = this;
-	let condition = {};
-	if (data && data.type) {
-		condition = {
-			type: data.type
-		};
-	}
 	let options = {};
 	__self.mongoCore.countDocuments(colName, condition, options, cb);
 };
