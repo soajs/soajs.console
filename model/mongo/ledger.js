@@ -98,7 +98,7 @@ Ledger.prototype.get = function (data, cb) {
 		"skip": 0,
 		"limit": 100
 	};
-	options.sort = {};
+	options.sort = {"_id": -1};
 	if (data && data.limit) {
 		options.limit = data.limit;
 	}
