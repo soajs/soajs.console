@@ -45,7 +45,7 @@ function CustomRegistry(service, options, mongoCore) {
 			__self.mongoCore.createIndex(colName, {'created': 1}, {}, (err, index) => {
 				service.log.debug("Index: " + index + " created with error: " + err);
 			});
-			__self.mongoCore.createIndex(colName, {'name': 1}, {"unique": 1}, (err, index) => {
+			__self.mongoCore.createIndex(colName, {'name': 1, 'created': 1}, {"unique": 1}, (err, index) => {
 				service.log.debug("Index: " + index + " created with error: " + err);
 			});
 			
