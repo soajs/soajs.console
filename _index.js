@@ -155,6 +155,11 @@ function run(serviceStartCb) {
 					});
 				});
 			});
+			service.delete("/registry/custom/acl", function (req, res) {
+				bl.customRegistry.delete_acl(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			service.delete("/registry/resource", function (req, res) {
 				bl.resource.delete(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					let response = req.soajs.buildResponse(error, data);
@@ -177,6 +182,11 @@ function run(serviceStartCb) {
 							req.soajs.log.error(error);
 						}
 					});
+				});
+			});
+			service.delete("/registry/resource/acl", function (req, res) {
+				bl.resource.delete_acl(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
 			

@@ -219,6 +219,44 @@ Resource.prototype.update_acl = function (data, cb) {
 	});
 };
 
+Resource.prototype.delete_acl = function (data, cb) {
+	let __self = this;
+	if (!data || !data.id) {
+		let error = new Error("Resource: id is required.");
+		return cb(error, null);
+	}
+	
+	__self.validateId(data.id, (err, _id) => {
+		if (err) {
+			return cb(err, null);
+		}
+		
+		let condition = {"_id": _id};
+		
+		
+		let s = {
+			'$set': {
+				"settings.acl": {}
+			}
+		};
+		__self.check_if_can_access(data, condition, {}, (error) => {
+			if (error) {
+				return cb(error);
+			}
+			__self.mongoCore.updateOne(colName, condition, s, null, (err, record) => {
+				if (err) {
+					return cb(err);
+				}
+				if (!record || (record && !record.nModified)) {
+					let error = new Error("Resource: [" + data.id + "] was not updated.");
+					return cb(error);
+				}
+				return cb(null, record.nModified);
+			});
+		});
+	});
+};
+
 Resource.prototype.check_if_can_access = function (data, condition, options, cb) {
 	let __self = this;
 	__self.mongoCore.findOne(colName, condition, options, (err, item) => {

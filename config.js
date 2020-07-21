@@ -285,6 +285,19 @@ module.exports = {
 					}
 				}
 			},
+			"/registry/custom/acl": {
+				"_apiInfo": {
+					"l": "This API deletes the custom registry acl",
+					"group": "Account"
+				},
+				"id": {
+					"source": ["body.id"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
 			
 			"/registry/resource": {
 				"_apiInfo": {
@@ -300,6 +313,19 @@ module.exports = {
 				},
 				"env": {
 					"source": ["body.env"],
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
+			"/registry/resource/acl": {
+				"_apiInfo": {
+					"l": "This API deletes the resource configuration acl",
+					"group": "Account"
+				},
+				"id": {
+					"source": ["body.id"],
+					"required": true,
 					"validation": {
 						"type": "string"
 					}
