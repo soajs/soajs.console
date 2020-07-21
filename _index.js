@@ -35,6 +35,11 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			service.get("/environment/settings", function (req, res) {
+				bl.environment.getSettings(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			service.get("/release", function (req, res) {
 				bl.settings.get_release(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
@@ -90,6 +95,11 @@ function run(serviceStartCb) {
 							req.soajs.log.error(error);
 						}
 					});
+				});
+			});
+			service.delete("/environment/acl", function (req, res) {
+				bl.environment.delete_acl(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
 			service.delete("/registry/db/session", function (req, res) {

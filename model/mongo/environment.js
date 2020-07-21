@@ -95,6 +95,26 @@ Environment.prototype.get = function (data, cb) {
 	}
 };
 
+Environment.prototype.getSettings = function (data, cb) {
+	let __self = this;
+	if (!data || !data.code) {
+		let error = new Error("Environment: code is required.");
+		return cb(error, null);
+	}
+	
+	let options = {
+		"projection": {code: 1, description: 1, settings: 1}
+	};
+	if (data.noProjection) {
+		delete options.projection;
+	}
+	let condition = {
+		code: data.code
+	};
+	condition = access.add_acl_2_condition(data, condition);
+	__self.mongoCore.findOne(colName, condition, options, cb);
+};
+
 Environment.prototype.get_portUsage = function (data, cb) {
 	let __self = this;
 	if (!data || !(data.port)) {
@@ -201,6 +221,37 @@ Environment.prototype.update_acl = function (data, cb) {
 			"settings.acl.groups.value": data.groups,
 			"settings.acl.groups.type": data.type,
 			"settings.acl.groups.config": data.config || {}
+		}
+	};
+	__self.check_if_can_access(data, condition, {}, (error) => {
+		if (error) {
+			return cb(error);
+		}
+		__self.mongoCore.updateOne(colName, condition, s, null, (err, record) => {
+			if (err) {
+				return cb(err);
+			}
+			if (!record || (record && !record.nModified)) {
+				let error = new Error("Environment: [" + data.code + "] was not updated.");
+				return cb(error);
+			}
+			return cb(null, record.nModified);
+		});
+	});
+};
+
+Environment.prototype.delete_acl = function (data, cb) {
+	let __self = this;
+	if (!data || !data.code) {
+		let error = new Error("Environment: code is required.");
+		return cb(error, null);
+	}
+	
+	let condition = {"code": data.code};
+	
+	let s = {
+		'$set': {
+			"settings.acl": {}
 		}
 	};
 	__self.check_if_can_access(data, condition, {}, (error) => {

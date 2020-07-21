@@ -224,6 +224,26 @@ let bl = {
 		});
 	},
 	
+	"getSettings": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		if (inputmaskData.code) {
+			inputmaskData.code = inputmaskData.code.toUpperCase();
+		}
+		
+		let modelObj = bl.mp.getModel(soajs, options);
+		
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.getSettings(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, response);
+		});
+	},
+	
 	"update": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
@@ -319,6 +339,24 @@ let bl = {
 		let modelObj = bl.mp.getModel(soajs, options);
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.update_acl(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, bl.handleUpdateResponse(response));
+		});
+	},
+	
+	"delete_acl": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		if (inputmaskData.code) {
+			inputmaskData.code = inputmaskData.code.toUpperCase();
+		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.delete_acl(inputmaskData, (err, response) => {
 			bl.mp.closeModel(modelObj);
 			if (err) {
 				return cb(bl.handleError(soajs, 602, err));

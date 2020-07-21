@@ -124,7 +124,7 @@ module.exports = {
 			"/environment": {
 				"_apiInfo": {
 					"l": "This API returns the environment(s).",
-					"group": "Account"
+					"group": "Environment"
 				},
 				"code": {
 					"source": ["query.code"],
@@ -134,6 +134,19 @@ module.exports = {
 				},
 				"id": {
 					"source": ["query.id"],
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
+			"/environment/settings": {
+				"_apiInfo": {
+					"l": "This API returns the environment settings.",
+					"group": "Environment"
+				},
+				"code": {
+					"source": ["query.code"],
+					"required": true,
 					"validation": {
 						"type": "string"
 					}
