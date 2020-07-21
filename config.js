@@ -218,6 +218,19 @@ module.exports = {
 					}
 				}
 			},
+			"/environment/acl": {
+				"_apiInfo": {
+					"l": "This API deletes the environment acl",
+					"group": "Environment"
+				},
+				"code": {
+					"source": ["query.code"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
 			
 			"/registry/db/custom": {
 				"_apiInfo": {
