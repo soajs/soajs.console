@@ -291,7 +291,7 @@ module.exports = {
 					"group": "Account"
 				},
 				"id": {
-					"source": ["body.id"],
+					"source": ["query.id"],
 					"required": true,
 					"validation": {
 						"type": "string"
@@ -324,7 +324,7 @@ module.exports = {
 					"group": "Account"
 				},
 				"id": {
-					"source": ["body.id"],
+					"source": ["query.id"],
 					"required": true,
 					"validation": {
 						"type": "string"
