@@ -9,7 +9,7 @@
 'use strict';
 
 const sdk = require("../lib/sdk.js");
-const soajsCore = require('soajs');
+// const soajsCore = require('soajs');
 
 function getGroups(soajs) {
 	let _groups = null;
