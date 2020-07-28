@@ -80,7 +80,7 @@ let bl = {
 				return cb(bl.handleError(soajs, 602, err));
 			}
 			if (response) {
-				delete response.deployer;
+				//delete response.deployer;
 				if (response.services && response.services.config) {
 					delete response.services.config.throttling;
 					delete response.services.config.key;
