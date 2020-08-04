@@ -3,7 +3,7 @@
 SOAJS console is a service that manages everything related to soajs registry, api builder, dashboard, and api builder.
 
 ### Complete Documentation
-More information is available on SOAJS website under the section for [Console](https://soajsorg.atlassian.net/wiki/spaces/MIC/overview).
+More information is available on SOAJS website under the section for [Console](https://soajsorg.atlassian.net/wiki/x/QYCmbw).
 
 ### License
 *Copyright SOAJS All Rights Reserved.*

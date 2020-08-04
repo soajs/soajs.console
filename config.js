@@ -42,6 +42,16 @@ module.exports = {
 		"version": "1"
 	}],
 	
+	"tags": ["console", "environment", "registry", "ledger", "notification"],
+	"attributes": {
+		"environment": ["manual", "container"],
+		"registry": ["throttling", "custom", "database", "resource configuration"]
+	},
+	"program": ["soajs"],
+	"documentation": {
+		"readme": "/README.md",
+		"release": "/RELEASE.md"
+	},
 	//-------------------------------------
 	"errors": {
 		400: "Business logic required data are missing",
