@@ -52,8 +52,8 @@ function Ledger(service, options, mongoCore) {
 
 Ledger.prototype.add = function (data, cb) {
 	let __self = this;
-	if (!data || !data.doc || !data.doc.type || !data.doc.locator || !data.doc.section || !data.doc.action || !data.doc.status || !data.who) {
-		let error = new Error("Ledger: type, locator, action, status, and who are required.");
+	if (!data || !data.doc || !data.doc.type || !data.doc.locator || !data.doc.section || !data.doc.action || !data.doc.status) {
+		let error = new Error("Ledger: type, locator, action, section, and status are required.");
 		return cb(error, null);
 	}
 	let options = {};
@@ -63,9 +63,11 @@ Ledger.prototype.add = function (data, cb) {
 		locator: data.doc.locator,
 		action: data.doc.action,
 		status: data.doc.status,
-		who: data.who,
 		time: new Date().getTime()
 	};
+	if (data.who) {
+		doc.who = data.who;
+	}
 	if (data.doc.env) {
 		doc.env = data.doc.env.toLowerCase();
 	}
