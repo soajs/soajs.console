@@ -142,12 +142,19 @@ Resource.prototype.get = function (data, cb) {
 		let error = new Error("Resource: env is required.");
 		return cb(error, null);
 	}
+	// let condition = {
+	// 	created: data.env.toUpperCase()
+	// };
 	let condition = {
-		created: data.env.toUpperCase()
+		"$or": [
+			{"created": data.env.toUpperCase()},
+			{["sharedEnvs." + data.env.toUpperCase()]: true}
+		]
 	};
 	if (data.type) {
-		condition.type = data.type;
+		condition.$or[0].type = data.type;
 	}
+	
 	condition = access.add_acl_2_condition(data, condition);
 	let options = {};
 	__self.mongoCore.find(colName, condition, options, cb);

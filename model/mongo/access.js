@@ -39,7 +39,7 @@ let lib = {
 	},
 	"add_acl_2_condition": (data, condition) => {
 		if (data._groups) {
-			condition.$or = [
+			let aclOr = [
 				{"settings.acl.groups.type": {"$exists": false}},
 				{"settings.acl.groups.value": {"$exists": false}},
 				{
@@ -59,6 +59,20 @@ let lib = {
 					}]
 				}
 			];
+			if (condition.$or) {
+				if (!condition.$and) {
+					condition.$and = [];
+				}
+				condition.$and.push(
+					{
+						"$or": condition.$or
+					}
+				);
+				delete condition.$or;
+				condition.$and.push({"$or": aclOr});
+			} else {
+				condition.$or = aclOr;
+			}
 		}
 		if (data.public) {
 			if (condition.$or) {

@@ -136,7 +136,10 @@ CustomRegistry.prototype.get = function (data, cb) {
 	}
 	let options = {};
 	let condition = {
-		created: data.env.toUpperCase()
+		"$or": [
+			{"created": data.env.toUpperCase()},
+			{["sharedEnvs." + data.env.toUpperCase()]: true}
+		]
 	};
 	condition = access.add_acl_2_condition(data, condition);
 	__self.mongoCore.find(colName, condition, options, cb);
