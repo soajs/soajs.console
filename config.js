@@ -169,6 +169,12 @@ module.exports = {
 					"group": "Settings"
 				}
 			},
+			"/ui/setting": {
+				"_apiInfo": {
+					"l": "This API returns the ui setting.",
+					"group": "Settings"
+				}
+			},
 			
 			"/registry": {
 				"_apiInfo": {

@@ -46,6 +46,12 @@ function run(serviceStartCb) {
 				});
 			});
 			
+			service.get("/ui/setting", function (req, res) {
+				bl.settings.get_ui_setting(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			
 			service.get("/registry", function (req, res) {
 				bl.registry.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));

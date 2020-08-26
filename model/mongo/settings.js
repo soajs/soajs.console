@@ -50,7 +50,7 @@ function Settings(service, options, mongoCore) {
 Settings.prototype.getOne = function (data, cb) {
 	let __self = this;
 	let condition = {
-		type: "installer"
+		type: data.type
 	};
 	let options = {};
 	__self.mongoCore.findOne(colName, condition, options, cb);

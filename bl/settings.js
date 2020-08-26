@@ -44,6 +44,19 @@ let bl = {
 	
 	"get_release": (soajs, inputmaskData, options, cb) => {
 		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData.type = "installer";
+		modelObj.getOne(inputmaskData, (err, item) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, item);
+		});
+	},
+	
+	"get_ui_setting": (soajs, inputmaskData, options, cb) => {
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData.type = "ui_setting";
 		modelObj.getOne(inputmaskData, (err, item) => {
 			bl.mp.closeModel(modelObj);
 			if (err) {
