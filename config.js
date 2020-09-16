@@ -72,6 +72,7 @@ module.exports = {
 		500: "Nothing to Update!",
 		501: "Unable to find the environment deployer data",
 		502: "Unable to find the environment",
+		503: "Unable to find the environment key data",
 		
 		601: "Model not found",
 		602: "Model error: ",
@@ -185,6 +186,13 @@ module.exports = {
 			"/registry": {
 				"_apiInfo": {
 					"l": "This API gets a registry",
+					"group": "Registry"
+				},
+				"commonFields": ["env"]
+			},
+			"/registry/key": {
+				"_apiInfo": {
+					"l": "This API gets a registry key",
 					"group": "Registry"
 				},
 				"commonFields": ["env"]

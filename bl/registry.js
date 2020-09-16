@@ -90,6 +90,33 @@ let bl = {
 			return cb(null, response);
 		});
 	},
+	
+	"getKey": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		if (inputmaskData.env) {
+			inputmaskData.env = inputmaskData.env.toUpperCase();
+		}
+		
+		let modelObj = bl.mp.getModel(soajs, options);
+		inputmaskData._groups = getGroups(soajs);
+		modelObj.get(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			let key = null;
+			if (response && response.services && response.services.config) {
+				key = response.services.config.key;
+			}
+			if (!key) {
+				return cb(bl.handleError(soajs, 503, null));
+			} else {
+				return cb(null, key);
+			}
+		});
+	},
 	// "getDeployer.old": (soajs, inputmaskData, options, cb) => {
 	// 	if (!inputmaskData) {
 	// 		return cb(bl.handleError(soajs, 400, null));
