@@ -90,62 +90,6 @@ let bl = {
 			return cb(null, response);
 		});
 	},
-	// "getDeployer.old": (soajs, inputmaskData, options, cb) => {
-	// 	if (!inputmaskData) {
-	// 		return cb(bl.handleError(soajs, 400, null));
-	// 	}
-	// 	if (inputmaskData.env) {
-	// 		inputmaskData.env = inputmaskData.env.toUpperCase();
-	// 	}
-	//
-	// 	soajsCore.core.registry.loadByEnv({envCode: inputmaskData.env}, (err, envRecord) => {
-	// 		if (err) {
-	// 			soajs.log.error(err.message);
-	// 		}
-	// 		if (!envRecord || !envRecord.deployer) {
-	// 			return cb(bl.handleError(soajs, 501, null));
-	// 		}
-	// 		let depType = get(["deployer", "type"], envRecord);
-	// 		let regConf = null;
-	// 		if (depType === "container") {
-	// 			let depSeleted = get(["deployer", "selected"], envRecord);
-	// 			regConf = get(["deployer"].concat(depSeleted.split(".")), envRecord);
-	// 		}
-	// 		if (regConf) {
-	// 			let id = regConf.id;
-	// 			// get the latest url and port from infra
-	// 			sdk.infra.get.account_token(soajs, {"id": id}, (error, data) => {
-	// 				if (data) {
-	// 					if (regConf.configuration) {
-	// 						regConf.configuration.port = data.configuration.port;
-	// 						regConf.configuration.url = data.configuration.url;
-	// 					}
-	// 				}
-	// 				let modelObj = bl.mp.getModel(soajs, options);
-	// 				inputmaskData._groups = getGroups(soajs);
-	//
-	// 				// get the latest namespace from registry
-	// 				modelObj.get(inputmaskData, (err, response) => {
-	// 					bl.mp.closeModel(modelObj);
-	// 					let regConfLatest = null;
-	// 					if (response) {
-	// 						let depType = get(["deployer", "type"], response);
-	// 						if (depType === "container") {
-	// 							let depSeleted = get(["deployer", "selected"], response);
-	// 							regConfLatest = get(["deployer"].concat(depSeleted.split(".")), response);
-	// 						}
-	// 					}
-	// 					if (regConfLatest) {
-	// 						regConf.namespace = regConfLatest.namespace;
-	// 					}
-	// 					return cb(null, envRecord.deployer);
-	// 				});
-	// 			});
-	// 		} else {
-	// 			return cb(null, envRecord.deployer);
-	// 		}
-	// 	});
-	// },
 	
 	"getDeployer": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {

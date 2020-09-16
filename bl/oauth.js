@@ -100,7 +100,7 @@ let bl = {
 				if (err) {
 					return cb(bl.handleError(soajs, 602, err));
 				}
-				return cb(null, "tenant oauth user removed successful");
+				return cb(null, "tenant oauth user added");
 			});
 		});
 	},
@@ -133,8 +133,19 @@ let bl = {
 					
 				};
 				opts.userId = inputmaskData.userId;
-				
-				Hasher.init(bl.localConfig.hasher);
+				let encryptionConfig = {
+					"hashIterations": bl.localConfig.hasher.hashIterations
+				};
+				if (soajs.servicesConfig && soajs.servicesConfig.hashIterations) {
+					encryptionConfig.hashIterations = soajs.servicesConfig.hashIterations;
+				} else {
+					let hashIterations = get(["registry", "custom", "urac", "value", "hashIterations"], soajs);
+					if (hashIterations) {
+						encryptionConfig.hashIterations = hashIterations;
+					}
+				}
+				Hasher.init(encryptionConfig);
+				//Hasher.init(bl.localConfig.hasher);
 				opts.password = Hasher.hash(inputmaskData.password);
 				
 				modelObj.update(opts, (err) => {
@@ -142,7 +153,7 @@ let bl = {
 					if (err) {
 						return cb(bl.handleError(soajs, 602, err));
 					}
-					return cb(null, "tenant oauth user updated successful");
+					return cb(null, "tenant oauth user updated");
 				});
 			});
 		});
@@ -157,7 +168,7 @@ let bl = {
 			if (err) {
 				return cb(bl.handleError(soajs, 602, err));
 			}
-			return cb(null, "tenant oauth user removed successful");
+			return cb(null, "tenant oauth user removed");
 		});
 	},
 	
