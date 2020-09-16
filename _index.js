@@ -57,6 +57,12 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			
+			service.get("/registry/key", function (req, res) {
+				bl.registry.getKey(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			service.get("/registry/throttling", function (req, res) {
 				bl.registry.getThrottling(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
