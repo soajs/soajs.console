@@ -110,7 +110,7 @@ let bl = {
 			}
 			let key = null;
 			if (response && response.services && response.services.config) {
-				key = response.services.config.key
+				key = response.services.config.key;
 			}
 			if (!key) {
 				return cb(bl.handleError(soajs, 503, null));
