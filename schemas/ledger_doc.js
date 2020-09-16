@@ -13,11 +13,11 @@ let config = {
 	"properties": {
 		"type": {
 			"type": "string",
-			"enum": ["Registry", "Deployment", "Notification"]
+			"enum": ["Registry", "Deployment", "Notification", "Multitenant"]
 		},
 		"section": {
 			"type": "string",
-			"enum": ["Default", "Custom", "Throttling", "DB", "Resource configuration", "Catalog", "Continuous delivery", "Kubernetes", "Environment"]
+			"enum": ["Default", "Custom", "Throttling", "DB", "Resource configuration", "Catalog", "Continuous delivery", "Kubernetes", "Environment", "ACL"]
 		},
 		"locator": {
 			"type": "array",

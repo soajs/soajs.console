@@ -77,7 +77,7 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
-			service.get("//tenant/oauth/users", function (req, res) {
+			service.get("/tenant/oauth/users", function (req, res) {
 				bl.oauth.list(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
@@ -200,7 +200,7 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
-			service.delete("//tenant/oauth/user", function (req, res) {
+			service.delete("/tenant/oauth/user", function (req, res) {
 				bl.oauth.delete(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
@@ -315,7 +315,7 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
-			service.put("//tenant/oauth/user", function (req, res) {
+			service.put("/tenant/oauth/user", function (req, res) {
 				bl.oauth.edit(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
@@ -404,7 +404,7 @@ function run(serviceStartCb) {
 					});
 				});
 			});
-			service.post("//tenant/oauth/user", function (req, res) {
+			service.post("/tenant/oauth/user", function (req, res) {
 				bl.oauth.add(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
