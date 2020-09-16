@@ -52,6 +52,9 @@ module.exports = {
 		"readme": "/README.md",
 		"release": "/RELEASE.md"
 	},
+	"hasher": {
+		"hashIterations": 12
+	},
 	//-------------------------------------
 	"errors": {
 		400: "Business logic required data are missing",
@@ -62,6 +65,9 @@ module.exports = {
 		405: "Failed to update environment, settings provided are not for this type.",
 		406: "Failed to create environment, unsupported type.",
 		407: "Failed to create environment, port is taken by another environment.",
+		
+		420: "tenant oAuth User already exists",
+		421: "Unable to get tenant oAuth Users",
 		
 		500: "Nothing to Update!",
 		501: "Unable to find the environment deployer data",
@@ -218,6 +224,20 @@ module.exports = {
 					"group": "Registry"
 				},
 				"commonFields": ["env"]
+			},
+			
+			"/tenant/oauth/users": {
+				_apiInfo: {
+					"l": "List tenant oauth users",
+					"group": "Oauth"
+				},
+				"id": {
+					"source": ['query.id'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
 			}
 		},
 		
@@ -341,6 +361,27 @@ module.exports = {
 				},
 				"id": {
 					"source": ["query.id"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
+			
+			"/tenant/oauth/user": {
+				_apiInfo: {
+					"l": "Delete tenant oauth user",
+					"group": "Oauth"
+				},
+				"id": {
+					"source": ['query.id'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"uId": {
+					"source": ['query.uId'],
 					"required": true,
 					"validation": {
 						"type": "string"
@@ -510,6 +551,34 @@ module.exports = {
 							"category": {"type": "string"},
 						},
 						"required": ["name", "plugged", "shared", "config", "type", "category"]
+					}
+				}
+			},
+			
+			"/tenant/oauth/user": {
+				_apiInfo: {
+					"l": "Add tenant oauth user",
+					"group": "Oauth"
+				},
+				"id": {
+					"source": ['query.id'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"userId": {
+					"source": ['body.userId'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"password": {
+					"source": ['body.password'],
+					"required": true,
+					"validation": {
+						"type": "string"
 					}
 				}
 			}
@@ -965,6 +1034,41 @@ module.exports = {
 					}
 				}
 			},
+			
+			"/tenant/oauth/user": {
+				_apiInfo: {
+					"l": "Update tenant oauth user",
+					"group": "Oauth"
+				},
+				"id": {
+					"source": ['query.id'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"uId": {
+					"source": ['query.uId'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"userId": {
+					"source": ['body.userId'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"password": {
+					"source": ['body.password'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			}
 		}
 	}
 };

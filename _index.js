@@ -77,6 +77,11 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			service.get("//tenant/oauth/users", function (req, res) {
+				bl.oauth.list(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			//DELETE methods
 			service.delete("/environment", function (req, res) {
@@ -195,7 +200,11 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
-			
+			service.delete("//tenant/oauth/user", function (req, res) {
+				bl.oauth.delete(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			//PUT methods
 			service.put("/environment/acl", function (req, res) {
@@ -306,7 +315,11 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
-			
+			service.put("//tenant/oauth/user", function (req, res) {
+				bl.oauth.edit(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			//POST methods
 			service.post("/ledger", function (req, res) {
@@ -391,7 +404,11 @@ function run(serviceStartCb) {
 					});
 				});
 			});
-			
+			service.post("//tenant/oauth/user", function (req, res) {
+				bl.oauth.add(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			service.start(serviceStartCb);
 		});
 	});

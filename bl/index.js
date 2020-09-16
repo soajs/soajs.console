@@ -13,7 +13,7 @@ const fs = require("fs");
 
 let SSOT = {};
 let model = process.env.SOAJS_SERVICE_MODEL || "mongo";
-const BLs = ["ledger", "registry", "customRegistry", "environment", "resource", "settings"];
+const BLs = ["ledger", "registry", "customRegistry", "environment", "resource", "settings", 'oauth'];
 
 let BL = {
 	init: init,
@@ -22,8 +22,8 @@ let BL = {
 	environment: null,
 	customRegistry: null,
 	resource: null,
-	settings: null
-	
+	settings: null,
+	oauth: null
 };
 
 function init(service, localConfig, cb) {
