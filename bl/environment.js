@@ -286,7 +286,8 @@ let bl = {
 					if (inputmaskData.settings && inputmaskData.settings.namespace && inputmaskData.settings.namespace !== regConf.namespace) {
 						sdk.infra.create.namespace(soajs, {
 							"name": inputmaskData.settings.namespace,
-							"env": inputmaskData.code.toLowerCase()
+							"env": inputmaskData.code.toLowerCase(),
+							"id": inputmaskData.settings.id
 						}, (error, data) => {
 							if (data) {
 								sdk.infra.update.account_env(soajs, {
