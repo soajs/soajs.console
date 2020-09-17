@@ -56,7 +56,7 @@ Oauth.prototype.list = function (data, cb) {
 		if (err) {
 			return cb(err, null);
 		}
-		let condition = {'_id': id};
+		let condition = {'tId': id};
 		__self.mongoCore.find(colName, condition, (err, records) => {
 			return cb(err, records);
 		});
@@ -149,12 +149,12 @@ Oauth.prototype.get = function (data, cb) {
 
 Oauth.prototype.update = function (data, cb) {
 	let __self = this;
-	if (!data || !data.id || !data.uId || !data.userId || !data.password) {
-		let error = new Error("Oauth: id, uId, userId, and password are required.");
+	if (!data || !data.tId || !data.uId || !data.userId || !data.password) {
+		let error = new Error("Oauth: tId, uId, userId, and password are required.");
 		return cb(error, null);
 	}
 	
-	__self.validateId(data.id, (err, id) => {
+	__self.validateId(data.tId, (err, id) => {
 		if (err) {
 			return cb(err, null);
 		}
@@ -196,7 +196,7 @@ Oauth.prototype.delete = function (data, cb) {
 				return cb(err, null);
 			}
 			let condition = {"tId": id, "_id": uId};
-			__self.mongoCore.delete(colName, condition, (err) => {
+			__self.mongoCore.deleteOne(colName, condition, (err) => {
 				return cb(err);
 			});
 		});

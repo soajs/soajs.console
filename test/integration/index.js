@@ -81,6 +81,9 @@ describe("starting integration tests", () => {
 		require("./customRegistry/add_delete.js");
 		require("./customRegistry/acl.js");
 		
+		require("./oauth/add.js");
+		require("./oauth/list_edit_delete.js");
+		
 		done();
 	});
 	

@@ -89,18 +89,23 @@ let bl = {
 			}
 			Hasher.init(encryptionConfig);
 			let newPassword = Hasher.hash(inputmaskData.password);
-			let oauthUserRecord = {
-				"userId": inputmaskData.userId,
-				"password": newPassword,
-				"tId": inputmaskData.id,
-				"keys": null
-			};
-			modelObj.add(oauthUserRecord, (err) => {
-				bl.mp.closeModel(modelObj);
+			modelObj.validateId(inputmaskData.id, (err, id) =>{
 				if (err) {
 					return cb(bl.handleError(soajs, 602, err));
 				}
-				return cb(null, "tenant oauth user added");
+				let oauthUserRecord = {
+					"userId": inputmaskData.userId,
+					"password": newPassword,
+					"tId": id,
+					"keys": null
+				};
+				modelObj.add(oauthUserRecord, (err) => {
+					bl.mp.closeModel(modelObj);
+					if (err) {
+						return cb(bl.handleError(soajs, 602, err));
+					}
+					return cb(null, "tenant oauth user added");
+				});
 			});
 		});
 	},
@@ -129,7 +134,7 @@ let bl = {
 				
 				let opts = {
 					"tId": inputmaskData.id,
-					"_id": inputmaskData.uId,
+					"uId": inputmaskData.uId,
 					
 				};
 				opts.userId = inputmaskData.userId;
@@ -147,7 +152,6 @@ let bl = {
 				Hasher.init(encryptionConfig);
 				//Hasher.init(bl.localConfig.hasher);
 				opts.password = Hasher.hash(inputmaskData.password);
-				
 				modelObj.update(opts, (err) => {
 					bl.mp.closeModel(modelObj);
 					if (err) {
