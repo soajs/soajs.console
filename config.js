@@ -126,14 +126,14 @@ module.exports = {
 					"source": ["query.type"],
 					"validation": {
 						"type": "string",
-						"enum": ["Registry", "Deployment", "Notification"]
+						"enum": ["Registry", "Deployment", "Notification", "Multitenant"]
 					}
 				},
 				"section": {
 					"source": ["query.section"],
 					"validation": {
 						"type": "string",
-						"enum": ["Default", "Custom", "Throttling", "DB", "Resource configuration", "Catalog", "Continuous delivery", "Kubernetes", "Environment"]
+						"enum": ["Default", "Custom", "Throttling", "DB", "Resource configuration", "Catalog", "Continuous delivery", "Kubernetes", "Environment", "ACL"]
 					}
 				}
 			},
