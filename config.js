@@ -56,6 +56,9 @@ module.exports = {
 		"hashIterations": 12
 	},
 	//-------------------------------------
+	"bodyParser": {
+		"limit": "50mb"
+	},
 	"errors": {
 		400: "Business logic required data are missing",
 		401: "Failed to build environment template",
