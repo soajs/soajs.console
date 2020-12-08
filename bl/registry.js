@@ -149,6 +149,9 @@ let bl = {
 						if (regConf.configuration.token) {
 							delete regConf.configuration.token;
 						}
+						if (regConf.configuration.ca) {
+							delete regConf.configuration.ca;
+						}
 					}
 					
 					return cb(null, response.deployer);
