@@ -42,6 +42,7 @@ let lib = {
 			let aclOr = [
 				{"settings.acl.groups.type": {"$exists": false}},
 				{"settings.acl.groups.value": {"$exists": false}},
+				{"settings.acl.groups.value": {"$eq": []}},
 				{
 					"$and": [{"settings.acl.groups.type": {"$exists": true, "$eq": "whitelist"}}, {
 						"settings.acl.groups.value": {

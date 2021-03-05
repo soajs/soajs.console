@@ -16,8 +16,8 @@ let indexing = {};
 
 function CustomRegistry(service, options, mongoCore) {
 	let __self = this;
-	if (__self.log) {
-		__self.log = service.log;
+	if (service.log && service.log.error) {
+		__self.log = service.log.error;
 	} else {
 		__self.log = (log) => {
 			console.log(log);

@@ -111,18 +111,18 @@ Ledger.prototype.get = function (data, cb) {
 		if (error) {
 			return cb(error);
 		} else {
-			let current_count = options.skip;
-			if (response && response.length) {
-				current_count = current_count + response.length;
-			}
-			if (current_count < options.limit) {
-				return cb(null, {
-					"limit": options.limit,
-					"start": options.skip,
-					"count": response.length,
-					"items": response
-				});
-			} else {
+			// let current_count = options.skip;
+			// if (response && response.length) {
+			// 	current_count = current_count + response.length;
+			// }
+			// if (current_count < options.limit) {
+			// 	return cb(null, {
+			// 		"limit": options.limit,
+			// 		"start": options.skip,
+			// 		"count": response.length,
+			// 		"items": response
+			// 	});
+			// } else {
 				__self.count(data, condition, (error, count) => {
 					if (error) {
 						return cb(error);
@@ -135,7 +135,7 @@ Ledger.prototype.get = function (data, cb) {
 						});
 					}
 				});
-			}
+			// }
 		}
 	});
 };

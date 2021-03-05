@@ -16,8 +16,8 @@ let indexing = {};
 
 function Environment(service, options, mongoCore) {
 	let __self = this;
-	if (__self.log) {
-		__self.log = service.log;
+	if (service.log && service.log.error) {
+		__self.log = service.log.error;
 	} else {
 		__self.log = (log) => {
 			console.log(log);
@@ -66,7 +66,7 @@ Environment.prototype.get = function (data, cb) {
 	let __self = this;
 	
 	let options = {
-		"projection": {code: 1, description: 1, deployer: 1}
+		"projection": {code: 1, description: 1, deployer: 1, locked: 1}
 	};
 	if (data.noProjection) {
 		delete options.projection;
@@ -283,6 +283,23 @@ Environment.prototype.check_if_can_access = function (data, condition, options, 
 		}
 		access.check_can_access(data, item, cb);
 	});
+};
+
+Environment.prototype.validateId = function (id, cb) {
+	let __self = this;
+	
+	if (!id) {
+		let error = new Error("Environment: must provide an id.");
+		return cb(error, null);
+	}
+	
+	try {
+		id = __self.mongoCore.ObjectId(id);
+		return cb(null, id);
+	} catch (e) {
+		__self.log(e.message);
+		return cb(new Error("A valid ID is required"), null);
+	}
 };
 
 Environment.prototype.closeConnection = function () {
