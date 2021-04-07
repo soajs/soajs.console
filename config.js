@@ -100,6 +100,7 @@ module.exports = {
 				"default": 100,
 				"validation": {
 					"type": "integer",
+					"min": 0,
 					"max": 2000
 				}
 			},
@@ -109,7 +110,7 @@ module.exports = {
 				"validation": {
 					"type": "string"
 				}
-			},
+			}
 		},
 		
 		"get": {
@@ -247,6 +248,380 @@ module.exports = {
 					"required": true,
 					"validation": {
 						"type": "string"
+					}
+				}
+			},
+			
+			
+			
+			"/dashboard/services": {
+				"_apiInfo": {
+					"l": "List analytics per service",
+					"group": "Analytics"
+				},
+				"commonFields": ["start", "limit"],
+				"type": {
+					'source': ['query.type'],
+					'required': true,
+					'validation': {
+						'type': 'array',
+						'minItems': 1,
+						'items': {
+							'type': "string",
+						}
+					}
+				},
+				"tags": {
+					'source': ['query.tags'],
+					'validation': {
+						'type': 'array',
+						"minItems": 1,
+						'items': {
+							'type': "string"
+						}
+					}
+				},
+				"programs": {
+					'source': ['query.programs'],
+					'validation': {
+						'type': 'array',
+						"minItems": 1,
+						'items': {
+							'type': "string"
+						}
+					}
+				},
+				"attributes": {
+					'source': ['query.attributes'],
+					'validation': {
+						'type': 'object',
+						"patternProperties": {
+							'^/[a-zA-Z0-9_.-]+$': {
+								'type': 'array',
+								"minItems": 1,
+								'items': {
+									'type': "string"
+								}
+							}
+						}
+					}
+				},
+				"keywords": {
+					'source': ['query.keywords'],
+					'validation': {
+						'type': 'object',
+						"properties": {
+							'serviceName': {
+								'type': 'string'
+							},
+							'serviceGroup': {
+								'type': 'string'
+							}
+						}
+					}
+				},
+				"includeSOAJS": {
+					'source': ['query.includeSOAJS'],
+					'validation': {
+						'type': 'boolean'
+					}
+				},
+				"version": {
+					'required': true,
+					'source': ['query.version'],
+					'validation': {
+						'type': 'string',
+						'enum': ["all", 'latest']
+					}
+				}
+			},
+			
+			"/dashboard/apis": {
+				"_apiInfo": {
+					"l": "List analytics per API",
+					"group": "Analytics"
+				},
+				"commonFields": ["start", "limit"],
+				"type": {
+					'source': ['query.type'],
+					'required': true,
+					'validation': {
+						'type': 'array',
+						'minItems': 1,
+						'items': {
+							'type': "string",
+						}
+					}
+				},
+				"tags": {
+					'source': ['query.tags'],
+					'validation': {
+						'type': 'array',
+						"minItems": 1,
+						'items': {
+							'type': "string"
+						}
+					}
+				},
+				"programs": {
+					'source': ['query.programs'],
+					'validation': {
+						'type': 'array',
+						"minItems": 1,
+						'items': {
+							'type': "string"
+						}
+					}
+				},
+				"attributes": {
+					'source': ['query.attributes'],
+					'validation': {
+						'type': 'object',
+						"patternProperties": {
+							'^/[a-zA-Z0-9_.-]+$': {
+								'type': 'array',
+								"minItems": 1,
+								'items': {
+									'type': "string"
+								}
+							}
+						}
+					}
+				},
+				"includeSOAJS": {
+					'source': ['query.includeSOAJS'],
+					'validation': {
+						'type': 'boolean'
+					}
+				},
+				"keywords": {
+					'source': ['query.keywords'],
+					'validation': {
+						'type': 'object',
+						"properties": {
+							'serviceName': {
+								'type': 'string'
+							},
+							'serviceGroup': {
+								'type': 'string'
+							}
+						}
+					}
+				},
+				"version": {
+					'required': true,
+					'source': ['query.version'],
+					'validation': {
+						'type': 'string',
+						'enum': ["all", 'latest']
+					}
+				}
+			},
+			
+			"/dashboard/apis/v2": {
+				"_apiInfo": {
+					"l": "List analytics per API",
+					"group": "Analytics"
+				},
+				"commonFields": ["start", "limit"],
+				"type": {
+					'source': ['query.type'],
+					'required': true,
+					'validation': {
+						'type': 'array',
+						'minItems': 1,
+						'items': {
+							'type': "string",
+						}
+					}
+				},
+				"tags": {
+					'source': ['query.tags'],
+					'validation': {
+						'type': 'array',
+						"minItems": 1,
+						'items': {
+							'type': "string"
+						}
+					}
+				},
+				"programs": {
+					'source': ['query.programs'],
+					'validation': {
+						'type': 'array',
+						"minItems": 1,
+						'items': {
+							'type': "string"
+						}
+					}
+				},
+				"attributes": {
+					'source': ['query.attributes'],
+					'validation': {
+						'type': 'object',
+						"patternProperties": {
+							'^/[a-zA-Z0-9_.-]+$': {
+								'type': 'array',
+								"minItems": 1,
+								'items': {
+									'type': "string"
+								}
+							}
+						}
+					}
+				},
+				"includeSOAJS": {
+					'source': ['query.includeSOAJS'],
+					'validation': {
+						'type': 'boolean'
+					}
+				},
+				"keywords": {
+					'source': ['query.keywords'],
+					'validation': {
+						'type': 'object',
+						"properties": {
+							'serviceName': {
+								'type': 'string'
+							},
+							'serviceGroup': {
+								'type': 'string'
+							},
+							"route": {
+								'type': 'string'
+							},
+							"serviceVersion": {
+								'type': 'string'
+							}
+						}
+					}
+				}
+			},
+			
+			"/apis": {
+				"_apiInfo": {
+					"l": "Complete list of all APIs for all services versions",
+					"group": "Analytics"
+				},
+				"type": {
+					'source': ['query.type'],
+					'required': true,
+					'validation': {
+						'type': 'array',
+						'minItems': 1,
+						'items': {
+							'type': "string",
+						}
+					}
+				},
+				"includeSOAJS": {
+					'source': ['query.includeSOAJS'],
+					'validation': {
+						'type': 'boolean'
+					}
+				},
+				"keywords": {
+					'source': ['query.keywords'],
+					'validation': {
+						'type': 'object',
+						"properties": {
+							'serviceName': {
+								'type': 'string'
+							},
+							'serviceGroup': {
+								'type': 'string'
+							},
+							"route": {
+								'type': 'string'
+							}
+						}
+					}
+				}
+			},
+			
+			"/apis/v2": {
+				"_apiInfo": {
+					"l": "Complete list of all APIs for all services versions",
+					"group": "Analytics"
+				},
+				"commonFields": ["start", "limit"],
+				"type": {
+					'source': ['query.type'],
+					'required': true,
+					'validation': {
+						'type': 'array',
+						'minItems': 1,
+						'items': {
+							'type': "string",
+						}
+					}
+				},
+				"includeSOAJS": {
+					'source': ['query.includeSOAJS'],
+					'validation': {
+						'type': 'boolean'
+					}
+				},
+				"keywords": {
+					'source': ['query.keywords'],
+					'validation': {
+						'type': 'object',
+						"properties": {
+							'serviceName': {
+								'type': 'string'
+							},
+							'serviceGroup': {
+								'type': 'string'
+							},
+							"route": {
+								'type': 'string'
+							},
+							"serviceVersion": {
+								'type': 'string'
+							}
+						}
+					}
+				}
+			},
+			
+			"/api/acl/usage": {
+				"_apiInfo": {
+					"l": "Complete list the API ACL usage among products and tenants",
+					"group": "Analytics"
+				},
+				"service": {
+					'source': ['query.service'],
+					'required': true,
+					'validation': {
+						'type': 'string'
+					}
+				},
+				"version": {
+					'source': ['query.version'],
+					'required': true,
+					'validation': {
+						'type': 'string'
+					}
+				},
+				"method": {
+					'source': ['query.method'],
+					'required': true,
+					'validation': {
+						'type': 'string'
+					}
+				},
+				"api": {
+					'source': ['query.api'],
+					'required': true,
+					'validation': {
+						'type': 'string'
+					}
+				},
+				"apiGroup": {
+					'source': ['query.apiGroup'],
+					'required': false,
+					'validation': {
+						'type': 'string'
 					}
 				}
 			}

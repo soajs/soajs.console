@@ -71,6 +71,7 @@ module.exports = (grunt) => {
 				"latedef": "nofunc",
 				"leanswitch": true,
 				"maxerr": 100,
+				"multistr": true,
 				"noarg": true,
 				"nonbsp": true,
 				"strict": "global",

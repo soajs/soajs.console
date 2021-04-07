@@ -25,6 +25,38 @@ function run(serviceStartCb) {
 			}
 			
 			//GET methods
+			
+			service.get("/dashboard/services", function (req, res) {
+				bl.dashboard.get_services(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.get("/dashboard/apis", function (req, res) {
+				bl.dashboard.get_apis(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.get("/dashboard/apis/v2", function (req, res) {
+				bl.dashboard.get_apis_v2(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.get("/apis", function (req, res) {
+				bl.dashboard.get_apis_all_versions(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.get("/apis/v2", function (req, res) {
+				bl.dashboard.get_apis_all_versions_v2(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.get("/api/acl/usage", function (req, res) {
+				bl.dashboard.get_api_acl_usage(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			
 			service.get("/ledger", function (req, res) {
 				bl.ledger.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));

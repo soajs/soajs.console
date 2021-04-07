@@ -34,6 +34,8 @@
   "dependencies": {
     "async": "3.2.0",
     "soajs": "4.0.23",
+    "soajs.core.libs": "1.2.0",
+    "lodash": "4.17.21",
     "uuid": "8.3.2"
   }
 }
