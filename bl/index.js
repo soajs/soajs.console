@@ -23,7 +23,8 @@ let BL = {
 	customRegistry: null,
 	resource: null,
 	settings: null,
-	oauth: null
+	oauth: null,
+	dashboard: null
 };
 
 function init(service, localConfig, cb) {
