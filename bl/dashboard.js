@@ -122,6 +122,20 @@ let bl = {
 			}
 			return cb(null, response);
 		});
+	},
+	
+	"get_api_acl_usage_tenants": (soajs, inputmaskData, options, cb) => {
+		if (!inputmaskData) {
+			return cb(bl.handleError(soajs, 400, null));
+		}
+		let modelObj = bl.mp.getModel(soajs, options);
+		modelObj.get_api_acl_usage_tenants(inputmaskData, (err, response) => {
+			bl.mp.closeModel(modelObj);
+			if (err) {
+				return cb(bl.handleError(soajs, 602, err));
+			}
+			return cb(null, response);
+		});
 	}
 };
 

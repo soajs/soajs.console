@@ -56,6 +56,11 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			service.get("/api/acl/usage/tenants", function (req, res) {
+				bl.dashboard.get_api_acl_usage_tenants(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			service.get("/ledger", function (req, res) {
 				bl.ledger.get(req.soajs, req.soajs.inputmaskData, null, (error, data) => {

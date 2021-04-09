@@ -1156,9 +1156,8 @@ Dashboard.prototype.get_api_acl_usage = function (data, cb) {
 															found_in_env.packages.push(packages[i].code);\
 														}\
 													} else {\
-														if (o[method]) {\
-															for (let a = 0; a < o[method].length; a++) {\
-																if (o[method][a].apis && o[method][a].apis[api]) {\
+														if (o[method] && o[method].apis) {\
+																if (o[method].apis && o[method].apis[api]) {\
 																	if (!found_in_env.envs[packages[i].code]) {\
 																		found_in_env.envs[packages[i].code] = [];\
 																	}\
@@ -1170,7 +1169,6 @@ Dashboard.prototype.get_api_acl_usage = function (data, cb) {
 																		found_in_env.packages.push(packages[i].code);\
 																	}\
 																}\
-															}\
 														}\
 													}\
 												}\
@@ -1237,52 +1235,52 @@ Dashboard.prototype.get_api_acl_usage = function (data, cb) {
 				}, {"found_in_scope.envs": {$exists: true, $not: {$size: 0}}}]
 			}
 		},
-		{
-			$lookup:
-				{
-					from: tenants_colName,
-					let: {"p_code": "$code"},
-					pipeline: [
-						{
-							$unwind: "$applications"
-						},
-						{
-							$unwind: {path: "$applications.keys", preserveNullAndEmptyArrays: true}
-						},
-						{
-							$unwind: {path: "$applications.keys.extKeys", preserveNullAndEmptyArrays: true}
-						},
-						{
-							$match: {$expr: {$eq: ["$applications.product", "$$p_code"]}}
-						},
-						{
-							$project: {
-								"code": 1,
-								"name": 1,
-								"applications.product": 1,
-								"applications.package": 1,
-								"applications.key.extKey": "$applications.keys.extKeys.extKey",
-								"applications.key.env": "$applications.keys.extKeys.env"
-							}
-						},
-						{
-							$group: {
-								_id: {code: "$code", name: "$name"},
-								applications: {$push: "$applications"}
-							}
-						},
-						{
-							$project: {
-								"code": "$_id.code",
-								"name": "$_id.name",
-								"applications": 1,
-								"_id": 0
-							}
-						}
-					],
-					as: "tenants"
-				}
-		}
+		// {
+		// 	$lookup:
+		// 		{
+		// 			from: tenants_colName,
+		// 			let: {"p_code": "$code"},
+		// 			pipeline: [
+		// 				{
+		// 					$unwind: "$applications"
+		// 				},
+		// 				{
+		// 					$unwind: {path: "$applications.keys", preserveNullAndEmptyArrays: true}
+		// 				},
+		// 				{
+		// 					$unwind: {path: "$applications.keys.extKeys", preserveNullAndEmptyArrays: true}
+		// 				},
+		// 				{
+		// 					$match: {$expr: {$eq: ["$applications.product", "$$p_code"]}}
+		// 				},
+		// 				{
+		// 					$project: {
+		// 						"code": 1,
+		// 						"name": 1,
+		// 						"applications.product": 1,
+		// 						"applications.package": 1,
+		// 						"applications.key.extKey": "$applications.keys.extKeys.extKey",
+		// 						"applications.key.env": "$applications.keys.extKeys.env"
+		// 					}
+		// 				},
+		// 				{
+		// 					$group: {
+		// 						_id: {code: "$code", name: "$name"},
+		// 						applications: {$push: "$applications"}
+		// 					}
+		// 				},
+		// 				{
+		// 					$project: {
+		// 						"code": "$_id.code",
+		// 						"name": "$_id.name",
+		// 						"applications": 1,
+		// 						"_id": 0
+		// 					}
+		// 				}
+		// 			],
+		// 			as: "tenants"
+		// 		}
+		// }
 	];
 	
 	__self.mongoCore.aggregate(products_colName, pipeline, {}, (err, cursor) => {
@@ -1291,6 +1289,98 @@ Dashboard.prototype.get_api_acl_usage = function (data, cb) {
 		} else {
 			cursor.toArray((err, response) => {
 				return cb(err, response);
+			});
+		}
+	});
+};
+
+Dashboard.prototype.get_api_acl_usage_tenants = function (data, cb) {
+	let __self = this;
+	
+	let productCode = data.productCode;
+	let orCond = [];
+	if (data.keyword) {
+		let rePattern = new RegExp(data.keyword, 'i');
+		orCond.push({'code': {"$regex": rePattern}});
+		orCond.push({'name': {"$regex": rePattern}});
+	}
+	let conditions = {};
+	if (orCond.length > 0) {
+		conditions.$or = orCond;
+	}
+	let pipeline = [
+		{
+			$match: conditions
+		},
+		{
+			$unwind: "$applications"
+		},
+		{
+			$unwind: {path: "$applications.keys", preserveNullAndEmptyArrays: true}
+		},
+		{
+			$unwind: {path: "$applications.keys.extKeys", preserveNullAndEmptyArrays: true}
+		},
+		{
+			$match: {$expr: {$eq: ["$applications.product", productCode]}}
+		},
+		{
+			$project: {
+				"code": 1,
+				"name": 1,
+				"applications.product": 1,
+				"applications.package": 1,
+				"applications.key.extKey": "$applications.keys.extKeys.extKey",
+				"applications.key.env": "$applications.keys.extKeys.env"
+			}
+		},
+		{
+			$group: {
+				_id: {code: "$code", name: "$name"},
+				applications: {$push: "$applications"}
+			}
+		},
+		{
+			$project: {
+				"code": "$_id.code",
+				"name": "$_id.name",
+				"applications": 1,
+				"_id": 0
+			}
+		}
+	];
+	let countPipeline = [...pipeline];
+	countPipeline.push({$count: "count"});
+	__self.mongoCore.aggregate(tenants_colName, countPipeline, {}, (error, cursor) => {
+		if (error) {
+			return cb(error, null);
+		} else {
+			cursor.toArray((error, countResponse) => {
+				if (error) {
+					return cb(error, null);
+				} else {
+					pipeline.push({$skip: data.start || 0});
+					pipeline.push({$limit: data.limit || 1000});
+					__self.mongoCore.aggregate(tenants_colName, pipeline, {}, (error, cursor) => {
+						if (error) {
+							return cb(error, null);
+						} else {
+							cursor.toArray((error, recordsResponse) => {
+								if (error) {
+									return cb(error, null);
+								} else {
+									let response = {
+										limit: data.limit || 1000,
+										start: data.start || 0,
+										count: (countResponse && countResponse[0] ? countResponse[0].count : 0),
+										records: recordsResponse
+									};
+									return cb(null, response);
+								}
+							});
+						}
+					});
+				}
 			});
 		}
 	});

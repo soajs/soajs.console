@@ -622,6 +622,27 @@ module.exports = {
 						'type': 'string'
 					}
 				}
+			},
+			"/api/acl/usage/tenants": {
+				"_apiInfo": {
+					"l": "List analytics per API",
+					"group": "Analytics"
+				},
+				"commonFields": ["start", "limit"],
+				"productCode": {
+					'source': ['query.productCode'],
+					'required': true,
+					'validation': {
+						'type': 'string'
+					}
+				},
+				"keyword": {
+					'source': ['query.keyword'],
+					'required': false,
+					'validation': {
+						'type': 'string'
+					}
+				}
 			}
 		},
 		
