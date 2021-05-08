@@ -1218,7 +1218,7 @@ module.exports = {
 											"debug": {"type": "boolean"},
 											"getUserFromToken": {"type": "boolean"}
 										},
-										"required": ["accessTokenLifetime", "refreshTokenLifetime", "debug", "getUserFromToken"]
+										"required": ["accessTokenLifetime", "refreshTokenLifetime", "getUserFromToken"]
 									},
 									"cors": {
 										"type": "object",

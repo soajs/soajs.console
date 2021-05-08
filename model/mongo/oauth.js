@@ -57,7 +57,12 @@ Oauth.prototype.list = function (data, cb) {
 			return cb(err, null);
 		}
 		let condition = {'tId': id};
-		__self.mongoCore.find(colName, condition, (err, records) => {
+		let options = {
+			"projection": {
+				'password': 0
+			}
+		};
+		__self.mongoCore.find(colName, condition, options, (err, records) => {
 			return cb(err, records);
 		});
 	});
