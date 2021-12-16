@@ -1,6 +1,6 @@
 language: node_js
 
-node_js: 12
+node_js: 16
 
 jobs:
   include:
@@ -56,6 +56,8 @@ jobs:
     - docker tag soajsorg/console:latest soajsorg/console:${MAJOR_VERSION}.x
 
     - docker push soajsorg/console
+    - docker push soajsorg/console:${PACKAGE_VERSION}
+    - docker push soajsorg/console:${MAJOR_VERSION}.x
     deploy:
       on:
         all_branches: true

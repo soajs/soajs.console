@@ -36,7 +36,7 @@ describe("Testing ACL resource", () => {
 			
 			let params = {
 				body: {
-					"id": body.data[0]._id,
+					"id": body.data._id,
 					"type": "blacklist",
 					"groups": ["owner"]
 				}
@@ -47,7 +47,7 @@ describe("Testing ACL resource", () => {
 				assert.ok(body2.data);
 				let params = {
 					body: {
-						"id": body.data[0]._id,
+						"id": body.data._id,
 						"data": {
 							"name": "urac",
 							"plugged": false,

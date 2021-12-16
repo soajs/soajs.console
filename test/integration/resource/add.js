@@ -36,7 +36,7 @@ describe("Testing add resource", () => {
 			
 			let params = {
 				body: {
-					"id": body.data[0]._id,
+					"id": body.data._id,
 					"data": {
 						"name": "myMongo69",
 						"plugged": false,

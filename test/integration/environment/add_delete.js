@@ -40,7 +40,7 @@ describe("Testing add environment", () => {
 				assert.ifError(error);
 				assert.ok(body);
 				assert.ok(body.data);
-				assert.deepStrictEqual(body.data, {n: 1, ok: 1, deletedCount: 1});
+				assert.deepStrictEqual(body.data, {n: 1, ok: true, deletedCount: 1});
 				
 				let params = {
 					qs: {

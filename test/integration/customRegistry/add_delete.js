@@ -34,14 +34,14 @@ describe("Testing add delete custom registry", () => {
 			
 			let params = {
 				body: {
-					"id": body.data[0]._id,
+					"id": body.data._id,
 				}
 			};
 			requester('/registry/custom', 'delete', params, (error, body) => {
 				assert.ifError(error);
 				assert.ok(body);
 				assert.ok(body.data);
-				assert.deepStrictEqual(body.data, {n: 1, ok: 1, deletedCount: 1});
+				assert.deepStrictEqual(body.data, {n: 1, ok: true, deletedCount: 1});
 				done();
 			});
 		});
