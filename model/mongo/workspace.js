@@ -242,6 +242,7 @@ Workspace.prototype.addCollection = function (data, cb) {
         "description": data.description,
         "env": data.env,
         "status": "active",
+        "apis": [],
         "time": {
             "createdAt": new Date().getTime()
         }
@@ -284,8 +285,11 @@ Workspace.prototype.addCollectionApi = function (data, cb) {
             }
         };
         const set = {
-            $addToSet: {
-                apis: doc
+            $push: {
+                apis: {
+                    $each: [doc],
+                    $position: 0
+                }
             }
         };
 
