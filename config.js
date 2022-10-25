@@ -650,8 +650,8 @@ module.exports = {
 					"l": "Fetch the list of collections",
 					"group": "Collection"
 				},
-				"code": {
-					"source": ["query.code"],
+				"env": {
+					"source": ["query.env"],
 					"required": true,
 					"validation": {
 						"type": "string"

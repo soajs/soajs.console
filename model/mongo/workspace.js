@@ -51,7 +51,9 @@ Workspace.prototype.listCollections = function (data, cb) {
     let __self = this;
     let pipeline = [
         {
-            $match: {}
+            $match: {
+                "env": data.env
+            }
         }
     ];
     __self.mongoCore.aggregate(colName, pipeline, {}, (err, cursor) => {
