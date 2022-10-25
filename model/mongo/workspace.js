@@ -61,9 +61,6 @@ Workspace.prototype.listCollections = function (data, cb) {
             return cb(err, null);
         } else {
             cursor.toArray((err, response) => {
-                if (response && Array.isArray(response)) {
-                    response = response[0];
-                }
                 return cb(err, response || []);
             });
         }
