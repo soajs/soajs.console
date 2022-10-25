@@ -266,8 +266,7 @@ Workspace.prototype.addCollectionApi = function (data, cb) {
             return cb(error);
         }
         const condition = {
-            "_id": _id,
-            "tenantId": data.tenantId
+            "_id": _id
         };
 
         let options = {};
