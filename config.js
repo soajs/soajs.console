@@ -643,7 +643,21 @@ module.exports = {
 						'type': 'string'
 					}
 				}
-			}
+			},
+
+			"/collections": {
+				"_apiInfo": {
+					"l": "Fetch the list of collections",
+					"group": "Collection"
+				},
+				"code": {
+					"source": ["query.code"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
 		},
 		
 		"delete": {
@@ -792,6 +806,40 @@ module.exports = {
 						"type": "string"
 					}
 				}
+			},
+
+			"/collection/:id": {
+				_apiInfo: {
+					"l": "Delete a collection",
+					"group": "Collection"
+				},
+				"id": {
+					"source": ['params.id'],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
+			"/collection/:id/api/:apiId": {
+				_apiInfo: {
+					"l": "Delete an api from a collection",
+					"group": "Collection"
+				},
+				"id": {
+					"source": ["params.id"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"apiId": {
+					"source": ["params.apiId"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
 			}
 		},
 		
@@ -984,6 +1032,86 @@ module.exports = {
 					"required": true,
 					"validation": {
 						"type": "string"
+					}
+				}
+			},
+
+			"/collection": {
+				"_apiInfo": {
+					"l": "Add a collection",
+					"group": "Collection"
+				},
+				"name": {
+					"source": ["body.name"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"description": {
+					"source": ["body.description"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"env": {
+					"source": ["body.env"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
+			"/collection/:id/api": {
+				"_apiInfo": {
+					"l": "Add an API to a collection",
+					"group": "Collection"
+				},
+				"id": {
+					"source": ["params.id"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"method": {
+					"source": ["body.method"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"name": {
+					"source": ["body.name"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"api": {
+					"source": ["body.api"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"headers": {
+					"source": ["body.headers"],
+					"validation": {
+						"type": "object"
+					}
+				},
+				"body": {
+					"source": ["body.body"],
+					"validation": {
+						"type": "object"
+					}
+				},
+				"query": {
+					"source": ["body.query"],
+					"validation": {
+						"type": "object"
 					}
 				}
 			}
@@ -1471,6 +1599,114 @@ module.exports = {
 					"required": true,
 					"validation": {
 						"type": "string"
+					}
+				}
+			},
+
+
+			"/collection/:id": {
+				"_apiInfo": {
+					"l": "Update a collection",
+					"group": "Collection"
+				},
+				"id": {
+					"source": ["params.id"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"name": {
+					"source": ["body.name"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"description": {
+					"source": ["body.description"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				}
+			},
+			"/collection/:id/apis": {
+				"_apiInfo": {
+					"l": "Update the APIs list of a collection",
+					"group": "Collection"
+				},
+				"id": {
+					"source": ["params.id"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"apis": {
+					"source": ["body.code"],
+					"required": true,
+					"validation": {
+						"type": "array"
+					}
+				}
+			},
+			"/collection/:id/api/:apiId": {
+				"_apiInfo": {
+					"l": "Update the API of a collection",
+					"group": "Collection"
+				},
+				"id": {
+					"source": ["params.id"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"apiId": {
+					"source": ["params.apiId"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"method": {
+					"source": ["body.method"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"name": {
+					"source": ["body.name"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"api": {
+					"source": ["body.api"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"headers": {
+					"source": ["body.headers"],
+					"validation": {
+						"type": "object"
+					}
+				},
+				"body": {
+					"source": ["body.body"],
+					"validation": {
+						"type": "object"
+					}
+				},
+				"query": {
+					"source": ["body.query"],
+					"validation": {
+						"type": "object"
 					}
 				}
 			}

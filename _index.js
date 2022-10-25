@@ -126,6 +126,12 @@ function run(serviceStartCb) {
 				});
 			});
 			
+			service.get("/collections", function (req, res) {
+				bl.workspace.listCollections(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+
 			//DELETE methods
 			service.delete("/environment", function (req, res) {
 				bl.environment.delete(req.soajs, req.soajs.inputmaskData, null, (error, data, envCode) => {
@@ -249,6 +255,18 @@ function run(serviceStartCb) {
 				});
 			});
 			
+			service.delete("/collection/:id", function (req, res) {
+				bl.workspace.deleteCollection(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.delete("/collection/:id/api/:apiId", function (req, res) {
+				bl.workspace.deleteCollectionApi(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+
+
 			//PUT methods
 			service.put("/environment/acl", function (req, res) {
 				bl.environment.update_acl(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
@@ -363,6 +381,22 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+
+			service.put("/collection/:id", function (req, res) {
+				bl.workspace.updateCollection(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.put("/collection/:id/apis", function (req, res) {
+				bl.workspace.updateCollectionApis(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.put("/collection/:id/api/:apiId", function (req, res) {
+				bl.workspace.updateCollectionApi(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			//POST methods
 			service.post("/ledger", function (req, res) {
@@ -452,6 +486,18 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+
+			service.post("/collection", function (req, res) {
+				bl.workspace.addCollection(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+			service.post("/collection/:id/api", function (req, res) {
+				bl.workspace.addCollectionApi(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
+
 			service.start(serviceStartCb);
 		});
 	});

@@ -1,0 +1,27 @@
+[
+  {
+    "_id": "",
+    "time": {
+      "createdAt": 0,
+      "updateAt": 0
+    },
+    "env": "DEV",
+    "name": "",
+    "description": "",
+    "apis": [
+      {
+        "_id": "",
+        "time": {
+          "createdAt": 0,
+          "updateAt": 0
+        },
+        "name": "",
+        "api": "",
+        "method": "get",
+        "headers": {},
+        "query": {},
+        "body": {}
+      }
+    ]
+  }
+]
