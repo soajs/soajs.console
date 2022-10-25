@@ -98,6 +98,10 @@ let bl = {
         if (!inputmaskData) {
             return cb(bl.handleError(soajs, 400, null));
         }
+
+        inputmaskData.tenantId = soajs.tenant.id;
+        inputmaskData.addedBy = soajs.urac._id;
+
         bl.modelObj.addCollection(inputmaskData, (err, response) => {
 			if (err) {
 				return cb(bl.handleError(soajs, 602, err));

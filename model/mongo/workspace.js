@@ -64,7 +64,7 @@ Workspace.prototype.listCollections = function (data, cb) {
                 if (response && Array.isArray(response)) {
                     response = response[0];
                 }
-                return cb(err, response);
+                return cb(err, response || []);
             });
         }
     });
