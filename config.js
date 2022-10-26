@@ -1644,7 +1644,7 @@ module.exports = {
 					}
 				},
 				"apis": {
-					"source": ["body.code"],
+					"source": ["body.apis"],
 					"required": true,
 					"validation": {
 						"type": "array"
