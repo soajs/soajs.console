@@ -52,7 +52,8 @@ Workspace.prototype.listCollections = function (data, cb) {
     let pipeline = [
         {
             $match: {
-                "env": data.env
+                "env": data.env,
+                "status": "active"
             }
         }
     ];
