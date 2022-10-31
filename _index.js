@@ -382,6 +382,11 @@ function run(serviceStartCb) {
 				});
 			});
 
+			service.put("/collection/proxy", function (req, res) {
+				bl.workspace.proxy(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			service.put("/collection/:id", function (req, res) {
 				bl.workspace.updateCollection(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
@@ -394,11 +399,6 @@ function run(serviceStartCb) {
 			});
 			service.put("/collection/:id/api/:apiId", function (req, res) {
 				bl.workspace.updateCollectionApi(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
-					return res.json(req.soajs.buildResponse(error, data));
-				});
-			});
-			service.put("/collection/proxy", function (req, res) {
-				bl.workspace.proxy(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});

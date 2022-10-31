@@ -1604,6 +1604,32 @@ module.exports = {
 			},
 
 
+			"/collection/proxy": {
+				"_apiInfo": {
+					"l": "Proxy a collection request",
+					"group": "Collection"
+				},
+				"url": {
+					"source": ["body.url"],
+					"required": true,
+					"validation": {
+						"type": "string"
+					}
+				},
+				"config": {
+					"source": ["body.config"],
+					"required": true,
+					"validation": {
+						"type": "body",
+						"required": ["method"],
+						"properties": {
+							"method": {
+								"type": "string"
+							},
+						}
+					}
+				}
+			},
 			"/collection/:id": {
 				"_apiInfo": {
 					"l": "Update a collection",
@@ -1707,33 +1733,6 @@ module.exports = {
 					"source": ["body.query"],
 					"validation": {
 						"type": "object"
-					}
-				}
-			},
-
-			"/collection/proxy": {
-				"_apiInfo": {
-					"l": "Proxy a collection request",
-					"group": "Collection"
-				},
-				"url": {
-					"source": ["body.url"],
-					"required": true,
-					"validation": {
-						"type": "string"
-					}
-				},
-				"config": {
-					"source": ["body.config"],
-					"required": true,
-					"validation": {
-						"type": "body",
-						"required": ["method"],
-						"properties": {
-							"method": {
-								"type": "string"
-							},
-						}
 					}
 				}
 			}
