@@ -136,13 +136,15 @@ let bl = {
             })
             .catch((error) => {
                 if (error.response) {
+                    console.log(error.response);
                     return cb(null, {
-                        url: error.response.url,
-                        status: error.response.status,
-                        data: error.response.data,
-                        "error": error.message
+                        "url": error.response.url,
+                        "status": error.response.status,
+                        "error": error.message,
+                        "data": error.response.data
                     });
                 } else if (error.request) {
+                    console.log(error.request);
                     return cb(null, {
                         "request": error.request,
                         "error": error.message
