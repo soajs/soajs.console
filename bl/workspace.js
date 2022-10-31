@@ -120,6 +120,26 @@ let bl = {
 			}
 			return cb(null, response);
 		});
+    },
+
+
+    "proxy": (soajs, inputmaskData, options, cb) => {
+        (async () => {
+            await fetch(url, config)
+                .then(async (response) => {
+                    return ({
+                        url: response.url,
+                        status: response.status,
+                        data: await response.json()
+                    });
+                })
+                .then((data) => {
+                    return cb(null, data);
+                })
+                .catch((error) => {
+                    return cb(null, {"error": error.message});
+                });
+        })();
     }
 
 };

@@ -397,6 +397,11 @@ function run(serviceStartCb) {
 					return res.json(req.soajs.buildResponse(error, data));
 				});
 			});
+			service.put("/collection/proxy", function (req, res) {
+				bl.workspace.proxy(req.soajs, req.soajs.inputmaskData, null, (error, data) => {
+					return res.json(req.soajs.buildResponse(error, data));
+				});
+			});
 			
 			//POST methods
 			service.post("/ledger", function (req, res) {
