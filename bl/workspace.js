@@ -125,7 +125,7 @@ let bl = {
 
     "proxy": (soajs, inputmaskData, options, cb) => {
         (async () => {
-            await fetch(url, config)
+            await fetch(inputmaskData.url, inputmaskData.config)
                 .then(async (response) => {
                     return ({
                         url: response.url,
