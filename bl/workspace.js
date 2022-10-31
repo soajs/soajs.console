@@ -129,25 +129,16 @@ let bl = {
         axios(inputmaskData.config)
             .then((response) => {
                 return cb(null, {
-                    url: response.url,
                     status: response.status,
                     data: response.data
                 });
             })
             .catch((error) => {
                 if (error.response) {
-                    console.log(error.response);
                     return cb(null, {
-                        "url": error.response.url,
                         "status": error.response.status,
                         "error": error.message,
                         "data": error.response.data
-                    });
-                } else if (error.request) {
-                    console.log(error.request);
-                    return cb(null, {
-                        "request": error.request,
-                        "error": error.message
                     });
                 } else {
                     return cb(null, {
