@@ -8,7 +8,7 @@
 
 'use strict';
 
-const axios = require('axios').default;
+const axios = require('axios');
 
 let bl = {
     "modelObj": null,
@@ -126,35 +126,33 @@ let bl = {
 
 
     "proxy": (soajs, inputmaskData, options, cb) => {
-        (async () => {
-            axios(inputmaskData.config)
-                .then((response) => {
-                    return cb(null, {
-                        url: response.url,
-                        status: response.status,
-                        data: response.data
-                    });
-                })
-                .catch((error) => {
-                    if (error.response) {
-                        return cb(null, {
-                            url: error.response.url,
-                            status: error.response.status,
-                            data: error.response.data,
-                            "error": error.message
-                        });
-                    } else if (error.request) {
-                        return cb(null, {
-                            "request": error.request,
-                            "error": error.message
-                        });
-                    } else {
-                        return cb(null, {
-                            "error": error.message
-                        });
-                    }
+        axios(inputmaskData.config)
+            .then((response) => {
+                return cb(null, {
+                    url: response.url,
+                    status: response.status,
+                    data: response.data
                 });
-        })();
+            })
+            .catch((error) => {
+                if (error.response) {
+                    return cb(null, {
+                        url: error.response.url,
+                        status: error.response.status,
+                        data: error.response.data,
+                        "error": error.message
+                    });
+                } else if (error.request) {
+                    return cb(null, {
+                        "request": error.request,
+                        "error": error.message
+                    });
+                } else {
+                    return cb(null, {
+                        "error": error.message
+                    });
+                }
+            });
     }
 
 };
