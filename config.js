@@ -1084,7 +1084,6 @@ module.exports = {
 				},
 				"name": {
 					"source": ["body.name"],
-					"required": true,
 					"validation": {
 						"type": "string"
 					}
@@ -1705,7 +1704,6 @@ module.exports = {
 				},
 				"name": {
 					"source": ["body.name"],
-					"required": true,
 					"validation": {
 						"type": "string"
 					}

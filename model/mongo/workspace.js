@@ -188,8 +188,8 @@ Workspace.prototype.updateCollectionApis = function (data, cb) {
 
 Workspace.prototype.updateCollectionApi = function (data, cb) {
     let __self = this;
-    if (!data || !data.id || !data.apiId || !data.method || !data.name || !data.api) {
-        let error = new Error("Workspace: id, apiId, method, name and api are required.");
+    if (!data || !data.id || !data.apiId || !data.method || !data.api) {
+        let error = new Error("Workspace: id, apiId, method and api are required.");
         return cb(error, null);
     }
     __self.validateId(data.id, (error, _id) => {
@@ -208,9 +208,11 @@ Workspace.prototype.updateCollectionApi = function (data, cb) {
         };
         s.$set["apis.$.time.updatedAt"] = updatedAt;
         s.$set["apis.$.method"] = data.method;
-        s.$set["apis.$.name"] = data.name;
         s.$set["apis.$.api"] = data.api;
 
+        if (data.name) {
+            s.$set["apis.$.name"] = data.name;
+        }
         if (data.headers) {
             s.$set["apis.$.headers"] = data.headers;
         }
@@ -276,7 +278,6 @@ Workspace.prototype.addCollectionApi = function (data, cb) {
         const doc = {
             "_id": __self.generateId().toString(),
             "method": data.method,
-            "name": data.name,
             "api": data.api,
             "headers": data.headers,
             "body": data.body,
@@ -285,6 +286,9 @@ Workspace.prototype.addCollectionApi = function (data, cb) {
                 "createdAt": new Date().getTime()
             }
         };
+        if (data.name) {
+            doc.name = data.name;
+        }
         const set = {
             $push: {
                 apis: {
