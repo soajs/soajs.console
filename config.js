@@ -1107,6 +1107,12 @@ module.exports = {
 						"type": "object"
 					}
 				},
+				"params": {
+					"source": ["body.params"],
+					"validation": {
+						"type": "object"
+					}
+				},
 				"query": {
 					"source": ["body.query"],
 					"validation": {
@@ -1723,6 +1729,12 @@ module.exports = {
 				},
 				"body": {
 					"source": ["body.body"],
+					"validation": {
+						"type": "object"
+					}
+				},
+				"params": {
+					"source": ["body.params"],
 					"validation": {
 						"type": "object"
 					}

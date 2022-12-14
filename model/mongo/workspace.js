@@ -222,6 +222,9 @@ Workspace.prototype.updateCollectionApi = function (data, cb) {
         if (data.query) {
             s.$set["apis.$.query"] = data.query;
         }
+        if (data.params) {
+            s.$set["apis.$.params"] = data.params;
+        }
         __self.mongoCore.updateOne(colName, condition, s, null, (error, response) => {
             if (error) {
                 return cb(error);
@@ -282,6 +285,7 @@ Workspace.prototype.addCollectionApi = function (data, cb) {
             "headers": data.headers,
             "body": data.body,
             "query": data.query,
+            "params": data.params,
             "time": {
                 "createdAt": new Date().getTime()
             }
