@@ -55,6 +55,9 @@ Workspace.prototype.listCollections = function (data, cb) {
                 "env": data.env,
                 "status": "active"
             }
+        },
+        {
+            $sort: { "name": 1 }
         }
     ];
     __self.mongoCore.aggregate(colName, pipeline, {}, (err, cursor) => {
