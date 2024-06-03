@@ -23,7 +23,7 @@ let bl = {
 	"model": null,
 	"soajs_service": null,
 	"localConfig": null,
-	
+
 	"handleError": (soajs, errCode, err) => {
 		if (err) {
 			soajs.log.error(err.message);
@@ -58,7 +58,7 @@ let bl = {
 			}
 		}
 	},
-	
+
 	"get": (soajs, inputmaskData, options, cb) => {
 		if (!inputmaskData) {
 			return cb(bl.handleError(soajs, 400, null));
@@ -69,6 +69,13 @@ let bl = {
 			bl.mp.closeModel(modelObj);
 			if (err) {
 				return cb(bl.handleError(soajs, 602, err));
+			}
+			if (response && response.length > 0) {
+				for (let i = 0; i < response.length; i++) {
+					if (response[i].created !== inputmaskData.env.toUpperCase()) {
+						delete response[i].value;
+					}
+				}
 			}
 			return cb(null, response);
 		});
@@ -98,7 +105,7 @@ let bl = {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 		let modelObj = bl.mp.getModel(soajs, options);
-		
+
 		inputmaskData.type = "kubernetes";
 		modelObj.add(inputmaskData, (err, response) => {
 			bl.mp.closeModel(modelObj);
@@ -113,7 +120,7 @@ let bl = {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 		let modelObj = bl.mp.getModel(soajs, options);
-		
+
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.update(inputmaskData, (err, response) => {
 			bl.mp.closeModel(modelObj);
@@ -128,7 +135,7 @@ let bl = {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 		let modelObj = bl.mp.getModel(soajs, options);
-		
+
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.update_acl(inputmaskData, (err, response) => {
 			bl.mp.closeModel(modelObj);
@@ -143,7 +150,7 @@ let bl = {
 			return cb(bl.handleError(soajs, 400, null));
 		}
 		let modelObj = bl.mp.getModel(soajs, options);
-		
+
 		inputmaskData._groups = getGroups(soajs);
 		modelObj.delete_acl(inputmaskData, (err, response) => {
 			bl.mp.closeModel(modelObj);
@@ -156,4 +163,3 @@ let bl = {
 };
 
 module.exports = bl;
-	
