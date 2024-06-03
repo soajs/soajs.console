@@ -70,6 +70,13 @@ let bl = {
 			if (err) {
 				return cb(bl.handleError(soajs, 602, err));
 			}
+			if (response && response.length > 0) {
+				for (let i = 0; i < response.length; i++) {
+					if (response[i].created !== inputmaskData.env.toUpperCase()) {
+						delete response[i].value;
+					}
+				}
+			}
 			return cb(null, response);
 		});
 	},
