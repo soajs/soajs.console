@@ -28,15 +28,15 @@
     "grunt-jsdoc": "2.4.1",
     "grunt-mocha-test": "0.13.3",
     "mocha": "10.7.3",
-    "request": "2.88.2",
-    "soajs.controller": "4.2.15"
+    "soajs.controller": "4.2.17"
   },
   "dependencies": {
-    "async": "3.2.5",
-    "axios": "1.7.4",
-    "soajs": "4.1.10",
+    "async": "3.2.6",
+    "axios": "1.7.9",
+    "soajs": "4.1.11",
     "soajs.core.libs": "1.2.0",
     "lodash": "4.17.21",
-    "uuid": "10.0.0"
+    "request": "2.88.2",
+    "uuid": "11.0.3"
   }
 }
