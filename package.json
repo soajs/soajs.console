@@ -27,16 +27,16 @@
     "grunt-istanbul": "0.8.0",
     "grunt-jsdoc": "2.4.1",
     "grunt-mocha-test": "0.13.3",
-    "mocha": "11.1.0",
-    "soajs.controller": "4.2.31"
+    "mocha": "11.7.4",
+    "soajs.controller": "4.2.40"
   },
   "dependencies": {
     "async": "3.2.6",
-    "axios": "1.8.2",
-    "soajs": "4.1.13",
+    "axios": "1.12.2",
+    "soajs": "4.1.16",
     "soajs.core.libs": "1.2.1",
     "lodash": "4.17.21",
     "request": "2.88.2",
-    "uuid": "11.1.0"
+    "uuid": "13.0.0"
   }
 }
