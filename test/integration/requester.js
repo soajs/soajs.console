@@ -18,7 +18,7 @@ module.exports = async (method, params, cb) => {
 	const httpMethod = (method === 'del') ? 'delete' : method;
 
 	let options = {
-		uri: 'http://127.0.0.1:4000/console' + apiName,
+		url: 'http://127.0.0.1:4000/console' + apiName,
 		method: httpMethod.toUpperCase(),
 		headers: {
 			key: extKey,
